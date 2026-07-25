@@ -1,0 +1,30 @@
+# --- secrets / machine-local ---
+config.json
+proxies.txt
+proxies.txt.bak*
+proxies_default.txt
+!proxies.example.txt
+nyx_injector.bat
+nyx_core.txt
+nyx_style.txt
+
+# --- runtime state ---
+Profiles/
+Results/
+logs/
+*.log
+
+# --- python ---
+__pycache__/
+*.pyc
+*.pyo
+.Python
+.venv/
+venv/
+
+# --- os / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.claude/

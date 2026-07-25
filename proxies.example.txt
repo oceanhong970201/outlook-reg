@@ -1,0 +1,9 @@
+# One proxy per line, format:  host:port:username:password
+# For local Resin gateway the host is the Resin listen address and the
+# username selects "<platform>.<account>" with a shared token as password.
+# Example (DO NOT commit real credentials):
+127.0.0.1:2260:Default.s1:REPLACE_WITH_RESIN_PROXY_TOKEN
+127.0.0.1:2260:Default.s2:REPLACE_WITH_RESIN_PROXY_TOKEN
+127.0.0.1:2260:Default.s3:REPLACE_WITH_RESIN_PROXY_TOKEN
+127.0.0.1:2260:Default.s4:REPLACE_WITH_RESIN_PROXY_TOKEN
+127.0.0.1:2260:Default.s5:REPLACE_WITH_RESIN_PROXY_TOKEN

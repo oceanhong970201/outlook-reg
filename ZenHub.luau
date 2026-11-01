@@ -29,7 +29,7 @@ local Players = game:GetService("Players")
 if not game:IsLoaded() then game.Loaded:Wait() end
 if not Players.LocalPlayer then Players:GetPropertyChangedSignal("LocalPlayer"):Wait() end
 assert(Players.LocalPlayer, "Zen Hub: local player is unavailable")
-local CONFIG_FOLDER = "AnimeExpeditionsClone"
+local CONFIG_FOLDER = "ZenHub"
 -- Account identity is bound once: no guest path and no shared legacy fallback.
 local function normalizeConfigUserId(value)
     if type(value) == "string" then
@@ -81,7 +81,257 @@ if not previousAccountMatches then
     Environment.__AnimeExpeditionsLostShipmentResume = nil
 end
 
-local Spec = HttpService:JSONDecode([==[{"source":"reports/nousigi_ui_inventory.json","sourceVersion":44934,"generatedAt":"2026-09-09T11:24:24.000Z","stats":{"Lobby":{"sections":26,"controls":83},"Joiner":{"sections":35,"controls":191},"Game":{"sections":17,"controls":60},"Macro":{"sections":25,"controls":157},"Webhook":{"sections":2,"controls":7},"totalControls":538,"Settings":{"sections":9,"controls":40}},"pages":[{"name":"Lobby","title":"Lobby","sections":[{"name":"Auto Claimer","path":["Auto Claimer"],"controls":[{"key":"NUI-0006","sourceId":"button-input-Enable all Auto Claim","type":"button","title":"Enable all Auto Claim","description":"Turn on every Auto Claim toggle above","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0007","sourceId":"input-checkbox-Auto Claim Battlepass","type":"toggle","title":"Auto Claim Battlepass","description":"Claims available rewards from every loaded regular and event Battlepass, including previous seasons","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0008","sourceId":"input-checkbox-Auto Claim Calendar","type":"toggle","title":"Auto Claim Calendar","description":"Claims available Daily Calendar login rewards","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0009","sourceId":"input-checkbox-Auto Claim Event Rewards","type":"toggle","title":"Auto Claim Event Rewards","description":"Claims completed event quests and calendars discovered from replicated data","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-MONSTER-CLAIM","type":"toggle","title":"Auto Claim Monster Clash Missions","description":"Claims completed Repeatable, Event, Daily and Weekly missions. Also covered by Auto Claim Event Rewards. Waits for native claim/reset acknowledgement; never buys items or opens chests.","default":false},{"key":"AE-MONSTER-CLAIM-STATUS","type":"label","title":"Monster Clash Claims: disabled\nRepeatable / Event / Daily / Weekly","description":"Submitted requests and observed claimed/reset state are tracked separately. No completed mission means no request."},{"key":"NUI-0010","sourceId":"input-checkbox-Auto Claim Index","type":"toggle","title":"Auto Claim Index","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0011","sourceId":"input-checkbox-Auto Claim Level Milestone","type":"toggle","title":"Auto Claim Level Milestone","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0012","sourceId":"input-checkbox-Auto Claim Quest","type":"toggle","title":"Auto Claim Quest","description":"Can be claimed while in game","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0013","sourceId":"input-checkbox-Auto Claim Quest Board","type":"toggle","title":"Auto Claim Quest Board","description":"Claims completed weekly Expedition quests and reached Quest Board milestone rewards","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0014","sourceId":"input-checkbox-Auto Open Event Capsules","type":"toggle","title":"Auto Open Event Capsules","description":"Opens owned event capsules one at a time and confirms the inventory update","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Auto Fishing","path":["Auto Fishing"],"controls":[{"key":"NUI-0015","sourceId":"input-checkbox-Auto Fishing","type":"toggle","title":"Auto Fishing","description":"Automatically moves to tagged water, casts, and solves the fishing minigame.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Auto Shop","path":["Auto Shop"],"controls":[{"key":"AE-SHOP-BATCH-SIZE","sourceId":"shop-batch-size","type":"slider","title":"Purchase Batch Size","description":"Maximum quantity per native purchase request; actual quantity is capped by stock, affordability and inventory capacity.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":1,"max":100,"rounding":0}]},{"name":"Auto Shop › Expedition Shop","path":["Auto Shop","Expedition Shop"],"controls":[{"key":"NUI-0016","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buys selected in-stock items when there is enough currency.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0017","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select items by their in-game display name.","currentValue":null,"options":["Bamboo Bottle","Dragon Hilt","Equipment Lock","Equipment Reroll","Futuristic Payload","Gem","Gold","Katana","Magic Book","Pirate's Slingshot","Red Finger","Staff of Chaos","Stat Lock","Stat Reroll","Trait Crystal","Warrior's Axe"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Shop › Gold Shop","path":["Auto Shop","Gold Shop"],"controls":[{"key":"NUI-0018","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buys selected in-stock items when there is enough currency.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0019","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select items by their in-game display name.","currentValue":null,"options":["Cursed Boba","Delicious Pie","Equipment Lock","Equipment Reroll","Frown Fruit","Mana Flask","Meat","Red Flower","Sprite (Grey)","Stat Lock","Stat Reroll","Survival Rations","Trait Crystal"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Shop › Raid General Shop","path":["Auto Shop","Raid General Shop"],"controls":[{"key":"NUI-0020","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buys selected in-stock items when there is enough currency.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0021","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select items by their in-game display name.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Sprite (Grey)","Stat Lock","Stat Reroll","Trait Crystal"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Shop › [EVENT] Event Shop","path":["Auto Shop","[EVENT] Event Shop"],"controls":[{"key":"NUI-0022","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buys selected in-stock items when there is enough currency.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0023","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select items by their in-game display name.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Gem","Sprite (Grey)","Stat Lock","Stat Reroll","Trait Crystal"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Shop › [EVENT] Wandering Trader","path":["Auto Shop","[EVENT] Wandering Trader"],"controls":[{"key":"NUI-0024","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buys selected in-stock items whenever the Wandering Trader appears and you have enough currency.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0025","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select items by their in-game display name.","currentValue":null,"options":["Dragon Hilt","Equipment Lock","Equipment Reroll","Futuristic Payload","Gem","Gold","Luck Potion","Magic Book","Red Finger","Staff of Chaos","Stat Lock","Stat Reroll","Trait Crystal","Warrior's Axe"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Summon Banner","path":["Auto Summon Banner"],"controls":[]},{"name":"Auto Summon Banner › Mini","path":["Auto Summon Banner","Mini"],"controls":[{"key":"NUI-0026","sourceId":"input-checkbox-Auto Summon Mini","type":"toggle","title":"Auto Summon Mini","description":"Summons only while a selected Mythic unit is the banner's featured main unit.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0027","sourceId":"input-checkbox-Teleport Lobby if in Banner","type":"toggle","title":"Teleport Lobby if in Banner","description":"While in a match, instantly returns to the lobby when a selected unit is featured and at least 50 summons are affordable.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0028","sourceId":"input-checkbox-Unselect if Summoned","type":"toggle","title":"Unselect if Summoned","description":"Unselects a target from this banner after that unit is summoned.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0029","sourceId":"select-input-Auto Sell Rarity","type":"dropdown","title":"Auto Sell Rarity","description":"Synchronizes AE's normal and shiny auto-sell settings for this banner.","currentValue":null,"options":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary","Shiny Mythic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Epic","Legendary","Shiny Rare","Shiny Epic","Shiny Legendary"]},{"key":"NUI-0030","sourceId":"select-input-Select Summon Unit","type":"dropdown","title":"Select Summon Unit","description":"Select obtainable Mythic units. Summoning starts when one is the featured main unit.","currentValue":null,"options":["Bioinsect","Carrot","Cursed Student","Elf Mage","Flame Emperor","Hollow","Lady Giant","Puppet","Salmon Sorcerer","String Demon","Vegetable"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Summon Banner › Standard","path":["Auto Summon Banner","Standard"],"controls":[{"key":"NUI-0031","sourceId":"input-checkbox-Auto Summon Standard","type":"toggle","title":"Auto Summon Standard","description":"Summons only while a selected Mythic unit is the banner's featured main unit.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0032","sourceId":"input-checkbox-Teleport Lobby if in Banner","type":"toggle","title":"Teleport Lobby if in Banner","description":"While in a match, instantly returns to the lobby when a selected unit is featured and at least 50 summons are affordable.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0033","sourceId":"input-checkbox-Unselect if Summoned","type":"toggle","title":"Unselect if Summoned","description":"Unselects a target from this banner after that unit is summoned.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0034","sourceId":"select-input-Auto Sell Rarity","type":"dropdown","title":"Auto Sell Rarity","description":"Synchronizes AE's normal and shiny auto-sell settings for this banner.","currentValue":null,"options":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary","Shiny Mythic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary"]},{"key":"NUI-0035","sourceId":"select-input-Select Summon Unit","type":"dropdown","title":"Select Summon Unit","description":"Select obtainable Mythic units. Summoning starts when one is the featured main unit.","currentValue":null,"options":["Bioinsect","Carrot","Cursed Student","Elf Mage","Flame Emperor","Hollow","Lady Giant","Puppet","Salmon Sorcerer","String Demon","Vegetable"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Event","path":["Event"],"controls":[]},{"name":"Event › [EVENT] Dragon's Wish","path":["Event","[EVENT] Dragon's Wish"],"controls":[{"key":"NUI-0036","sourceId":"input-checkbox-Auto Collect Wishing Orb","type":"toggle","title":"Auto Collect Wishing Orb","description":"Automatically collects unlocked, uncollected Wish Orbs while playing East Town Story.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Event › [EVENT] Guess That Unit","path":["Event","[EVENT] Guess That Unit"],"controls":[{"key":"NUI-0037","sourceId":"input-checkbox-Auto Guess That Unit","type":"toggle","title":"Auto Guess Who Am I","description":"Automatically solve the available Who Am I event using ranked clues and at most three native guesses; waits for the next reset after completion.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-GOLD-RETRY","sourceId":"whoami-gold-retry","type":"toggle","title":"Auto Use Gold to Retry","description":"Opt-in: use the native Gold retry only after an unsuccessful attempt. Requires Auto Guess Who Am I. Pending or unknown outcomes are never charged again.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-GOLD-LIMIT","sourceId":"whoami-gold-limit","type":"slider","title":"Gold Retry Limit per Hour","description":"3 by default. 0 retries until victory or insufficient Gold. Attempt budget is saved before each charge and survives reload.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":3,"min":0,"max":20,"rounding":0},{"key":"AE-WHOAMI-STATUS","sourceId":"whoami-status","type":"label","title":"Who Am I: disabled\nGold retry: off","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-WHOAMI-DEEPSEEK","sourceId":"whoami-deepseek","type":"toggle","title":"Use DeepSeek for New Questions","description":"Optional DeepSeek HTTPS for new clues. Provide your own ZenHubDeepSeekApiKey in the executor environment before loading. No API key is bundled or exported.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-AI-RECONNECT","sourceId":"whoami-ai-reconnect","type":"button","title":"Check AI Connection","description":"Check the direct provider model catalogue (no completion charge). Never starts a question, resets its schedule, or charges Gold. Checks are limited to once every 3 seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-WHOAMI-AI-STATUS","sourceId":"whoami-ai-status","type":"label","title":"DeepSeek: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Expedition Hub","path":["Expedition Hub"],"controls":[{"key":"AE-FUEL-BATCH-SIZE","sourceId":"fuel-batch-size","type":"slider","title":"Add Fuel Batch Size","description":"Maximum fuel items per request; uses remaining native fuel-item capacity and owned fuel, not displayed seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":1,"max":100,"rounding":0}]},{"name":"Expedition Hub › Auto Construct","path":["Expedition Hub","Auto Construct"],"controls":[{"key":"NUI-0038","sourceId":"input-checkbox-Auto Construct","type":"toggle","title":"Auto Construct","description":"Constructs selected buildings that have not reached level 1 yet when their requirements and costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0039","sourceId":"select-input-Select Building","type":"dropdown","title":"Select Building","description":"Choose which buildings may be constructed.","currentValue":null,"options":["Expedition Center","Gold Mine","Resource Drill","Research Lab","Training Grounds","Expedition Shop","Armory","Quest Board"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Hub › Auto Upgrade Building","path":["Expedition Hub","Auto Upgrade Building"],"controls":[{"key":"NUI-0040","sourceId":"input-checkbox-Auto Upgrade Building","type":"toggle","title":"Auto Upgrade Building","description":"Upgrades selected constructed buildings to their next available level when requirements and costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0041","sourceId":"select-input-Select Building","type":"dropdown","title":"Select Building","description":"Choose which buildings may be upgraded.","currentValue":null,"options":["Expedition Center","Gold Mine","Resource Drill","Research Lab","Training Grounds","Expedition Shop","Armory","Quest Board"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Hub › Gold Mine","path":["Expedition Hub","Gold Mine"],"controls":[{"key":"NUI-0042","sourceId":"input-checkbox-Auto Add Fuel","type":"toggle","title":"Auto Add Fuel","description":"Fills the Gold Mine with available Expedition Fuel.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0043","sourceId":"input-checkbox-Auto Collect","type":"toggle","title":"Auto Collect","description":"Collects completed Gold Mine rewards.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0044","sourceId":"input-checkbox-Return Lobby When Fuel Empty","type":"toggle","title":"Return Lobby When Fuel Empty","description":"After the current match ends, returns to the lobby when the Gold Mine is empty and you have Expedition Fuel available.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Research Lab","path":["Expedition Hub","Research Lab"],"controls":[{"key":"NUI-0045","sourceId":"input-checkbox-Auto Upgrade Skill Tree","type":"toggle","title":"Auto Upgrade Skill Tree","description":"Buys available Research Lab skill-tree upgrades whenever all requirements and material costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Resource Drill","path":["Expedition Hub","Resource Drill"],"controls":[{"key":"NUI-0046","sourceId":"input-checkbox-Auto Add Fuel","type":"toggle","title":"Auto Add Fuel","description":"Fills the Resource Drill with available Expedition Fuel.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0047","sourceId":"input-checkbox-Auto Collect","type":"toggle","title":"Auto Collect","description":"Collects completed Resource Drill rewards.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0048","sourceId":"input-checkbox-Auto Open Geode","type":"toggle","title":"Auto Open Geode","description":"Opens every Expedition Geode before Auto Joiners enter a stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0049","sourceId":"input-checkbox-Ignore if Sprite Reached Limit","type":"toggle","title":"Ignore if Sprite Reached Limit","description":"Keeps opening Expedition Geodes even when Grey Sprite inventory is full.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0050","sourceId":"input-checkbox-Return Lobby When Fuel Empty","type":"toggle","title":"Return Lobby When Fuel Empty","description":"After the current match ends, returns to the lobby when the Resource Drill is empty and you have Expedition Fuel available.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Training Grounds","path":["Expedition Hub","Training Grounds"],"controls":[{"key":"NUI-0051","sourceId":"input-checkbox-Auto Train Units","type":"toggle","title":"Auto Train Units","description":"Manages Training Grounds while in the Lobby: fills every available slot with selected units below 400% Worthiness and retrieves units when they reach 400%. Enable the return option below to rotate completed trainees after a match.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0052","sourceId":"input-checkbox-Ignore Z Stat Units","type":"toggle","title":"Ignore Z Stat Units","description":"Prevents selected units with a Z Damage, SPA, or Range stat from being assigned to the Training Grounds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0053","sourceId":"input-checkbox-Return Lobby if Full Worthiness","type":"toggle","title":"Return Lobby if Full Worthiness","description":"Training Grounds actions only work in the Lobby. After the current match ends, returns to the Lobby when a trainee reaches 400% Worthiness and another selected, eligible unit below 400% is waiting to take the freed slot.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0054","sourceId":"select-input-Select Units","type":"dropdown","title":"Select Units","description":"Select the exact inventory units to train.\n<b>WARNING: Copying this configuration also copies the selected units' UIDs. Be careful when sharing it.</b>","currentValue":null,"options":["Zoro#30023217-fa19-4c91-9418-fa32289f83ea\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B-/B/C)</font>","Zoro#7d62790a-7eda-4191-aca8-8411a8fc560f\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B-/C/C+)</font>","Zoro#a7ac442f-144c-46fa-8237-f4fcc1d3f680\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B/B-/C)</font>","Levi#3fc2bfc6-2015-4b5c-92ef-5465f9ca8098\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (B-/B/B)</font>","Levi#caf1ddbc-8986-4731-860d-83a6e1af209b\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (B-/B/C+)</font>","Levi#6b5d01b2-a861-4576-a8fc-7a0b8f0043e2\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (C/B-/C)</font>","Levi#9e7169a8-4219-43c6-a023-4de8485e0598\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (C/B/B+)</font>","Gon#b375b827-2f31-4cc0-a799-35387a518632\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Nen Hunter (B+/C+/C+)</font>","Senku#3c87fd41-22f0-4b8e-8671-f4a9c098d462\n<font color=\"#A5A5A5\">[Epic] Lvl 50 Stone Alchemist (C/B/B)</font>","Kite#882f9c5a-84a9-4e53-8c8d-e210a2baf646\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Jester (B-/C/C)</font>","Sparkle#5e25f19e-279f-4323-99a8-6e49675342b4\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (B-/C+/C+)</font>","Sparkle#2e266cfd-6e68-4146-8d13-5a4620ade92c\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C+/C/C+)</font>","Sparkle#cb2eb430-ed45-4bb6-acd5-636537950fa2\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C/C+/B-)</font>","Sparkle#dae7414a-85a8-41ed-a0df-592211f458d7\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C/C/B)</font>","Choso#118cd9dc-4a5b-4905-bcd2-e65bfb748bcd\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Crimson (A/SSS/A)</font>","Khun#a65f3bce-1f2e-4260-90ee-1247f6517399\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Cubert (C/C/C)</font>","Khun#60d675fc-bd0d-4061-8085-b179c4ae8c2a\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Cubert (SSS/SSS/SSS)</font>","Sugar#04f70944-dc41-4168-96e5-734e9bd472dd\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (B+/B/C+)</font>","Sugar#d9e39ed8-571c-4e94-867e-3beb1eda1a95\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (SSS/SSS/A+)</font>","Sugar#5b10502b-0504-4901-b20f-86819525c826\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (Z/Z/Z)</font>","Hinata#6d71e009-d970-4e55-9f3c-ca0ed52a8027\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 True Saint (SSS/SSS/SSS)</font>","HimmelTheHero#6c31c058-9024-493b-8906-5c5f66c1de61\n<font color=\"#A5A5A5\">[Legendary] Lvl 1 The Hero (B+/B-/C)</font>","HimmelTheHero#6fc752a7-227a-481f-9e02-68c89f39fa52\n<font color=\"#A5A5A5\">[Legendary] Lvl 10 The Hero (C/B+/SSS)</font>","Utahime#6e0c9ec5-920c-4bbd-b521-bb1d8a78cdf1\n<font color=\"#A5A5A5\">[Legendary] Lvl 50 Forbidden Teacher (B-/C/SSS)</font>","Ichiraku#1df2aa1e-c024-4c7b-9174-0b8e3df0d1f0\n<font color=\"#A5A5A5\">[Legendary] Lvl 50 Ramen Guy (B/C+/B)</font>","GokuSS1#36e2f746-e36e-4430-b420-0c0fc3fd9b35\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B-/C+/C)</font>","GokuSS1#c681c363-88e2-48a3-98eb-32ce5f162b94\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B-/C/C)</font>","GokuSS1#4b92f00e-ddf9-45a7-91e9-68066d65c301\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B/B/B-)</font>","GokuSS1#ab2d921e-81fa-417e-950e-74b89aacc54f\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (C/C/C)</font>","Zeref#9e02e741-7160-4b11-8838-3fc93e81f974\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B-/B/C)</font>","Zeref#c5113d7f-ac74-4157-af70-904508d5a459\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B-/C+/B)</font>","Zeref#b2fbfa5d-48ab-4aea-91a8-695dc8af9685\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B/B/B)</font>","Zeref#0a3f77dd-79e5-4e5a-a246-22825476874a\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (C/C/C)</font>","Yuta#af9310ad-292d-40b1-825e-b5b7c2d40181\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Student (C/B/C)</font>","SkullKnight#5c6fa078-d21c-4414-adc3-d97356c2f8a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Eclipse Hunter (C/C/B)</font>","Harribel#81778526-b624-4381-a453-48f9aa127bd1\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Sharkfang (B-/C+/C)</font>","Gowther#09d32bd0-e140-4aee-8ce8-9abd7a5eb7b8\n<font color=\"#A5A5A5\">[Mythic] Lvl 42 Puppet (C/C-/C)</font>","Cell#4da14f8e-b094-497e-bfd9-18329444b34f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (A+/Z/SS)</font>","Cell#677a179e-7774-4164-85cb-93f5e3726905\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (Final Form) (SSS/SSS/SSS)</font>","Cell#fb662745-e813-4d9d-bbf6-46aa4f1c1136\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (Final Form) (SSS/SSS/SSS)</font>","Cell#1bfa4857-4596-4e6d-975c-5be989385dee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (S/A/S)</font>","Cell#3de2e347-a920-4231-a55e-cc8b2e3fbfc9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (SS/SS/A+)</font>","Cell#4451c43e-b5bf-44d7-90af-496a39865619\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (SSS/A+/S)</font>","GokuSS1#0d0d04e1-da8d-47b2-bcb7-b7b4564c551a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (S/SS/A+)</font>","GokuSS1#38d474b6-5608-4cd3-b393-f205c585191b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (SSS/SSS/A)</font>","GokuSS1#a2a0ef9a-63ef-42fe-b37b-3c4b9bec04cd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (Unleashed) (SSS/SSS/SSS)</font>","Zeref#5a08e5bd-72ad-41d0-85f3-eba470726ee7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A+/A)</font>","Zeref#596871ae-0cca-4266-a754-b64129afae0d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A+/A+)</font>","Zeref#0716d898-afc0-4462-bc7f-9bc1a45d4207\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A/S)</font>","Zeref#f551447d-df7d-41a5-b582-625b77451c06\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A/S)</font>","Zeref#1e431e39-64dd-4472-be11-0ad57705346d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/S/A+)</font>","Zeref#9fa88dba-a010-4528-b835-5884a8742a63\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/S/A+)</font>","Zeref#01d524ab-3433-49db-ac00-dadaeafaaac7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/SS/A+)</font>","Zeref#0544b1e6-d96e-4ee2-ab2b-b95ab5d89603\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/SS/A+)</font>","Zeref#28ac7136-42ee-417a-a369-d1622b3a0597\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/Z/A+)</font>","Zeref#9d1c6b5a-6ca8-4450-9e4d-b74a9a7af2ef\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A+/A+)</font>","Zeref#266e34f7-ac4e-45b6-870d-c77e2b52df5f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A+/S)</font>","Zeref#e736e370-33d3-41dd-895f-b7e8f2b55c78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A/S)</font>","Zeref#cbc1212a-df8e-41ea-ae5d-246edf99dd1a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/S/SS)</font>","Zeref#51ef5bd9-e36c-4a74-a724-8f439dfe7747\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/SSS/A)</font>","Zeref#02306892-e5db-41f1-ba5d-1252ed066e6d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/SSS/SSS)</font>","Zeref#87a204a5-1d8e-4fe2-a498-96311ac6182d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (Black Sun) (SSS/SSS/SSS)</font>","Zeref#61e825de-42c9-40ab-ac8a-58a9250af61d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A+/A)</font>","Zeref#f4606458-9d03-402a-8323-e6ade6d4d062\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A+/A+)</font>","Zeref#5f3a9f29-d9cc-4a7b-9406-922f2830c3be\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A/A)</font>","Zeref#bdd97b13-4a40-4bc0-a796-2c9882af3ce7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A/SSS)</font>","Zeref#34668f92-d2f0-4854-8845-6ba3ae95a294\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/B-/C+)</font>","Zeref#1ab8d4fd-40be-464e-a9ae-d0f1691794ca\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/SSS/SS)</font>","Zeref#0d10a790-3281-402b-ab3a-8f76c3966dba\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/A)</font>","Zeref#708b2ad2-688a-463d-81ea-dc75553c35ad\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/A+)</font>","Zeref#9baa66d9-3e13-440c-a8f6-41c752f58555\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/S)</font>","Zeref#05131031-ae01-46cf-8ff3-e5d8a8e67ae8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#286eda82-7f81-4739-aca8-2b3ccc5df396\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#6bed19d9-997b-4cb8-be84-96830e7d8009\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#239a6f30-7dde-421d-9eb9-959f62c87093\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SSS/A/A+)</font>","Zeref#d9e1562d-3dda-4e74-9efe-58c775a2eba7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SSS/SS/SS)</font>","Yuta#f67fbe70-7f64-4a98-9fc9-9c833d01dcb8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A+/S/S)</font>","Yuta#531e6ca3-56e8-4db0-aa37-d034e297eacf\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A+/Z/A)</font>","Yuta#e9e82407-9a49-414e-87be-e560dc96b852\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A/A/A)</font>","Yuta#eb5741b4-3a9e-4dc4-8b87-7b60c53d35a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (S/A+/A)</font>","Yuta#19d8da38-37d9-4295-8fa5-eca8d135c1aa\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (S/A/A+)</font>","Yuta#c13109e6-8bae-43ce-85bc-a4e125b1a58b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SS/A+/A)</font>","Yuta#5517c4a4-f17a-45a4-8970-b5e79349d3d9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SSS/A/SS)</font>","Yuta#b8b12d76-1a7e-40b0-be55-f0594bb18a7b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SSS/S/S)</font>","Yuta#cedfc2e7-1b48-45de-a6bd-59b112a97522\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (True Love) (SSS/SSS/SSS)</font>","Yuta#2f3d3769-8612-449d-83f7-c89a00d299ac\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (Z/S/SS)</font>","Judar#7d09d48b-ad93-4298-a594-64c44d64730e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SS)</font>","Judar#8694c8cb-d6e5-4628-ba60-845105cfe9a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SSS)</font>","Judar#cd63b0c0-4b53-4ec9-80a2-9ba02be5f612\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SSS)</font>","Judar#4fb12350-0bd2-4732-ae16-57c17a5418b3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A/S)</font>","Judar#1f8b0804-da28-4c7e-8ce5-e6ab529991c5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A/Z)</font>","Judar#ed3958b9-2874-4b23-a247-5e5ddf1de1b0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/S/A)</font>","Judar#3b20df0d-04f8-4b2f-8fd8-9753b5d3d1cb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/S/SSS)</font>","Judar#aa26344a-95f9-442e-ad01-0f6152959997\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/A)</font>","Judar#be0d4c13-0e1d-4d49-b7bf-ab2647a8d10d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/SS)</font>","Judar#dbdf6822-9f29-42a7-a03e-803b992e20a7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/SSS)</font>","Judar#c84f9ab6-9076-421a-b3e2-8e1fda07a146\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A)</font>","Judar#b0e05ff3-e826-403b-8f0b-d5ef0cfbd3a4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A+)</font>","Judar#b56f3106-918c-4cc4-9fa5-701116701117\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A+)</font>","Judar#3c0bc368-9cf1-4a0a-9772-9e06e90623ea\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/S)</font>","Judar#69c06930-6781-484e-8a8b-95baa25d3872\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/S)</font>","Judar#36ec33f0-486f-48b3-8a58-35fc78c9be84\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A+/S)</font>","Judar#2e3ba020-e6f0-4c82-b6e1-599ebcc0f67a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A+/SS)</font>","Judar#2176d2e8-41df-4b19-8ea5-50915f7e3fa3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#8028ca02-5498-4519-8ca4-681d1d034677\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#9e893522-79e6-45de-89e3-dbcefd6cdb4a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#04544417-2eb6-4d88-8361-bfec0288058d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/S)</font>","Judar#61947e67-560b-4849-84a9-6354a5093d27\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/S)</font>","Judar#3215af8c-cfd6-494e-b030-c7040b81470f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/SSS)</font>","Judar#0621500f-8db6-47c4-ad04-dffbc469c92d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/SS/A)</font>","Judar#e990dee7-c164-482e-9e2d-86e795467b04\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/SSS/A+)</font>","Judar#58b133b0-3366-45e3-b192-b8e2ef79f6f6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/Z/A+)</font>","Judar#668a2078-fc0a-4a15-94e8-3c27fff3e6ec\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/SSS)</font>","Judar#a1db7c86-a7c1-4a34-af81-6c3f306d9add\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/SSS)</font>","Judar#79efe070-6e33-4aa1-ad2a-796db6242dd1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/Z)</font>","Judar#6280ee86-4427-4c20-bcaf-1e75c0145a13\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/S/SS)</font>","Judar#001d622a-868b-4dc6-a277-52ec8c261229\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/A+)</font>","Judar#f1f0807c-e55a-456e-805c-34114088a20c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/A+)</font>","Judar#5f318a44-a410-47a8-b7c8-1f3c0333810f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/S)</font>","Judar#252fb301-9861-41bb-912c-45198cd5e546\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/SS)</font>","Judar#c1e83547-ba6d-4a22-b2f2-a4fbf72b0d38\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A+/SSS)</font>","Judar#61763696-900a-4f6e-854b-b13b5f474822\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/SS)</font>","Judar#1ea22950-8083-44a4-b08d-de046bd590ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/Z)</font>","Judar#3c8c5a50-3a53-4b0d-aaf6-f9227c448a62\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/Z)</font>","Judar#9121d767-1344-492f-bf6c-b7771a99896b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/SSS/A)</font>","Judar#8d4d53a0-c2c9-46a1-8616-13b8a5b7201c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/A)</font>","Judar#e7aca438-4294-42b0-aab1-a1919c50d3f5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/A)</font>","Judar#32fc6a4d-4dfe-4da3-aeee-7e50a9ffc98e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#46405b35-2f0c-4ba8-9755-d6c9fa179191\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#c28ce858-2727-4851-b90d-5eff08306241\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#bbe5935e-6ac7-4357-8599-93bc0ef3f93b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/A+)</font>","Judar#df5bb99b-252f-47e1-abd9-d040b9bff99a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/A+)</font>","Judar#ba31c507-b76d-4542-abd4-5cd4d439c656\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SS)</font>","Judar#26e4bc4f-bd75-4c4a-98e7-79e56fe842af\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SSS)</font>","Judar#682206fb-f192-4dd5-8290-7ad1717ba9ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SSS)</font>","Judar#ca7f3783-b04c-4eaa-b2b4-8f76cbd2ea92\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/S/A+)</font>","Judar#ea166d9e-cd1d-4510-b24d-37f728ae4e93\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/S/SSS)</font>","Judar#ad666489-184f-4598-8a8b-0bdb44559020\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/A)</font>","Judar#c34660d1-d7c9-4a6c-aa5a-748d1464b7cf\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/SSS)</font>","Judar#e8730c70-e5f7-4e66-8c34-2663ee33270f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/SSS)</font>","Judar#d6129ff3-7706-4d20-93a3-a96f91dfe11d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (Sovereign) (Z/SSS/SSS)</font>","Frieren#0004ceba-78a4-4a45-8231-c00a4f3631a0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/A/SSS)</font>","Frieren#794e6316-6b55-4b56-b80c-12730f601d93\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/S/A)</font>","Frieren#c4b40580-b0b0-4b7f-aaba-c069bcb5e1f4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/S/SSS)</font>","Frieren#1131fdb9-6c1a-45e4-b353-b10e7e3d8aeb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A/SS/A)</font>","Frieren#6dab59f3-ef07-4fa6-859d-0b065101673a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (S/SSS/A)</font>","Frieren#5f4fddc7-7670-4fb3-be1c-0a49e0826e06\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A+/A)</font>","Frieren#d09e0749-212a-4495-a364-f5bb37e43276\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A+/A+)</font>","Frieren#66ccb90c-4773-4b9d-91d4-b5de9c2c4c0e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A/A)</font>","Frieren#750c1531-8121-4920-8f05-e38a76357b80\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A/A)</font>","Frieren#40ee1d5b-4191-4bd7-aaf7-9f41868a8437\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (Unleashed) (Z/SSS/SSS)</font>","Sabo#f7ee7c65-6273-4b6b-82e1-9eb8e879184d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (A/A/A+)</font>","Sabo#ae457f3a-0c5a-4b92-9db4-58b6f8f55898\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (A/A/S)</font>","Sabo#8a335584-2101-4bdb-a389-ceb16e0ba6a6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (Reincarnate) (SSS/SSS/SSS)</font>","Sabo#4ad218bb-de19-464b-b309-5b248088cbf3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (S/SS/SSS)</font>","Sabo#5fe69edc-b6e0-4a05-b6f2-d5706f6a8c3c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SS/A/SS)</font>","Sabo#b36217bb-46b9-4750-a678-ce4383cf25ed\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SS/SS/A)</font>","Sabo#c9c1d029-b638-4243-855a-57da9158b50d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SSS/SSS/Z)</font>","Yamamoto#82994189-dfdb-414b-8053-a164c4bf2d5f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Head Captain (Char) (SSS/SSS/SSS)</font>","Gabimaru#252291be-b0a8-41f0-827b-f2ccf870668e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A+/A+/A+)</font>","Gabimaru#2e8ecc4d-bf7c-4d3f-9498-1cf0bc1fba28\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A+/A/S)</font>","Gabimaru#1bc3d0da-3c48-4427-a794-945abaa1816f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/A/S)</font>","Gabimaru#c906458f-bc92-4f19-b68b-bce98bae00c8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/S/Z)</font>","Gabimaru#b2bff2ef-5c1b-4da0-b77b-37522dee8793\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/Z/A+)</font>","Gabimaru#46820cd6-44a0-4894-adb3-9746e9d17f78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (B-/B-/C)</font>","Gabimaru#7436297b-da27-403b-8203-aca56e4655f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (C+/C/C)</font>","Gabimaru#c5f4ca60-8286-4a27-8ddf-54d3213bc305\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (C+/C/C)</font>","Gabimaru#a774196b-b67f-4ea3-bb5b-fcda2f568a78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/A)</font>","Gabimaru#4e5f4980-de74-47f3-8a10-bc1ef99cc0ab\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/A+)</font>","Gabimaru#5c46ffdb-0bdd-453f-8b90-6bcfb5612ea2\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/SSS)</font>","Gabimaru#96de9a26-070a-4fc3-a186-4350b13c6fd4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/A+/A)</font>","Gabimaru#943bc045-9f01-44cc-a0ab-538a4ad9f4e8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/A/A)</font>","Gabimaru#4c14f4fb-d67b-46d4-bb39-959b5d30d02e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/S/A+)</font>","Diane#7f1f64ef-543f-4541-82bb-64991df3773b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (A/A/SSS)</font>","Diane#8e161d2f-20c6-4cc7-99ba-3dc6302dccce\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (A/S/SSS)</font>","Diane#0ce23fa3-3be4-4e72-beb2-da94e93fd4e1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (B/B-/B-)</font>","Diane#b038ad6b-d0f6-47e0-ab70-3ebb5f6e1e2d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (B/B-/C+)</font>","Diane#bb9380b2-5d7e-4ecd-a9f8-51f2fe21e7c3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C+/C/C)</font>","Diane#946f42fb-ea34-4e19-adba-349884ae36d1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/B+/B-)</font>","Diane#a076bbf1-e3c9-4f73-9de6-90ff8b5f49f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/B/B+)</font>","Diane#7affc4a0-5ecd-49ad-9b82-bea6e17b2c11\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/C+/B-)</font>","Diane#8c1e14ce-28c0-4a36-807a-2736bdcfb957\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/C+/B-)</font>","Diane#89053b0d-a0ef-4f3b-8da2-82cc7e6fc66e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (Envy) (SSS/SSS/SSS)</font>","Diane#a746853a-8892-470c-a44c-e980656d2f94\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (S/A+/SSS)</font>","Gowther#d99020a4-5e44-4d51-9e78-683e10520ff3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (A/A+/SSS)</font>","Gowther#e6924adf-4805-44b3-ada5-183a57b971e1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (A/SSS/SSS)</font>","Gowther#2dde5ced-37dc-48ce-9957-e78a96552434\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (S/A/SSS)</font>","Gowther#bb76ec96-1b94-4eff-9a23-d38d2a819c10\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (SSS/A/SS)</font>","Gowther#9722a417-df3a-4c71-bef2-991e26989bfd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (Telekinetic) (Z/Z/Z)</font>","Grimmjow#ebd02e6a-081a-4039-b144-80032e356b52\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/S)</font>","Grimmjow#61fe04b7-8fc1-40d0-a04c-ccd2de89651f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/SSS)</font>","Grimmjow#ba5c1535-3ccb-44ff-9655-9e87a1c77081\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/SSS)</font>","Grimmjow#1e044b02-5953-4d85-ab4d-9159994c6fb7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A/SSS)</font>","Grimmjow#91a5bce6-1b9b-4c6e-a566-16394a544d4f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A/SSS)</font>","Grimmjow#257f4dc4-7a94-42c8-b6be-62dec1511d0f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/A)</font>","Grimmjow#7a8ada70-7ce0-4236-881b-16f8af1348c5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/A)</font>","Grimmjow#a7a7e2a0-fa10-45fb-a69c-253d56be87ae\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/Z)</font>","Grimmjow#c1aa6b60-ce49-4d6c-8474-87bb95097045\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SS/SSS)</font>","Grimmjow#684400c4-ce2d-42e4-a985-73c536db5cd3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/A)</font>","Grimmjow#28dcd748-f1b9-4262-a47a-7ec3859a3faa\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/S)</font>","Grimmjow#526b27f9-fd94-44a6-8fdc-a84ab518b582\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/S)</font>","Grimmjow#54c28762-fd29-47f0-8c5d-cf7132eb8004\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/SS)</font>","Grimmjow#d8b87b23-44c1-478d-90b0-22002d52db2f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A+/SSS)</font>","Grimmjow#3840776b-6c61-4c5d-acfa-1f6abb5fe8f3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/A)</font>","Grimmjow#0e24fc72-67ce-4b37-bf4c-3d5a2a2363a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/A+)</font>","Grimmjow#11f997bc-a9d0-49e5-b331-7c56e0cdc24e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#1b0c1a79-32ec-4cb2-a507-ab0b3c57313c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#8749773c-3828-4d80-8823-115546dfe37a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#a7257c44-e003-46aa-933b-1218e5ff3a8f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/S/SSS)</font>","Grimmjow#e3ad3e11-fdf7-4804-adfb-91807e3c81ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SS/A)</font>","Grimmjow#251374d9-c894-4fb5-9cdc-eea526d81898\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/A)</font>","Grimmjow#d6c3e541-85f5-4e68-8e82-353999de49a7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/A)</font>","Grimmjow#9c0c98dc-56ac-419a-afbb-bf7a7955ee4e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/SS)</font>","Grimmjow#8f2306ba-c696-411d-a74b-4127b875667d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B+/C+/C)</font>","Grimmjow#817c581b-bd32-4942-94d6-0d5a12d226d0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/B+/B)</font>","Grimmjow#81aba922-60bb-4fc7-bee6-07b2258340b4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/B+/C+)</font>","Grimmjow#a9b2ebb0-c0c1-4e45-9e13-91ed7cd1be05\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/C+/B+)</font>","Grimmjow#8f7b1f1e-4548-4ab4-a8ce-31bb62fc7583\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B/B-/C+)</font>","Grimmjow#7fdbb482-695f-4af4-9203-8176355f7a08\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (C/SSS/B)</font>","Grimmjow#08374f74-1c3e-4920-80e4-907d960d4260\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (Hunter) (SSS/SSS/SSS)</font>","Grimmjow#f0ee7136-154e-453c-a206-59c5c4b94e13\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A+/A)</font>","Grimmjow#47fb32ca-b868-4b2b-966d-05ce29186a5a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A+/A+)</font>","Grimmjow#4abd89d5-7e20-492b-9f8f-483812e77e50\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A/SSS)</font>","Grimmjow#dd172ad6-6a8e-496b-8d51-29b3506316fe\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A/SSS)</font>","Grimmjow#18fa0412-adc2-49c2-a7ef-d51b52e95916\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/SS/S)</font>","Grimmjow#36b4feb3-4c29-4bad-a34c-92428d15576c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/SSS/S)</font>","Grimmjow#299ec4c1-88a9-49cb-9585-efd81e381eb4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/A)</font>","Grimmjow#15377e10-d8d8-42f9-b7fd-c9de75c2e34c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/S)</font>","Grimmjow#4b36975d-bd90-4b16-9c0d-418a1dd4473d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/SSS)</font>","Grimmjow#20175903-0acc-40d0-83ac-b06f4a5e8284\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/SS/A+)</font>","Grimmjow#c6bdd97d-1ed6-4a12-a3a0-7dca9db60118\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A)</font>","Grimmjow#fb594d7a-cc3b-4cac-80b4-3706169d67b0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A)</font>","Grimmjow#2a821426-f590-4d20-824b-08eac2f826da\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A+)</font>","Grimmjow#4a61c790-be2f-4c0c-a667-c71cf355c63b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/A+)</font>","Grimmjow#11ff616f-fe9f-42a1-baf7-3a4b2b1818db\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#74839d70-eb33-46d4-b217-1c690c5698fc\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#c1cf99f5-5ca8-4d14-94be-f8ca139f048d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#c6d0fe03-b5fa-4595-a3f0-daf6afb141f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#ea32c548-631b-4d3a-8cee-ec619bcf0e62\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A)</font>","Grimmjow#4e010a85-4b6c-41db-9964-43b861b46bdd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A+)</font>","Grimmjow#5d1e55db-fd6a-4fdf-9da8-9d8ba3331aae\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A+)</font>","Grimmjow#00751e09-483a-47da-8cc5-7623dc8ab5e8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/SSS)</font>","Grimmjow#460b12aa-19bb-473f-a549-9569d49715d0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/SSS)</font>","Grimmjow#32507ad5-6fd4-4e58-b2a0-8097abda7f68\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/SS/A)</font>","Grimmjow#23eadb4c-a16b-4573-a629-0277b7dfab21\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/SSS/A+)</font>","Inumaki#549aa5e1-728b-4612-935f-33a36dea7b30\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SS/A)</font>","Inumaki#664472e7-0f93-4082-9abe-770682a2d060\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SSS/A+)</font>","Inumaki#cb74e586-9bfe-43f7-8e9b-982fdab75779\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SSS/S)</font>","Inumaki#7373f346-40ef-4036-be45-939a868da4bb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A/A+/Z)</font>","Inumaki#1b1a14c0-0ac9-4c31-b9ed-97e6d98cce1a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (Grade 1) (SSS/SSS/SSS)</font>","Inumaki#0c59aecd-993c-41fa-b50b-1473760fa024\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/A/A+)</font>","Inumaki#4d1ccbab-4374-42e3-b0a9-902ae0bed195\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/A/S)</font>","Inumaki#f4c3b422-f331-497d-972a-cc48d86517ba\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/S/SSS)</font>","Inumaki#3a4f45f1-8075-43ab-8a10-bc295aabccce\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SSS/A/A)</font>","Inumaki#968cfeb0-1e83-45b7-a223-e814193ec6f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SSS/S/SS)</font>","Crocodile#dd6ded16-9996-4e5f-8eaa-fb626505b272\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (Alligator) (SSS/SSS/SSS)</font>","Crocodile#5714c644-c360-477a-bfa4-19475b660702\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B+/B-/C)</font>","Crocodile#9f6b341b-a362-4a6d-971a-850f28eb186a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B-/B/C)</font>","Crocodile#658101d5-d476-44a7-8d1a-4dcc3ca3b7ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B-/C+/B-)</font>","Crocodile#6f39df0a-b76d-444e-b9c1-d487a21c9009\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B)</font>","Crocodile#67cfcd80-de3d-4a61-aac4-68fda49fa527\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B+)</font>","Crocodile#ad98c653-91a9-4fdf-b799-9901458478f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B-)</font>","Crocodile#6605943f-db29-4ab4-b893-1947f60f05c9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/B-)</font>","Crocodile#b0e3b073-e5a3-4509-93a5-2aa7fd9a78e6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/B-)</font>","Crocodile#ace948ab-72dc-46b3-b7cb-419504ee617c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/C)</font>","Doflamingo#e2f9093a-0be1-46ca-af1c-28b076049e03\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 String Demon (Awakened) (SSS/SSS/SSS)</font>","Doflamingo#b52d4908-3612-4d66-a7a4-61938c807fb9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 String Demon (B+/B+/C)</font>","Trunks#e6f1e575-339b-4702-b3ec-117aae0fe479\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A+/SSS/SS)</font>","Trunks#4a808323-3242-423d-9d18-fbc713e70617\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/S/A+)</font>","Trunks#afdb2ee5-e09a-4033-a08e-2cb3817060c3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/SSS/A)</font>","Trunks#8531607c-fb7c-47ba-8f74-e627aa537a3f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/SSS/S)</font>","Trunks#c0c8e24a-6b6b-42eb-a3e5-5b42f399b599\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (Juicebox) (SSS/SSS/SSS)</font>","Trunks#864ee1b7-6170-44e2-abbc-1128d54312a6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (SSS/A/SS)</font>","Vegeta#4f446ca2-df02-4d28-8cb2-4ef07531fb61\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (A+/A/SSS)</font>","Vegeta#3653fa23-a792-4a94-b7a5-230a0c044562\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (A/SSS/A+)</font>","Vegeta#89857591-9084-4183-bbcd-3195eec5d969\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (C+/Z/Z)</font>","Vegeta#335c54a2-5e4f-4534-bfc7-a40e27aa2728\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (C-/C-/A)</font>","Vegeta#971ef26c-0e2d-45d2-8c8b-d2904610da46\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (Prince) (SSS/Z/Z)</font>","Vegeta#6b56c7b3-cfa3-4346-9e23-afec1aa1bb83\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SS/SSS/A+)</font>","Vegeta#dc38307a-693c-49fe-af42-1a696a425d89\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A+/SSS)</font>","Vegeta#7ad156c1-44a6-4d17-93be-3cfeadd9d72c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A/A)</font>","Vegeta#3f40f3eb-889d-490c-a07f-30dd45762ab8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A/A+)</font>","Vegeta#7444b4a9-5a1e-4057-8994-0dd920fbab60\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/S/S)</font>","Vegeta#66d0f057-6fd5-452a-b286-4e36b11f5cb4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/SS/A)</font>","Vegeta#61f8c580-4eab-41d5-9400-68dacc85be2f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/SS/A+)</font>","Sanji#56647173-4928-4e6b-88d1-f47098fe4de4\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/B-/C+)</font>","Sanji#520b1134-8896-48e3-ac9f-6f8fb070cbd1\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/B/C+)</font>","Sanji#53c8dcd0-574e-452c-a3cf-e55b3d5dcac0\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/C+/C)</font>","Sanji#94e17c7e-7f8a-4d31-b7e5-0f2353a01016\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/B+/B-)</font>","Sanji#f4c12744-a0cc-4f7c-8364-dcfba94d7486\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C+/C)</font>","Sanji#8486efe7-2de7-4f9a-a8d3-ad82491abbf2\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C/C+)</font>","Sanji#ae82992f-cc59-449d-ba56-28330db5f841\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C/C+)</font>","Killua#b325331c-4899-4dd4-a3ef-a7ee2fa2b8fa\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B+/C+)</font>","Killua#473d8bda-4e4b-4c1b-a3c9-237245ef6b08\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B-/C)</font>","Killua#cec76969-dbb1-4a36-8e3d-f11e66830e83\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B-/C)</font>","Killua#737a603b-272a-48c6-ab47-350fc71e205b\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/C/B-)</font>","Killua#47f403f9-3974-45c0-bf68-1aa353513a87\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (C+/B/C)</font>","Goku#290a8163-f731-490e-b384-5e48183ade62\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B+/C/C)</font>","Goku#05f7be2e-92bb-4162-9754-44c37431b3f3\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B-/C/C)</font>","Goku#bfa6a219-474c-48bd-82f4-6cc3fd82a1ea\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B-/C/C+)</font>","Goku#6a2b9044-79ff-4544-a80b-981b3fb6c38f\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B/B-/B)</font>","Goku#ec6856f7-77ea-4bb5-96bb-ce2fa74526c1\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B/B-/C)</font>","Goku#bd623d92-6723-43e2-b901-93d7efa0aaf7\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (C+/B/C)</font>","Goku#a3f23b59-b7d5-4c29-b18a-1d09554ab57e\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (C+/C/C+)</font>","Uryu#760c0aeb-ea24-4018-88a3-f69b70b4b6e7\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C+/C/C)</font>","Uryu#5577b95c-bb18-43cd-88ae-6dcf94a858af\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C/C+/C)</font>","Uryu#5886163d-2dea-40b2-b46c-d513c062e058\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C/C/C)</font>","Luffy#f076084a-bd83-4341-9130-830cbdeaa639\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B+/B+/C+)</font>","Luffy#5a2e9dca-23f5-44c0-9548-4c7408a452b8\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B+/C/B-)</font>","Luffy#b562c464-356c-4e02-a451-24f51ef9843a\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B-/C/C)</font>","Luffy#d65dc191-9265-4cf0-a714-f024a93d1735\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B/B-/C)</font>","Luffy#d91650be-741f-43be-b4ae-d6703e9a0d60\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (C/B+/B+)</font>","Luffy#b6364ac4-58b6-43b9-ba0c-2599ae9fc2a2\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (C/B-/B+)</font>","Sasuke#4e9ba304-cd03-4f04-809b-488a93bfff21\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B+/B+/B+)</font>","Sasuke#c7704293-3a3b-451a-a8c6-e4c16cedf029\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B+/C/C)</font>","Sasuke#8395cee9-5a8e-4694-a21a-45efe2574499\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B-/B+/C+)</font>","Sasuke#c9b60d02-bedb-4975-9bf2-c7fb0de50b0d\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B-/B-/C)</font>","Sasuke#68ec9a27-7a8b-455a-863e-fe1e651f289a\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B/B-/C)</font>","Sasuke#b59d0b2a-b9e9-4460-b259-6377ad7158fd\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (C/C+/B)</font>","Sasuke#fe0cd03d-1014-4aa5-b638-74ca81fbabfa\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (C/C+/C)</font>","Kenpachi#8fa91eeb-101c-40d7-a2e1-e2a834791c77\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C+/C)</font>","Kenpachi#2e0500e0-caf4-428f-95eb-7fd261f7804d\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/B)</font>","Kenpachi#7d4b5fa1-4850-43a2-8d73-5205defab794\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/B-)</font>","Kenpachi#b1804a27-c1df-495e-869f-ad52bc582993\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/C)</font>","Kenpachi#ea9013ea-3590-4208-90a0-5bc328279a30\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/B+/B+)</font>","Kenpachi#fdef5319-995c-457d-94dd-93760b99362f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/B-/B+)</font>","Kenpachi#4eda49cc-fbed-4f11-b331-827ae7bd8fca\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C+/B-)</font>","Kenpachi#2f53fb80-3a9a-4753-b791-9f4ae804f25f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C/C)</font>","Kenpachi#0a4f2290-63fd-4ccd-9b61-22f4205a4033\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C/C+)</font>","Kenpachi#a294b1f1-42fb-468a-92c8-0cbedfba11da\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/B/B+)</font>","Kenpachi#403d0e10-e4ed-4aca-ac4e-ea6093e284fd\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C+/B)</font>","Kenpachi#46b5487e-3f68-4873-b71b-3427304fc8ca\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C+/C+)</font>","Kenpachi#5555b7ec-c918-436d-80ca-c07ab0ff7953\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C/B)</font>","Kenpachi#457d35b2-88a9-4494-8803-4ecbe0bc9a40\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C/C+)</font>","Kenpachi#2d11ea4d-7818-413b-8c3a-fed9af13d229\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B+/C)</font>","Kenpachi#96534dc3-69c3-4bcb-95b0-76785af7e9b6\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/B+)</font>","Kenpachi#3672d5db-7a24-46f5-8e2d-795cf1aa26b8\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/C)</font>","Kenpachi#fe554204-fe3b-4401-88e3-74bbce6d60e5\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/C+)</font>","Kenpachi#87915fce-945a-4655-8973-d3fb05cc5142\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B/B-)</font>","Kenpachi#6f4b11ec-d23d-42be-ad58-60bd15c8484f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/C/B)</font>","Kenpachi#664fd858-8aa5-4307-ba2b-0a201b43c22e\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B+/B-)</font>","Kenpachi#42f06b65-0167-49d0-915a-e8c493b948b7\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B+/C+)</font>","Kenpachi#0d43eef7-e728-4c8c-8ba6-591924fb4347\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B/C)</font>","Kenpachi#48cebc5e-6cd1-4966-8957-3a71f1f25cfc\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C+/C)</font>","Kenpachi#8f527bb7-863b-445b-8dea-fa485d03b883\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/B+)</font>","Kenpachi#4b4c6e63-7050-43d0-a581-ae47614a53cf\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/B-)</font>","Kenpachi#1250350d-0897-4f9f-b49e-aec3efa19a52\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/C)</font>","Kenpachi#b5a0a1f8-fc48-4246-8607-4ccd67485605\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/C)</font>","Griffith#1e23762d-db8f-44e0-8488-57aec8c954c9\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Broken Falcon (C/B-/B+)</font>","Itachi#068fe869-4794-470c-8e3a-7b6cf366ce22\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (A+/S/Z)</font>","Itachi#26f67b88-9f90-4621-bf32-b38badee863a\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (A/A/Z)</font>","Itachi#b8c7e47a-8d94-4b5c-9d2e-5d4a9e3a0060\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (C-/F/C-)</font>","Itachi#b0997bd9-25f5-43f6-867e-5bf46ef5f6f1\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (F/C/C)</font>","Itachi#352819dc-3694-45d7-81d9-9519187de72f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (S/A+/Z)</font>","Guts#816b18fd-0468-44aa-bb3c-d34ad56dea77\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Iron Wolf (B/C+/C+)</font>","Enel#7a491e51-9daf-4f4f-b7e6-820387fbe924\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B+/C+/B)</font>","Enel#baa4e665-8c01-4ffb-af9e-b58acc2080c2\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B+/C/C+)</font>","Enel#3a80813d-c6ab-45de-afdd-144989fc1dcf\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B/B+/C)</font>","Enel#a43edf09-f192-49f0-a14d-7017da3e839a\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B/C+/C)</font>","Enel#3e6b2c4d-e1c3-4025-8169-bc94b016a1db\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C+/C+/B-)</font>","Enel#4839acb9-4538-45e7-ba4f-8295deb24b17\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B-/C)</font>","Enel#90659079-a062-4e20-9249-3adf83ee242f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B-/C)</font>","Enel#004673e0-b6c9-4882-b92a-c12ed5f3bac2\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B/C+)</font>","Enel#c1a451f9-8a56-40c6-9c24-21d3e680adb3\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/C/B-)</font>","Enel#faf304f3-4b84-44da-a8a4-23de48217ae1\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/C/C+)</font>","Sinbad#fddb4c34-33b5-42fa-a3f9-3fd9ba3fac44\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/B/B-)</font>","Sinbad#da341814-a550-4c4a-811d-caab80145444\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C+/C)</font>","Sinbad#edaf445c-f489-4d86-ac96-f31dfa0e6257\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C/B-)</font>","Sinbad#55134d31-0761-42a6-8834-07e7dfc3bd2e\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C/C+)</font>","Sinbad#6a0ea2b0-526d-46d3-b344-7211a8e9b8ab\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B/B-/C+)</font>","Sinbad#576f2292-0d6f-4784-8de0-2d289391ecb0\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B/C+/C)</font>","Sinbad#8d71b007-596f-49b5-b554-eae7bb5b510f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B+/C)</font>","Sinbad#e77dcef6-b287-4703-929d-ba137e9940dc\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B-/B-)</font>","Sinbad#a5345489-4938-4503-8c7d-84cc4d7d7514\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B/C+)</font>","Sinbad#3c9ae98f-cd86-4f76-92b8-ab2aa70d3ac4\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/C/C)</font>","Sinbad#15ae680a-e2d8-416e-9786-8e8088ed3bb4\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/C/C+)</font>","Sinbad#eb82a47d-4c35-40b5-b524-5ab9de7b923c\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/B+/C+)</font>","Sinbad#8b81cdd8-dc58-4136-8fcb-414168236a85\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/B-/C)</font>","Sinbad#c05c5e11-1d23-460b-8431-a2bfcfafe077\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/C/B+)</font>","Sinbad#47434b37-0dc4-4b71-98d6-baa7ac311dac\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/C/B-)</font>","Griffith#28ac6e50-c405-49b0-a659-ef1a2d756489\n<font color=\"#A5A5A5\">[Secret] Lvl 50 5th God Hand (Z/Z/Z)</font>","Kenpachi#33214c70-fadc-48ce-bb28-dd301d3ea91d\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A+/A-/B+)</font>","Kenpachi#b8c247be-e863-4f77-b335-5e4c4c636843\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A/A/A)</font>","Kenpachi#8b31fac2-4693-444d-b43c-7d575c458554\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A/S/A)</font>","Kenpachi#798625b9-3267-4d74-8706-72eb6fe868d3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (B+/Z/C)</font>","Kenpachi#6b8a857e-1c25-414c-b976-d337be467d4b\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (B/B-/Z)</font>","Kenpachi#ae9cd153-d42e-4162-bb94-99f8eb83e39f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (Berserk) (SSS/SSS/SSS)</font>","Kenpachi#580baf7c-6557-4336-ac55-1f87b22677de\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C+/B/Z)</font>","Kenpachi#e8600b41-27be-4271-b2ed-e97a3b051ccd\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C-/C+/C)</font>","Kenpachi#3ad4518c-15f6-4577-983e-11eb72e5bfc4\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C/A/B+)</font>","Kenpachi#90257114-f558-4522-8353-985bc3b2c0ad\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (S/SS/SSS)</font>","Kenpachi#8e0d9c42-5501-4569-8536-dbd0c7f5b521\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SS/A+/A+)</font>","Kenpachi#06acb6ca-a905-49c5-8276-250dfddc1086\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SS/A/A+)</font>","Kenpachi#8e31260d-6998-4b16-9b67-5e7b30ecafd2\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SSS/S/SSS)</font>","Kenpachi#5c8d3af7-ebfd-44be-b346-47e4357bb69c\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SSS/SS/S)</font>","Itachi#88bb0516-69d4-42ce-8355-111711889eef\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A+/A)</font>","Itachi#a77292e1-fef8-46b7-9a2a-be07d2dc5dcd\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A+/A)</font>","Itachi#fd5bbd90-c6e9-451b-9381-1ceb4470a604\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A/A)</font>","Itachi#47fa68c4-63a8-47ac-8f3e-835cb4b92235\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/S/Z)</font>","Itachi#6ce4a060-dd1c-4dd7-a648-257d397b099d\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/SSS/SS)</font>","Itachi#d2826aa6-4d64-4e0d-8d2c-00502f859560\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A+/A)</font>","Itachi#bb2f06c7-da16-4254-93d4-7163dc454ccb\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/A)</font>","Itachi#bef583cc-ffc7-4b25-b643-035d7f0ad9c3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/A)</font>","Itachi#24948e8a-b0c5-4107-8611-36974068c04e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/SSS)</font>","Itachi#cae39719-00b6-4e9d-bccd-d258a8962df1\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/S/A+)</font>","Itachi#6764679e-a14b-4755-8a7c-9e590c4e96b0\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/SS/S)</font>","Itachi#68daa0f5-736e-4e27-b934-118bda8d1d2e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/Z/A)</font>","Itachi#5b2d36f3-4045-4b26-944a-03942afe2940\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/Z/C)</font>","Itachi#b1ac7d52-5d75-4d40-93af-4ed0dc0f7176\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (B/C+/A-)</font>","Itachi#062d409b-85c6-4145-b80a-552b5a37747f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (Black Fire) (Z/Z/Z)</font>","Itachi#14b87284-9fed-4040-a95b-4d2984615b3c\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/A)</font>","Itachi#1678c1c8-6f99-4a05-b3ea-678c785a0a9a\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/A+)</font>","Itachi#61db234f-37b5-4b8b-810c-37e31bcb574b\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/Z)</font>","Itachi#ab948ecc-fe9f-4730-8bb1-801931dfdb8f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A/Z)</font>","Itachi#1ee63c64-41c2-45e1-9b36-4eeaf0b0c451\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/S/S)</font>","Itachi#538e7228-6a5e-4027-9e42-27d0834ab545\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/SS/A+)</font>","Itachi#d4921b5b-ad2b-43d1-97c6-c2c8e6402b8e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SS/A+/A+)</font>","Itachi#507fcf18-6975-4fbe-94f4-a7e879538f59\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SS/SS/S)</font>","Itachi#baf86896-9063-4510-81a3-bcdaa733e259\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SSS/A/Z)</font>","Itachi#683fad07-15fc-492e-aa80-68ed40566422\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SSS/SS/S)</font>","Enel#83474d06-6859-4e16-8cf8-308d0664ea1a\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Lightning God (Overcharged) (SSS/Z/Z)</font>","Gohan#4be1ec2a-87f4-4666-bb34-c9ae001d277f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Prodigy (Rage) (Z/Z/Z)</font>","Megumi#2c197b8d-3ef5-4bad-82ad-8563976edc6e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (A/A/A)</font>","Megumi#9c19a518-e778-4caa-a3a7-259775b42762\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (A/S/A+)</font>","Megumi#a9faf2e3-e339-4e1f-81cd-54a2f6cd49b3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (B/Z/C)</font>","Megumi#cc68644a-a5f4-42a6-a3b4-0d81a74a7255\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (Divine) (Z/Z/Z)</font>","Griffith#3b8079ed-b72b-4a44-baa9-55deaafa8214\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Silver Falcon (SSS/Z/Z)</font>","Sinbad#446ba52f-1a0c-406f-ad67-2a5338f3415e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Sovereign (Djinn) (Z/Z/Z)</font>"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[],"portable":false}]},{"name":"Expedition Hub › Training Grounds › Bulk Select","path":["Expedition Hub","Training Grounds","Bulk Select"],"controls":[{"key":"NUI-0055","sourceId":"button-input-Select Non-Trait Mythics","type":"button","title":"Select Non-Trait Mythics","description":"Add every Mythic unit without a trait to the Auto Train selection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0056","sourceId":"button-input-Select Non-Trait Secrets","type":"button","title":"Select Non-Trait Secrets","description":"Add every Secret unit without a trait to the Auto Train selection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-TRAINING-IGNORE-FULL","sourceId":"training-ignore-full-worthiness","type":"button","title":"Ignore Full Worthiness","description":"Remove fully worthy units from Select Units once, including worthiness already earned in Training Grounds. Does not remove units from the building.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Misc","path":["Misc"],"controls":[{"key":"NUI-0057","sourceId":"input-checkbox-Auto Redeem Code","type":"toggle","title":"Auto Redeem Code","description":"Uses native code metadata plus maintained supplemental codes such as Bossrush, respecting native server validation and confirmed redeemed state. No external code websites are queried.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-DMCA-SEARCH","sourceId":"dmca-native-unit-search","type":"toggle","title":"Searchable DMCA Name","description":"Enable original unit-name aliases directly in the native Unit Inventory search. No extra native filter switch is required. After updating, reopen Units once. Names, inventory and other filters are unchanged.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"AE-DMCA-STATUS","sourceId":"dmca-native-unit-search-status","type":"label","title":"DMCA name search: initializing (single GUI switch)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-STREAMER-MODE","type":"toggle","title":"Streamer Mode","description":"Local display only: your overhead and leaderboard name become Zen Hub; your player level bar becomes LVL 999. Turn off to restore current native text. Does not change real levels, stats, unit cards or other players.","default":false,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false},{"key":"NUI-0058","sourceId":"label-Fun facts after running the script:\n- Enable Searchable DMCA Name in the Unit Inventory filter","type":"label","title":"Unit Inventory:\n- Enable Searchable DMCA Name here, then search the native Units inventory using original names. After updating, close and reopen Units once; no second filter switch is needed.\n- While in-game, event menus remain available even after the match has started.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0059","sourceId":"select-input-Open UI","type":"dropdown","title":"Open UI","description":"Open a game menu directly while in the Lobby.","currentValue":null,"options":["Achievements","Areas","Battlepass","Codes","Crafting","Event Calendar","Event Shop","Events","Evolve","Expedition Shop","Gold Shop","Guild","Index","Item Inventory","Join Friend","Level Milestones","Lobby Music","Play","Profile","Quests","Raid Shop","Settings","Shop","Shiny Normalizer","Shiny Transfer","Stat Reroll","Stat Transfer","Summon Banner","Trait Reroll","Unit Ascension","Unit Inventory","Update Log","Wiki Tools"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-ANTI-AFK","sourceId":"built-in-anti-afk","type":"toggle","title":"Built-in Anti-AFK","description":"Responds to LocalPlayer.Idled while this GUI is running; automatically disconnects on unload.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"AE-ANTI-AFK-CHAMBER","sourceId":"anti-afk-chamber","type":"toggle","title":"Anti-AFK Chamber","description":"Pauses only the native ClientAFKHandler idle-to-Chamber timer. Restores owned state when disabled or unloaded; manual entry and normal teleports are untouched.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-HIDE-REWARD-POPUP","sourceId":"hide-obtained-rewards","type":"toggle","title":"Hide Obtained Rewards","description":"Hide new obtained-reward cards popups only. Keeps native close acknowledgements, reward delivery and other listeners intact; off/unload restores normal display without replaying old popups.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Sprite Crafter","path":["Sprite Crafter"],"controls":[{"key":"NUI-0060","sourceId":"input-checkbox-Auto Craft Sprite","type":"toggle","title":"Auto Craft Sprite","description":"Automatically craft Sprites from Grey Sprites\nThis feature work both Lobby and in game","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0061","sourceId":"select-input-Select Sprite","type":"dropdown","title":"Select Sprite","description":"Which Sprites to auto-craft (Grey Sprite is the base, not selectable)","currentValue":null,"options":["Red Sprite","Blue Sprite","Green Sprite","Yellow Sprite","Purple Sprite","Pink Sprite","Rainbow Sprite"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Sprite Crafter › Sprite Limit","path":["Sprite Crafter","Sprite Limit"],"controls":[{"key":"NUI-0062","sourceId":"slider-input-Blue Sprite Limit","type":"slider","title":"Blue Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0063","sourceId":"slider-input-Green Sprite Limit","type":"slider","title":"Green Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0064","sourceId":"slider-input-Pink Sprite Limit","type":"slider","title":"Pink Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0065","sourceId":"slider-input-Purple Sprite Limit","type":"slider","title":"Purple Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0066","sourceId":"slider-input-Rainbow Sprite Limit","type":"slider","title":"Rainbow Sprite Limit","description":"Max amount to craft (costs 30 Grey per craft, cap 25)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":25,"min":0,"max":100,"rounding":0},{"key":"NUI-0067","sourceId":"slider-input-Red Sprite Limit","type":"slider","title":"Red Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0068","sourceId":"slider-input-Yellow Sprite Limit","type":"slider","title":"Yellow Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0}]},{"name":"Event › [EVENT] Lost Shipment","path":["Event","[EVENT] Lost Shipment"],"controls":[{"key":"AE-LOST-SHIPMENT-AUTO","sourceId":"lost-shipment-auto","type":"toggle","title":"Auto Farm Lost Shipment","description":"Accepts the native quest, approaches spawned crates using the selected movement mode, picks them up and returns them to the event NPC. Yields to fishing/macros and stops when disabled.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-LOST-SHIPMENT-MOVEMENT","sourceId":"lost-shipment-movement","type":"dropdown","title":"Movement Mode","description":"Pathfinding walks through native waypoints. Teleport moves to validated ground beside the current event target. Changing modes cancels old navigation; native pickup and confirmed-return checks stay unchanged.","currentValue":null,"options":["Pathfinding","Teleport"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Pathfinding"},{"key":"AE-LOST-SHIPMENT-STATUS","sourceId":"lost-shipment-status","type":"label","title":"Lost Shipment: disabled\nMovement: Pathfinding","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Auto Claimer","path":["Auto Claimer"],"sectionIndex":1,"children":[]},{"name":"Auto Fishing","path":["Auto Fishing"],"sectionIndex":2,"children":[]},{"name":"Auto Shop","path":["Auto Shop"],"sectionIndex":3,"children":[{"name":"Expedition Shop","path":["Auto Shop","Expedition Shop"],"sectionIndex":4,"children":[]},{"name":"Gold Shop","path":["Auto Shop","Gold Shop"],"sectionIndex":5,"children":[]},{"name":"Raid General Shop","path":["Auto Shop","Raid General Shop"],"sectionIndex":6,"children":[]},{"name":"[EVENT] Event Shop","path":["Auto Shop","[EVENT] Event Shop"],"sectionIndex":7,"children":[]},{"name":"[EVENT] Wandering Trader","path":["Auto Shop","[EVENT] Wandering Trader"],"sectionIndex":8,"children":[]}]},{"name":"Auto Summon Banner","path":["Auto Summon Banner"],"sectionIndex":9,"children":[{"name":"Mini","path":["Auto Summon Banner","Mini"],"sectionIndex":10,"children":[]},{"name":"Standard","path":["Auto Summon Banner","Standard"],"sectionIndex":11,"children":[]}]},{"name":"Event","path":["Event"],"sectionIndex":12,"children":[{"name":"[EVENT] Dragon's Wish","path":["Event","[EVENT] Dragon's Wish"],"sectionIndex":13,"children":[]},{"name":"[EVENT] Guess That Unit","path":["Event","[EVENT] Guess That Unit"],"sectionIndex":14,"children":[]},{"name":"[EVENT] Lost Shipment","path":["Event","[EVENT] Lost Shipment"],"sectionIndex":26,"children":[]}]},{"name":"Expedition Hub","path":["Expedition Hub"],"sectionIndex":15,"children":[{"name":"Auto Construct","path":["Expedition Hub","Auto Construct"],"sectionIndex":16,"children":[]},{"name":"Auto Upgrade Building","path":["Expedition Hub","Auto Upgrade Building"],"sectionIndex":17,"children":[]},{"name":"Gold Mine","path":["Expedition Hub","Gold Mine"],"sectionIndex":18,"children":[]},{"name":"Research Lab","path":["Expedition Hub","Research Lab"],"sectionIndex":19,"children":[]},{"name":"Resource Drill","path":["Expedition Hub","Resource Drill"],"sectionIndex":20,"children":[]},{"name":"Training Grounds","path":["Expedition Hub","Training Grounds"],"sectionIndex":21,"children":[{"name":"Bulk Select","path":["Expedition Hub","Training Grounds","Bulk Select"],"sectionIndex":22,"children":[]}]}]},{"name":"Misc","path":["Misc"],"sectionIndex":23,"children":[]},{"name":"Sprite Crafter","path":["Sprite Crafter"],"sectionIndex":24,"children":[{"name":"Sprite Limit","path":["Sprite Crafter","Sprite Limit"],"sectionIndex":25,"children":[]}]}]},{"name":"Joiner","title":"Joiner","sections":[{"name":"Boss Rush Cards and Gates","path":["Boss Rush Cards and Gates"],"controls":[{"key":"AE-BOSSRUSH-AUTO-JOIN","sourceId":"ae-bossrush-auto-join","type":"toggle","title":"Auto Join Boss Rush","description":"Automatically joins the native Boss Rush queue from the lobby. Uses the game's verified map/difficulty/level requirements; waits for native queue acknowledgement. Does not place units or alter Macro.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-MANUAL","type":"toggle","title":"Boss Rush Manual / Recording Mode","default":false,"description":"Pauses Macro playback, starts, gate movement and Continue/Fight Boss votes. Auto Select Cards remains independent. Actual Macro recording pauses card selection too."},{"key":"AE-BOSSRUSH-AUTO-START","type":"toggle","title":"Auto Start Boss Rush","default":false,"description":"Separately accepts Start Game prompts only with Play Macro ON and recording/manual mode OFF. Keep OFF when preparing or recording."},{"key":"AE-BOSSRUSH-MOVEMENT","type":"dropdown","title":"Boss Rush Gate Movement","options":["Teleport","Walk"],"default":"Teleport","multi":false,"description":"Teleport moves near a currently valid native Gate prompt, then uses its normal Enter action. Walk uses pathfinding."},{"key":"AE-BOSSRUSH-AUTO-CARDS","sourceId":"bossrush-auto-cards","type":"toggle","title":"Auto Select Boss Rush Cards","description":"Automatically selects offered cards using your element priority, then card-type priority. Works in Manual Setup mode and with Play Macro OFF. Pauses during actual Macro recording. No rerolls or purchases.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-AUTO-ENTER","sourceId":"ae-bossrush-auto-enter","type":"toggle","title":"Auto Move To & Enter Boss Rush Gates","description":"Move to and enter native Gates only while Play Macro is ON and not recording/manual. Does not start a wave or vote Continue.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-AUTO-GATES","sourceId":"bossrush-auto-gates","type":"toggle","title":"Auto Continue Boss Rush Gates","description":"Vote Continue until N Gates are confirmed cleared, then Fight Boss. Requires Play Macro ON; never starts a wave. Pauses for recording/manual mode.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-TARGET-GATES","sourceId":"bossrush-target-gates","type":"slider","title":"Gates Before Fight Boss","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":2,"min":2,"max":6,"rounding":0},{"key":"AE-BOSSRUSH-ELEMENT-PRIORITY","sourceId":"bossrush-element-priority","type":"priority-list","title":"Boss Rush Element Priority","description":"Higher list priority wins first, even if a lower-priority element offers a preferred card type. Only legal offered cards are considered.","currentValue":null,"options":["Flame","Light","Dark","Hydro","Gale","Storm","Terra","Neutral"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["Flame","Light","Dark","Hydro","Gale","Storm","Terra","Neutral"]},{"key":"AE-BOSSRUSH-TYPE-PRIORITY","sourceId":"bossrush-type-priority","type":"priority-list","title":"Boss Rush Card Type Priority","description":"Applied after element priority. ElementDamage / Resistance / Damage / SPA / Range / Crit are native card ID suffixes.","currentValue":null,"options":["ElementDamage","Resistance","Damage","SPA","Range","Crit"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["ElementDamage","Resistance","Damage","SPA","Range","Crit"]},{"key":"AE-BOSSRUSH-STATUS","sourceId":"bossrush-status","type":"label","title":"Boss Rush cards / gates: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Monster Clash / Rift Joiner","path":["Monster Clash / Rift Joiner"],"controls":[{"key":"AE-MONSTER-AUTO-JOIN","type":"toggle","title":"Auto Join Monster Clash (Rift Farm)","default":false,"description":"Joins native Monster Clash / Fractured District from the lobby. Uses Auto Join Priority and Disable Auto Joiners; does not start an unconfigured Macro.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-AUTO-HELICOPTER","type":"toggle","title":"Auto Enter Landed Rift Helicopter","default":false,"description":"After a Monster Clash victory, wait for the landed, active helicopter and enter as host. Suppresses automated Replay / Next / Lobby during the bounded wait; never joins a different game portal.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-HELICOPTER-WAIT","type":"slider","title":"Post-Win Helicopter Appearance Wait","default":30,"description":"Seconds to wait for a helicopter to appear before allowing normal auto-replay. This is a configurable safety grace, not a claimed game spawn timer.","options":[],"multi":false,"sensitive":false,"min":15,"max":120,"rounding":0},{"key":"AE-MONSTER-AUTOMATION-STATUS","type":"label","title":"Monster Clash Joiner: OFF\nHelicopter: OFF","default":null,"description":"","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-JOIN-INFO","type":"label","title":"Farm Macro: Macro > Select Monster Clash Macro > Fractured District.\nRift Macro is separate. Fake detection is in Game > Monster Clash. All three features pause during Macro recording.","default":null,"description":"","options":[],"multi":false,"sensitive":false}]},{"name":"Infernal Cult Joiner","path":["Infernal Cult Joiner"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-AUTO-JOIN","sourceId":"infernal-auto-join","type":"toggle","title":"Auto Join Infernal Cult","description":"Joins the current native Infernal Cult rotation from the lobby. Requires Lost Photo quest and the marked Story map completion. Stops joining at 16 Torn Photos. Does not start combat or place units.","default":false,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-JOIN-ONCE","sourceId":"infernal-join-once","type":"button","title":"Join Infernal Cult Once (Record Macro)","description":"Joins once without enabling Auto Join, changing your team, starting combat or playing a Macro. Wait for the native entry confirmation.","default":null,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-STATUS","sourceId":"infernal-status","type":"label","title":"Infernal Cult: reading native rotation...","description":"","default":null,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-INFO","sourceId":"infernal-info","type":"label","title":"Lost Photo: accept from Devil in Flaming Monastery.\nInfernal Cult follows the marked Story map (changes every 30 minutes), Hard / Act 1.\nRecord your placements after joining; this joiner does not start combat or operate your Macro.","description":"","default":null,"currentValue":null}]},{"name":"Auto Join Setting","path":["Auto Join Setting"],"controls":[{"key":"NUI-0069","sourceId":"input-checkbox-Disable Auto Joiners","type":"toggle","title":"Disable Auto Joiners","description":"Pauses every auto join feature until this setting is disabled","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0070","sourceId":"slider-input-Joiner Cooldown","type":"slider","title":"Joiner Cooldown","description":"Wait in Lobby the set amount of seconds before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":60,"rounding":1},{"key":"NUI-0071","sourceId":"trello-input-Auto Join Priority","type":"priority-list","title":"Auto Join Priority","description":"Drag to set which joiner runs first (highest number = highest priority)","currentValue":null,"options":["<b>5</b>. Expedition Joiner","<b>9</b>. Boss Bounty Joiner","<b>2</b>. Raid Joiner","<b>1</b>. Story Joiner","<b>0</b>. Trial Joiner","<b>8</b>. Weekly Challenge Joiner","<b>6</b>. Portal Joiner","<b>6</b>. Regular Challenge Joiner","<b>7</b>. Daily Challenge Joiner","<b>5.5</b>. Tower Joiner","Tidal Siege Joiner","Boss Rush Joiner","Infernal Cult Joiner","Monster Clash Joiner"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>5</b>. Expedition Joiner","<b>9</b>. Boss Bounty Joiner","<b>2</b>. Raid Joiner","<b>1</b>. Story Joiner","<b>0</b>. Trial Joiner","<b>8</b>. Weekly Challenge Joiner","<b>6</b>. Portal Joiner","<b>6</b>. Regular Challenge Joiner","<b>7</b>. Daily Challenge Joiner","<b>5.5</b>. Tower Joiner","Tidal Siege Joiner","Boss Rush Joiner","Infernal Cult Joiner","Monster Clash Joiner"]}]},{"name":"Auto Join Setting › Team Equipper","path":["Auto Join Setting","Team Equipper"],"controls":[{"key":"NUI-0072","sourceId":"input-checkbox-Team Equipper","type":"toggle","title":"Team Equipper","description":"Load the selected team slot before joining each mode","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0073","sourceId":"slider-input-Boss Bounty Joiner Team Slot","type":"slider","title":"Boss Bounty Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0074","sourceId":"slider-input-Daily Challenge Joiner Team Slot","type":"slider","title":"Daily Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0075","sourceId":"slider-input-Expedition Joiner Team Slot","type":"slider","title":"Expedition Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0076","sourceId":"slider-input-Portal Joiner Team Slot","type":"slider","title":"Portal Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0077","sourceId":"slider-input-Raid Joiner Team Slot","type":"slider","title":"Raid Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0078","sourceId":"slider-input-Regular Challenge Joiner Team Slot","type":"slider","title":"Regular Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0079","sourceId":"slider-input-Story Joiner Team Slot","type":"slider","title":"Story Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0080","sourceId":"slider-input-Tower Joiner Team Slot","type":"slider","title":"Tower Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0081","sourceId":"slider-input-Trial Joiner Team Slot","type":"slider","title":"Trial Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0082","sourceId":"slider-input-Weekly Challenge Joiner Team Slot","type":"slider","title":"Weekly Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0}]},{"name":"Daily Challenge Joiner","path":["Daily Challenge Joiner"],"controls":[{"key":"NUI-0083","sourceId":"input-checkbox-Auto Join Daily Challenge","type":"toggle","title":"Auto Join Daily Challenge","description":"Single rotating slot","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0084","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0085","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0086","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner","path":["Expedition Joiner"],"controls":[{"key":"NUI-0087","sourceId":"input-checkbox-Auto Collect Orb","type":"toggle","title":"Auto Collect Orb","description":"Automatically collect any dropped or existing Expedition orbs","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0088","sourceId":"input-checkbox-Auto Continue Checkpoint","type":"toggle","title":"Auto Continue Checkpoint","description":"Expedition only. When a checkpoint's Continue button appears, automatically continue to the next node","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0089","sourceId":"input-checkbox-Auto Join Expedition","type":"toggle","title":"Auto Join Expedition","description":"Automatically joins the selected Expedition map when in the Lobby (requires level 20+)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0090","sourceId":"input-checkbox-Auto Skip Encounter","type":"toggle","title":"Auto Skip Encounter","description":"Expedition only. Talk to Encounter NPCs, choose Speak, and continue to the next node","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0091","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking with random players instead of starting a private Expedition.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0092","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Expedition map to auto-join","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","East Town","1","2","3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"East Town"},{"key":"NUI-0093","sourceId":"select-input-Select Difficulty Level","type":"dropdown","title":"Select Difficulty Level","description":"Tier 1-3 (number of skulls)","currentValue":null,"options":["1","2","3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"3"}]},{"name":"Expedition Joiner › Auto Expedition Map Route","path":["Expedition Joiner","Auto Expedition Map Route"],"controls":[{"key":"NUI-0094","sourceId":"input-checkbox-Auto Expedition Map Route","type":"toggle","title":"Auto Expedition Map Route","description":"Automatically pre-selects the best valid Expedition route through node 10 using your reward priority.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0095","sourceId":"trello-input-Expedition Reward Priority","type":"priority-list","title":"Expedition Reward Priority","description":"Drag to set route reward priority (highest number = selected first). Defaults put the rarest rewards first.","currentValue":null,"options":["<b>6</b>. Expedition Coin","<b>2</b>. Cursed Timber","<b>7</b>. Aqua Shard","<b>11</b>. Fuel Cell","<b>10</b>. Equipment Reroll","<b>9</b>. Equipment Lock","<b>8</b>. Mechanical Scrap","<b>3</b>. Lush Dirt","<b>4</b>. Yen","<b>1</b>. Tome","<b>5</b>. Equipment Scrap"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>6</b>. Expedition Coin","<b>2</b>. Cursed Timber","<b>7</b>. Aqua Shard","<b>11</b>. Fuel Cell","<b>10</b>. Equipment Reroll","<b>9</b>. Equipment Lock","<b>8</b>. Mechanical Scrap","<b>3</b>. Lush Dirt","<b>4</b>. Yen","<b>1</b>. Tome","<b>5</b>. Equipment Scrap"]}]},{"name":"Expedition Joiner › Auto Extract","path":["Expedition Joiner","Auto Extract"],"controls":[{"key":"NUI-0096","sourceId":"input-checkbox-Auto Extract","type":"toggle","title":"Auto Extract","description":"Expedition only. After passing the selected node, extract at the next Checkpoint instead of continuing","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0097","sourceId":"slider-input-Extract after Node","type":"slider","title":"Extract after Node","description":"Extract at the first Checkpoint reached after this node has been completed","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Join Requirement","path":["Expedition Joiner","Auto Join Requirement"],"controls":[{"key":"NUI-0098","sourceId":"input-checkbox-Only Join if below Expedition Fuel","type":"toggle","title":"Only Join if below Expedition Fuel","description":"Only auto-join the selected Expedition when your Expedition Fuel is below the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0099","sourceId":"input-checkbox-Return Lobby if above Expedition Fuel","type":"toggle","title":"Return Lobby if above Expedition Fuel","description":"While playing Expedition, instantly return to the Lobby when your Expedition Fuel reaches or exceeds the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0100","sourceId":"slider-input-Above Expedition Fuel","type":"slider","title":"Above Expedition Fuel","description":"Return to the Lobby when Expedition Fuel is greater than or equal to this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0},{"key":"NUI-0101","sourceId":"slider-input-Under Expedition Fuel","type":"slider","title":"Under Expedition Fuel","description":"The Expedition Fuel amount must be strictly below this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0}]},{"name":"Expedition Joiner › Auto Restart","path":["Expedition Joiner","Auto Restart"],"controls":[{"key":"NUI-0102","sourceId":"input-checkbox-Auto Restart","type":"toggle","title":"Auto Restart","description":"Expedition only. Restart the match after the current node reaches the set number (node-based, like wave-based Auto Restart but for Expedition nodes)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0103","sourceId":"slider-input-Restart at Node","type":"slider","title":"Restart at Node","description":"Restart the Expedition when this node is reached","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":11,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Restart Reward","path":["Expedition Joiner","Auto Restart Reward"],"controls":[{"key":"NUI-0104","sourceId":"input-checkbox-Auto Restart for Reward","type":"toggle","title":"Auto Restart for Reward","description":"Selects the complete first 10-node route, then restarts the Expedition until that route meets every selected reward amount. Works with one or two rewards and without Expedition Auto Play.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0105","sourceId":"select-input-Select Reward","type":"dropdown","title":"Select Reward","description":"The Expedition route reward whose total amount must meet your requirement.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Equipment Scrap","Fuel Cell","Aqua Shard","Expedition Coin","Mechanical Scrap","Yen","Lush Dirt","Cursed Timber","Tome"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Fuel Cell"},{"key":"NUI-0106","sourceId":"select-input-Select Reward 2","type":"dropdown","title":"Select Reward 2","description":"Optional second Expedition route reward. Select None to use only the first reward.","currentValue":null,"options":["None","Equipment Lock","Equipment Reroll","Equipment Scrap","Fuel Cell","Aqua Shard","Expedition Coin","Mechanical Scrap","Yen","Lush Dirt","Cursed Timber","Tome"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"None"},{"key":"NUI-0107","sourceId":"slider-input-Required Amount","type":"slider","title":"Required Amount","description":"Restart when the selected reward totals less than this amount across the first 10 routed nodes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":41,"min":0,"max":100,"rounding":0},{"key":"NUI-0108","sourceId":"slider-input-Required Amount 2","type":"slider","title":"Required Amount 2","description":"Required total for the optional second reward across the first 10 routed nodes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Select Anvil Stat","path":["Expedition Joiner","Auto Select Anvil Stat"],"controls":[{"key":"NUI-0109","sourceId":"input-checkbox-Auto Select Anvil Stat","type":"toggle","title":"Auto Select Anvil Stat","description":"Auto-select the highest-priority Stat Anvil when the anvil prompt appears\nWill also auto use Anvil if you got it in hotbar","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0110","sourceId":"trello-input-Auto Select Anvil Stat Priority","type":"priority-list","title":"Auto Select Anvil Stat Priority","description":"Drag to set priority (highest number = selected first)","currentValue":null,"options":["<b>9</b>. EXP Multiplier","<b>14</b>. Bonus Match Rewards","<b>4</b>. SPA","<b>3</b>. Summon Damage","<b>10</b>. DoT DMG Dealt","<b>5</b>. Range","<b>13</b>. Critical Chance","<b>8</b>. Element Damage","<b>15</b>. Archetype Damage","<b>1</b>. Yen Generation","<b>2</b>. Summon Health","<b>12</b>. Critical Damage","<b>6</b>. Payload Health","<b>7</b>. Follow-Up Damage","<b>11</b>. Damage"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>9</b>. EXP Multiplier","<b>14</b>. Bonus Match Rewards","<b>4</b>. SPA","<b>3</b>. Summon Damage","<b>10</b>. DoT DMG Dealt","<b>5</b>. Range","<b>13</b>. Critical Chance","<b>8</b>. Element Damage","<b>15</b>. Archetype Damage","<b>1</b>. Yen Generation","<b>2</b>. Summon Health","<b>12</b>. Critical Damage","<b>6</b>. Payload Health","<b>7</b>. Follow-Up Damage","<b>11</b>. Damage"]}]},{"name":"Expedition Joiner › Auto Select Anvil Stat › Anvil Stat Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Anvil Stat","Anvil Stat Cap-Amount (Select the card by how many time)"],"controls":[{"key":"NUI-0111","sourceId":"slider-input-Archetype Damage","type":"slider","title":"Archetype Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0112","sourceId":"slider-input-Bonus Match Rewards","type":"slider","title":"Bonus Match Rewards","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0113","sourceId":"slider-input-Critical Chance","type":"slider","title":"Critical Chance","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0114","sourceId":"slider-input-Critical Damage","type":"slider","title":"Critical Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0115","sourceId":"slider-input-Damage","type":"slider","title":"Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0116","sourceId":"slider-input-DoT DMG Dealt","type":"slider","title":"DoT DMG Dealt","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0117","sourceId":"slider-input-EXP Multiplier","type":"slider","title":"EXP Multiplier","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0118","sourceId":"slider-input-Element Damage","type":"slider","title":"Element Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0119","sourceId":"slider-input-Follow-Up Damage","type":"slider","title":"Follow-Up Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0120","sourceId":"slider-input-Payload Health","type":"slider","title":"Payload Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0121","sourceId":"slider-input-Range","type":"slider","title":"Range","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0122","sourceId":"slider-input-SPA","type":"slider","title":"SPA","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0123","sourceId":"slider-input-Summon Damage","type":"slider","title":"Summon Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0124","sourceId":"slider-input-Summon Health","type":"slider","title":"Summon Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0125","sourceId":"slider-input-Yen Generation","type":"slider","title":"Yen Generation","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Select Upgrade","path":["Expedition Joiner","Auto Select Upgrade"],"controls":[{"key":"NUI-0126","sourceId":"input-checkbox-Auto Select Upgrade","type":"toggle","title":"Auto Select Upgrade","description":"Auto-select the highest-priority upgrade when an Expedition level-up prompt appears","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0127","sourceId":"input-checkbox-Upgrade Reroll","type":"toggle","title":"Upgrade Reroll","description":"Use the rerolls unlocked by the Research Lab while Auto Select Upgrade is in Advanced mode.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0128","sourceId":"label-Advanced reroll mechanic:\n- Bracket 1 uses Sets priority until every configured Sets upgrade h","type":"label","title":"Advanced reroll mechanic:\n- Bracket 1 uses Sets priority until every configured Sets upgrade has been selected once.\n- Bracket 2 then uses General priority and Cap Amount for the rest of the Expedition.\n- The highest-priority offered card is protected. Unlocked rerolls are used only on lower-priority cards.\n- All cards are reevaluated after each reroll. If it does not create a better card, remaining rerolls are saved.\n- Research Lab reroll level 0/1/2 provides 0/1/2 rerolls; the real amount is read from the prompt.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0129","sourceId":"select-input-Select Upgrade Type","type":"dropdown","title":"Select Upgrade Type","description":"Simple = one priority list. Advanced = complete every Sets upgrade once, then switch to the capped General bracket.","currentValue":null,"options":["Simple","Advanced"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Simple"},{"key":"NUI-0130","sourceId":"trello-input-Auto Select Upgrade Priority","type":"priority-list","title":"Auto Select Upgrade Priority","description":"Drag to set priority (highest number = selected first)","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]},{"key":"NUI-0131","sourceId":"trello-input-Upgrade Priority - General","type":"priority-list","title":"Upgrade Priority - General","description":"Bracket 2 priority. Activates only after Bracket 1 is fully completed, then respects Cap Amount for the rest of the Expedition.","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]},{"key":"NUI-0132","sourceId":"trello-input-Upgrade Priority - Sets","type":"priority-list","title":"Upgrade Priority - Sets","description":"Bracket 1 priority. Completed upgrades are ignored until every configured Sets upgrade has been selected once.","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]}]},{"name":"Expedition Joiner › Auto Select Upgrade › Upgrade Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Upgrade","Upgrade Cap-Amount (Select the card by how many time)"],"controls":[{"key":"NUI-0133","sourceId":"slider-input-[Epic] Blood Money","type":"slider","title":"[Epic] Blood Money","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0134","sourceId":"slider-input-[Epic] Dark Penetration","type":"slider","title":"[Epic] Dark Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0135","sourceId":"slider-input-[Epic] Extended Reach","type":"slider","title":"[Epic] Extended Reach","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0136","sourceId":"slider-input-[Epic] Flame Penetration","type":"slider","title":"[Epic] Flame Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0137","sourceId":"slider-input-[Epic] Gale Penetration","type":"slider","title":"[Epic] Gale Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0138","sourceId":"slider-input-[Epic] Hydro Penetration","type":"slider","title":"[Epic] Hydro Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0139","sourceId":"slider-input-[Epic] Light Penetration","type":"slider","title":"[Epic] Light Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0140","sourceId":"slider-input-[Epic] Lingering Rot","type":"slider","title":"[Epic] Lingering Rot","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0141","sourceId":"slider-input-[Epic] Neutral Penetration","type":"slider","title":"[Epic] Neutral Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0142","sourceId":"slider-input-[Epic] Overclocked Engine","type":"slider","title":"[Epic] Overclocked Engine","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0143","sourceId":"slider-input-[Epic] Quickened Blade","type":"slider","title":"[Epic] Quickened Blade","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0144","sourceId":"slider-input-[Epic] Storm Penetration","type":"slider","title":"[Epic] Storm Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0145","sourceId":"slider-input-[Epic] Terra Penetration","type":"slider","title":"[Epic] Terra Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0146","sourceId":"slider-input-[Epic] Vital Strikes","type":"slider","title":"[Epic] Vital Strikes","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0147","sourceId":"slider-input-[Legendary] Bat Cavalry","type":"slider","title":"[Legendary] Bat Cavalry","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0148","sourceId":"slider-input-[Legendary] Bounty Hunter","type":"slider","title":"[Legendary] Bounty Hunter","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0149","sourceId":"slider-input-[Legendary] EXP Condenser","type":"slider","title":"[Legendary] EXP Condenser","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0150","sourceId":"slider-input-[Legendary] Hemorrhage","type":"slider","title":"[Legendary] Hemorrhage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0151","sourceId":"slider-input-[Legendary] Martyr's Blast","type":"slider","title":"[Legendary] Martyr's Blast","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0152","sourceId":"slider-input-[Legendary] Razor Focus","type":"slider","title":"[Legendary] Razor Focus","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0153","sourceId":"slider-input-[Mythic] EXP Collector","type":"slider","title":"[Mythic] EXP Collector","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0154","sourceId":"slider-input-[Mythic] Feral Cruelty","type":"slider","title":"[Mythic] Feral Cruelty","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0155","sourceId":"slider-input-[Mythic] Infectious","type":"slider","title":"[Mythic] Infectious","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0156","sourceId":"slider-input-[Mythic] Missile Protocol","type":"slider","title":"[Mythic] Missile Protocol","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0157","sourceId":"slider-input-[Mythic] Momentum","type":"slider","title":"[Mythic] Momentum","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0158","sourceId":"slider-input-[Mythic] Whetstone Cache","type":"slider","title":"[Mythic] Whetstone Cache","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0159","sourceId":"slider-input-[Rare] Amplifier","type":"slider","title":"[Rare] Amplifier","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0160","sourceId":"slider-input-[Rare] Dark Mastery","type":"slider","title":"[Rare] Dark Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0161","sourceId":"slider-input-[Rare] Flame Mastery","type":"slider","title":"[Rare] Flame Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0162","sourceId":"slider-input-[Rare] Fortified Cargo","type":"slider","title":"[Rare] Fortified Cargo","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0163","sourceId":"slider-input-[Rare] Gale Mastery","type":"slider","title":"[Rare] Gale Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0164","sourceId":"slider-input-[Rare] Hydro Mastery","type":"slider","title":"[Rare] Hydro Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0165","sourceId":"slider-input-[Rare] Iron Flesh","type":"slider","title":"[Rare] Iron Flesh","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0166","sourceId":"slider-input-[Rare] Light Mastery","type":"slider","title":"[Rare] Light Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0167","sourceId":"slider-input-[Rare] Neutral Mastery","type":"slider","title":"[Rare] Neutral Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0168","sourceId":"slider-input-[Rare] Relentless Pursuit","type":"slider","title":"[Rare] Relentless Pursuit","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0169","sourceId":"slider-input-[Rare] Storm Mastery","type":"slider","title":"[Rare] Storm Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0170","sourceId":"slider-input-[Rare] Terra Mastery","type":"slider","title":"[Rare] Terra Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0171","sourceId":"slider-input-[Rare] Venomous Edge","type":"slider","title":"[Rare] Venomous Edge","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0172","sourceId":"slider-input-[Rare] Yen Hunger","type":"slider","title":"[Rare] Yen Hunger","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Expedition Auto Play","path":["Expedition Joiner","Expedition Auto Play"],"controls":[{"key":"NUI-0173","sourceId":"input-checkbox-Expedition Auto Play","type":"toggle","title":"Expedition Auto Play","description":"Expedition-only Auto Play. Automatically places, upgrades, and advances through each Expedition node. Payload positions are saved per map, while Lane positions are saved per map and detected road layout. Position setup is optional because each type has its own auto-detection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop"],"controls":[{"key":"NUI-0174","sourceId":"input-checkbox-Auto Checkpoint Shop","type":"toggle","title":"Auto Checkpoint Shop","description":"After the starter checkpoint, buy selected available items with Yen at later Checkpoints before Auto Play continues. Highest-cost selected offers are bought first.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0175","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select Checkpoint Shop items to buy. Item names match the names displayed by the game.","currentValue":null,"options":["Anvil","Aqua Shard","Bolt Tome","Cursed Timber","Destruction Potion","Draconic Tome","Enlightenment Tome","Epic Geode","Expedition Coin","Forsaken Tome","Fuel Cell","Giant Hammer","Hellfire Potion","Investor Tome","Limit Breaker Tome","Lucky Potion","Lush Dirt","Mechanical Scrap","Optics Tome","Payload EXP","Precision 1 Tome","Precision 2 Tome","Primordial Tome","Range 1 Tome","Range 2 Tome","Rare Geode","Reconstruction","Repair Hammer","Speed 1 Tome","Speed 2 Tome","Stat Anvil","Storm Potion","Strength 1 Tome","Strength 2 Tome","Time Stop Potion","Tome","Trait Tome","Unbound Tome","Wealth Potion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop › Auto Repair","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Repair"],"controls":[{"key":"NUI-0176","sourceId":"input-checkbox-Auto Use Repair Hammer","type":"toggle","title":"Auto Use Repair Hammer","description":"Uses a Repair Hammer from the hotbar whenever Payload health falls to or below the selected percentage. Works during every Expedition round type.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0177","sourceId":"slider-input-Use at Percent Health","type":"slider","title":"Use at Percent Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop › Auto Use Tome","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Use Tome"],"controls":[{"key":"NUI-0178","sourceId":"input-checkbox-Auto Use Tome","type":"toggle","title":"Auto Use Tome","description":"Uses any tome in the hotbar. Normal tomes improve the highest-DPS eligible unit; Investment tomes target the highest-income farm without Investment.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0179","sourceId":"trello-input-Tome Trait Priority","type":"priority-list","title":"Tome Trait Priority","description":"For non-farm units after every unit has a trait. A tome replaces only a lower-priority trait; highest number wins. Defaults rank rarer roll chances higher.","currentValue":null,"options":["<b>16</b>. Primordial","<b>5</b>. Strength 2","<b>3</b>. Range 1","<b>15</b>. Forsaken","<b>9</b>. Limit Breaker","<b>7</b>. Range 2","<b>14</b>. Draconic","<b>11</b>. Bolt","<b>12</b>. Optics","<b>2</b>. Speed 1","<b>8</b>. Precision 1","<b>4</b>. Enlightenment","<b>6</b>. Speed 2","<b>13</b>. Investor","<b>17</b>. Unbound","<b>1</b>. Strength 1","<b>10</b>. Precision 2"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. Primordial","<b>5</b>. Strength 2","<b>3</b>. Range 1","<b>15</b>. Forsaken","<b>9</b>. Limit Breaker","<b>7</b>. Range 2","<b>14</b>. Draconic","<b>11</b>. Bolt","<b>12</b>. Optics","<b>2</b>. Speed 1","<b>8</b>. Precision 1","<b>4</b>. Enlightenment","<b>6</b>. Speed 2","<b>13</b>. Investor","<b>17</b>. Unbound","<b>1</b>. Strength 1","<b>10</b>. Precision 2"]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Hire Unit","path":["Expedition Joiner","Expedition Auto Play","Auto Hire Unit"],"controls":[{"key":"NUI-0180","sourceId":"input-checkbox-Auto Hire Unit","type":"toggle","title":"Auto Hire Unit","description":"After the starter checkpoint, hire selected offered units at later Checkpoints when there is enough Yen. Hiring is completed before Auto Play continues.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0181","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Select which units may be hired from the three Checkpoint offers.","currentValue":null,"options":["5th God Hand","8th Sword (Berserk)","Bioinsect (Final Form)","Carrot (Unleashed)","Crimson (Brother)","Crow (Black Fire)","Cubert","Cursed Immortal (Black Sun)","Cursed Student (True Love)","Dark Mage (Sovereign)","Eclipse Hunter (Savior)","Elf Mage (Unleashed)","Flame Emperor (Reincarnate)","Forbidden Teacher","Head Captain (Char)","Hollow (Blaze)","Ice Queen","Iron Wolf (Struggler)","Jester","Kitsune","Lady Giant (Envy)","Lightning God (Overcharged)","Prodigy (Rage)","Puppet (Telekinetic)","Rainman (Forecast)","Ramen Guy","Razorjaw (Hunter)","Reaper (Released)","Salmon Sorcerer (Grade 1)","Sand (Alligator)","Shadow (Divine)","Sharkfang (Abyssal)","Silver Falcon","Sovereign (Djinn)","String Demon (Awakened)","The Drink (Juicebox)","The Hero","Toy Maker","True Saint (Holy)","Vegetable (Prince)","Water Mage (Scholar)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config"],"controls":[{"key":"NUI-0182","sourceId":"input-checkbox-Focus on Upgrade Farm","type":"toggle","title":"Focus on Upgrade Farm","description":"When upgrading, prioritize farm units first (lowest-level farm first) before other units. Off = upgrade the lowest-level unit overall (default).","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0183","sourceId":"input-checkbox-Only Place on Payload","type":"toggle","title":"Only Place on Payload","description":"Only place new units when the current round type is Payload. Lane rounds place no units. Relocation still follows the current node type.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config › Lane","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Lane"],"controls":[{"key":"NUI-0184","sourceId":"button-input-Set Position","type":"button","title":"Set Position","description":"Choose which Lane position to set at your current location","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0185","sourceId":"label-Current Map: (not in game)\nCurrent Lane Layout: (waiting for active Lane)\nDPS Position: (not s","type":"label","title":"Current Map: (not in game)\nCurrent Lane Layout: (waiting for active Lane)\nDPS Position: (not set)\nSupport Position: (not set)\nFarm Position: (not set)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0186","sourceId":"select-input-Select DPS Unit","type":"dropdown","title":"Select DPS Unit","description":"Units selected here are placed at the DPS position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0187","sourceId":"select-input-Select Farm Unit","type":"dropdown","title":"Select Farm Unit","description":"Units selected here are placed at the Farm position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0188","sourceId":"select-input-Select Support Unit","type":"dropdown","title":"Select Support Unit","description":"Units selected here are placed at the Support position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0189","sourceId":"select-input-Select Unit Priority","type":"dropdown","title":"Select Unit Priority","description":"Set every compatible placed unit to this targeting priority during Defense and Elite combat","currentValue":null,"options":["First","Last","Closest","Strongest","Boss","Weakest","Shielded","Fastest","None"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"First"}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config › Payload","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Payload"],"controls":[{"key":"NUI-0190","sourceId":"button-input-Set Position","type":"button","title":"Set Position","description":"Choose which Payload position to set at your current location","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0191","sourceId":"label-Current Map: (not in game)\nFront Position: (not set)\nMiddle Position: (not set)\nBack Position:","type":"label","title":"Current Map: (not in game)\nFront Position: (not set)\nMiddle Position: (not set)\nBack Position: (not set)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0192","sourceId":"select-input-Select Back Unit","type":"dropdown","title":"Select Back Unit","description":"Units selected here are placed at the Back position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0193","sourceId":"select-input-Select Front Unit","type":"dropdown","title":"Select Front Unit","description":"Units selected here are placed at the Front position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0194","sourceId":"select-input-Select Middle Unit","type":"dropdown","title":"Select Middle Unit","description":"Units selected here are placed at the Middle position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0195","sourceId":"select-input-Select Unit Priority","type":"dropdown","title":"Select Unit Priority","description":"Set every compatible placed unit to this targeting priority during Assault combat","currentValue":null,"options":["First","Last","Closest","Strongest","Boss","Weakest","Shielded","Fastest","None"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Closest"}]},{"name":"Expedition Joiner › Expedition Failsafe","path":["Expedition Joiner","Expedition Failsafe"],"controls":[{"key":"NUI-0196","sourceId":"input-checkbox-Restart if stuck Node","type":"toggle","title":"Restart if stuck Node","description":"Restarts the current Expedition when TotalNodes has not changed for the selected number of minutes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0197","sourceId":"slider-input-Restart Minute","type":"slider","title":"Restart Minute","description":"How many minutes TotalNodes may remain unchanged before the Expedition is treated as stuck and restarted.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":60,"rounding":0}]},{"name":"Expedition Joiner › Toy Capsule Farm (The Drink)","path":["Expedition Joiner","Toy Capsule Farm (The Drink)"],"controls":[{"key":"NUI-0198","sourceId":"input-checkbox-Auto Toy Capsule","type":"toggle","title":"Auto Toy Capsule","description":"East Town Expedition only. Rerolls until the first node is The Drink, accepts his offer, collects the Toy Capsule, and repeats.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0199","sourceId":"input-checkbox-Join Toy Capsule Expedition if available","type":"toggle","title":"Join Toy Capsule Expedition if available","description":"Requires Auto Join Expedition. When a Toy Capsule is available, joins The Drink's Trial instead of the configured Expedition.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0200","sourceId":"label-Toy Capsules Obtained: 0","type":"label","title":"Toy Capsules Obtained: 0","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Portal Joiner","path":["Portal Joiner"],"controls":[{"key":"NUI-0201","sourceId":"input-checkbox-Auto Join Portal","type":"toggle","title":"Auto Join Portal","description":"Automatically joins a matching portal when you are in the Lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0202","sourceId":"input-checkbox-Auto Pick Portal Reward","type":"toggle","title":"Auto Pick Portal Reward","description":"Selects the highest-tier offered portal that matches the same filters","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0203","sourceId":"select-input-Ignore Modifier","type":"dropdown","title":"Ignore Modifier","description":"Reject portals containing any selected modifier","currentValue":null,"options":["BossWaves","Mirror","NoFarms","Resistance","Shielded","ShortRange","Speedy","Traitless","UpgradeCap"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0204","sourceId":"select-input-Select Portal Types","type":"dropdown","title":"Select Portal Types","description":"Select the portal types that the Portal Joiner will accept","currentValue":null,"options":["Lightning God's Portal","Sky Ruins Portal","Sovereign's Portal","Summer Portal","Ancient Temple"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0205","sourceId":"slider-input-Portal Tier Cap","type":"slider","title":"Portal Tier Cap","description":"Only joins or selects portals at or below this tier","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":6,"min":1,"max":10,"rounding":0}]},{"name":"Raid Joiner","path":["Raid Joiner"],"controls":[{"key":"NUI-0206","sourceId":"input-checkbox-Auto Join Raid","type":"toggle","title":"Auto Join Raid","description":"Automatically joins the selected Raid map when in the Lobby (requires level 25+)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0207","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0208","sourceId":"input-checkbox-Only Join if below Raid Token","type":"toggle","title":"Only Join if below Raid Token","description":"Only auto-join the selected Raid when your Raid Tokens are below the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0209","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Raid map to auto-join","currentValue":null,"options":["Spirit City","Snowy Castle","Act 1","Act 2","Act 3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Snowy Castle"},{"key":"NUI-0210","sourceId":"select-input-Select Act","type":"dropdown","title":"Select Act","description":"","currentValue":null,"options":["Act 1","Act 2","Act 3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Act 2"},{"key":"NUI-0211","sourceId":"slider-input-Under Raid Token","type":"slider","title":"Under Raid Token","description":"Your Raid Token amount must be strictly below this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0}]},{"name":"Regular Challenge Joiner","path":["Regular Challenge Joiner"],"controls":[{"key":"NUI-0212","sourceId":"input-checkbox-Auto Join Regular Challenge","type":"toggle","title":"Auto Join Regular Challenge","description":"Checks all 3 rotating slots for a valid challenge (no ignored effects/maps, daily limit not reached)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0213","sourceId":"input-checkbox-Change Gamemode If new Challenge","type":"toggle","title":"Change Gamemode If new Challenge","description":"During Expedition Auto Extract/Restart, uses the new vote-start window to switch to an available Regular Challenge. Normal result screens follow Auto Join Priority before Next/Replay.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0214","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0215","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0216","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0217","sourceId":"select-input-Select Reward","type":"dropdown","title":"Select Reward","description":"Only join Regular Challenge slots that drop one of the selected rewards. Sprite rewards are skipped when every Sprite color in that slot is already at its inventory cap.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Sprite","Stat Lock","Stat Reroll","Trait Crystal"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Story Joiner","path":["Story Joiner"],"controls":[{"key":"NUI-0218","sourceId":"input-checkbox-Auto Join Story","type":"toggle","title":"Auto Join Story","description":"Automatically joins the selected Story map when in the Lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0219","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0220","sourceId":"select-input-Select Difficulty","type":"dropdown","title":"Select Difficulty","description":"","currentValue":null,"options":["Normal","Hard"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Normal"},{"key":"NUI-0221","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Story map to auto-join","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore","Act 1","Act 2","Act 3","Act 4","Act 5","Infinite","Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"School Grounds"},{"key":"NUI-0222","sourceId":"select-input-Select Act","type":"dropdown","title":"Select Act","description":"","currentValue":null,"options":["Act 1","Act 2","Act 3","Act 4","Act 5","Infinite","Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Act 1"}]},{"name":"Tower Joiner","path":["Tower Joiner"],"controls":[{"key":"NUI-0223","sourceId":"input-checkbox-Auto Join Tower","type":"toggle","title":"Auto Join Tower","description":"Automatically joins the next uncleared Tower floor. Tower is solo-only and does not support matchmaking.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0224","sourceId":"select-input-Tower Mode","type":"dropdown","title":"Tower Mode","description":"Normal and Traitless have separate seasons and floor progress.","currentValue":null,"options":["Normal","Traitless"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Normal"}]},{"name":"Trial Joiner","path":["Trial Joiner"],"controls":[{"key":"NUI-0225","sourceId":"input-checkbox-Auto Join Trial","type":"toggle","title":"Auto Join Trial","description":"Automatically joins the selected Unit Trial as a solo stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0226","sourceId":"select-input-Select Trial","type":"dropdown","title":"Select Trial","description":"Select a Trial by the trial unit's in-game display name.","currentValue":null,"options":["'s Trial","8th Sword's Trial","Bioinsect's Trial","Carrot's Trial","Crimson's Trial","Cursed Student's Trial","Eclipse Hunter's Trial","Elf Mage's Trial","Flame Emperor's Trial","Hollow's Trial","Lady Giant's Trial","Mechanical Wings's Trial","Prodigy's Trial","Puppet's Trial","Reaper's Trial","Salmon Sorcerer's Trial","String Demon's Trial","True Saint's Trial","Vegetable's Trial"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Weekly Challenge Joiner","path":["Weekly Challenge Joiner"],"controls":[{"key":"NUI-0227","sourceId":"input-checkbox-Auto Join Weekly Challenge","type":"toggle","title":"Auto Join Weekly Challenge","description":"Single rotating slot","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0228","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0229","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0230","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"[EVENT] Boss Bounty Joiner","path":["[EVENT] Boss Bounty Joiner"],"controls":[{"key":"NUI-0231","sourceId":"input-checkbox-Auto Join Boss Bounty","type":"toggle","title":"Auto Join Boss Bounty","description":"Rolls the daily Boss Bounty, keeps only the selected rarities, then joins its Spawn Location. Up to 5 bounties can be completed each day.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0232","sourceId":"select-input-Ignore Archetype Debuff","type":"dropdown","title":"Ignore Archetype Debuff","description":"Reroll when the boss resists any selected archetype. Archetype weaknesses are allowed.","currentValue":null,"options":["Magical","Physical","Psychic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0233","sourceId":"select-input-Ignore Element Debuff","type":"dropdown","title":"Ignore Element Debuff","description":"Reroll when the boss resists any selected element. Element weaknesses are allowed.","currentValue":null,"options":["Dark","Flame","Gale","Hydro","Light","Neutral","Storm","Terra"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0234","sourceId":"select-input-Ignore Modifier","type":"dropdown","title":"Ignore Modifier","description":"Reroll when the Boss Bounty contains any selected enemy modifier.","currentValue":null,"options":["Stunner","Commander","Reinforced","Armored","Tank","Sprinter"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0235","sourceId":"select-input-Keep Rarities","type":"dropdown","title":"Keep Rarities","description":"Keep and join selected rarities. Every unselected bounty is rerolled using the event's current Gold cost.","currentValue":null,"options":["Rare","Legendary","Secret"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Legendary","Secret"]},{"key":"NUI-0236","sourceId":"slider-input-Reroll After Losses","type":"slider","title":"Reroll After Losses","description":"Reroll a Boss Bounty after losing to the same boss this many times. Set to 0 to disable loss-based rerolls.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Tidal Siege Joiner","path":["Tidal Siege Joiner"],"controls":[{"key":"AE-TIDAL-AUTO-JOIN","sourceId":"tidal-auto-join","type":"toggle","title":"Auto Join Tidal Siege","description":"Join Coral Kingdom through the native Hard / Event Infinite flow. Respects Disable Auto Joiners, joiner cooldown and your existing priority order.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-TIDAL-SHINY-FARM","sourceId":"tidal-shiny-farm","type":"toggle","title":"Shiny Harribel Farm","description":"Run the configured event macro and fish. Deletes only temporary event hotbar items and confirmed fished MockUnits, except Sharktooth Conch; never your original team or permanent inventory. Uses a conch once, restarts only after a new Harribel reward, and stops on shiny.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-TIDAL-STATUS","sourceId":"tidal-status","type":"label","title":"Tidal Siege: disabled\nShiny Harribel Farm: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Auto Join Setting","path":["Auto Join Setting"],"sectionIndex":4,"children":[{"name":"Team Equipper","path":["Auto Join Setting","Team Equipper"],"sectionIndex":5,"children":[]}],"defaultExpanded":true},{"name":"Monster Clash / Rift Joiner","path":["Monster Clash / Rift Joiner"],"children":[],"sectionIndex":2},{"name":"Boss Rush Cards and Gates","path":["Boss Rush Cards and Gates"],"sectionIndex":1,"children":[]},{"name":"Infernal Cult Joiner","path":["Infernal Cult Joiner"],"sectionIndex":3,"children":[]},{"name":"Daily Challenge Joiner","path":["Daily Challenge Joiner"],"sectionIndex":6,"children":[]},{"name":"Expedition Joiner","path":["Expedition Joiner"],"sectionIndex":7,"children":[{"name":"Auto Expedition Map Route","path":["Expedition Joiner","Auto Expedition Map Route"],"sectionIndex":8,"children":[]},{"name":"Auto Extract","path":["Expedition Joiner","Auto Extract"],"sectionIndex":9,"children":[]},{"name":"Auto Join Requirement","path":["Expedition Joiner","Auto Join Requirement"],"sectionIndex":10,"children":[]},{"name":"Auto Restart","path":["Expedition Joiner","Auto Restart"],"sectionIndex":11,"children":[]},{"name":"Auto Restart Reward","path":["Expedition Joiner","Auto Restart Reward"],"sectionIndex":12,"children":[]},{"name":"Auto Select Anvil Stat","path":["Expedition Joiner","Auto Select Anvil Stat"],"sectionIndex":13,"children":[{"name":"Anvil Stat Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Anvil Stat","Anvil Stat Cap-Amount (Select the card by how many time)"],"sectionIndex":14,"children":[]}]},{"name":"Auto Select Upgrade","path":["Expedition Joiner","Auto Select Upgrade"],"sectionIndex":15,"children":[{"name":"Upgrade Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Upgrade","Upgrade Cap-Amount (Select the card by how many time)"],"sectionIndex":16,"children":[]}]},{"name":"Expedition Auto Play","path":["Expedition Joiner","Expedition Auto Play"],"sectionIndex":17,"children":[{"name":"Auto Checkpoint Shop","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop"],"sectionIndex":18,"children":[{"name":"Auto Repair","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Repair"],"sectionIndex":19,"children":[]},{"name":"Auto Use Tome","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Use Tome"],"sectionIndex":20,"children":[]}]},{"name":"Auto Hire Unit","path":["Expedition Joiner","Expedition Auto Play","Auto Hire Unit"],"sectionIndex":21,"children":[]},{"name":"Auto Play Config","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config"],"sectionIndex":22,"children":[{"name":"Lane","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Lane"],"sectionIndex":23,"children":[]},{"name":"Payload","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Payload"],"sectionIndex":24,"children":[]}]}]},{"name":"Expedition Failsafe","path":["Expedition Joiner","Expedition Failsafe"],"sectionIndex":25,"children":[]},{"name":"Toy Capsule Farm (The Drink)","path":["Expedition Joiner","Toy Capsule Farm (The Drink)"],"sectionIndex":26,"children":[]}]},{"name":"Portal Joiner","path":["Portal Joiner"],"sectionIndex":27,"children":[]},{"name":"Raid Joiner","path":["Raid Joiner"],"sectionIndex":28,"children":[]},{"name":"Regular Challenge Joiner","path":["Regular Challenge Joiner"],"sectionIndex":29,"children":[]},{"name":"Story Joiner","path":["Story Joiner"],"sectionIndex":30,"children":[]},{"name":"Tower Joiner","path":["Tower Joiner"],"sectionIndex":31,"children":[]},{"name":"Trial Joiner","path":["Trial Joiner"],"sectionIndex":32,"children":[]},{"name":"Weekly Challenge Joiner","path":["Weekly Challenge Joiner"],"sectionIndex":33,"children":[]},{"name":"[EVENT] Boss Bounty Joiner","path":["[EVENT] Boss Bounty Joiner"],"sectionIndex":34,"children":[]},{"name":"Tidal Siege Joiner","path":["Tidal Siege Joiner"],"sectionIndex":35,"children":[]}]},{"name":"Game","title":"Game","sections":[{"name":"Auto Put Out","path":["Auto Put Out"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-AUTO-PUT-OUT","sourceId":"auto-put-out","type":"toggle","title":"Auto Put Out","description":"Automatically teleports beside a current Infernal Put Out prompt, then uses its native interaction within 12 studs. Pauses during Macro recording or active actions; skips unsafe landing spots. Does not place units.","currentValue":null,"default":false},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-PUT-OUT-STATUS","sourceId":"auto-put-out-status","type":"label","title":"Auto Put Out: ready — auto teleport","description":"Automatically teleports into native Put Out range. Displays teleport and request counts; waits for valid targets and safe grounded landing spots.","currentValue":null,"default":null}]},{"name":"Auto Restart","path":["Auto Restart"],"controls":[{"key":"NUI-0237","sourceId":"input-checkbox-Auto Restart","type":"toggle","title":"Auto Restart","description":"Automatically restart the game when the specified wave is reached (fires Restart on the GameState replica)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0238","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0239","sourceId":"slider-input-Restart at Wave","type":"slider","title":"Restart at Wave","description":"Restart the game when this wave is reached","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Auto Sell","path":["Auto Sell"],"controls":[]},{"name":"Auto Sell › Auto Sell Farm","path":["Auto Sell","Auto Sell Farm"],"controls":[{"key":"NUI-0240","sourceId":"input-checkbox-Auto Sell Farm","type":"toggle","title":"Auto Sell Farm","description":"Automatically sell all farm (money-generating) units on the selected wave\nNot recorded by Record Macro","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0241","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0242","sourceId":"slider-input-Sell at Wave","type":"slider","title":"Sell at Wave","description":"Sell all farms on this wave.\nSet to 0 to auto-sell at the stage's last wave - stages with no final wave are skipped.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Auto Sell › Auto Sell Unit","path":["Auto Sell","Auto Sell Unit"],"controls":[{"key":"NUI-0243","sourceId":"input-checkbox-Auto Sell Unit","type":"toggle","title":"Auto Sell Unit","description":"Automatically sell all units on the selected wave\nNot recorded by Record Macro","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0244","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0245","sourceId":"slider-input-Sell at Wave","type":"slider","title":"Sell at Wave","description":"Sell all units on this wave.\nSet to 0 to auto-sell at the stage's last wave - stages with no final wave are skipped.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Auto Skip Wave","path":["Auto Skip Wave"],"controls":[{"key":"NUI-0246","sourceId":"input-checkbox-Auto Skip Wave","type":"toggle","title":"Auto Skip Wave","description":"Automatically enable the game's Auto Skip Wave setting (votes to skip waves)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0247","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Auto Skip is always ON in every mode. The 'Stop Skip at Wave' above only applies to the stage types selected here - unselected modes keep skipping forever","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0248","sourceId":"slider-input-Stop Skip at Wave","type":"slider","title":"Stop Skip at Wave","description":"Turn off Auto Skip after reaching the specified wave\nSet to 0 to never stop\nOnly applies to the stage types selected below - all other modes always skip","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Game Failsafe","path":["Game Failsafe"],"controls":[{"key":"NUI-0249","sourceId":"input-checkbox-Return Lobby Failsafe","type":"toggle","title":"Return Lobby Failsafe","description":"If the result screen is stuck for over 120s, force-teleport to the lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0250","sourceId":"input-checkbox-Return Lobby if Loose Stage","type":"toggle","title":"Return Lobby if Loose Stage","description":"Returns to the lobby after the selected number of Defeat result screens.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0251","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types count toward the loss failsafe.","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0252","sourceId":"slider-input-Loose Stage Amount","type":"slider","title":"Loose Stage Amount","description":"Return to the lobby after losing this many selected stages.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Game Finished","path":["Game Finished"],"controls":[{"key":"NUI-0253","sourceId":"input-checkbox-Auto Next","type":"toggle","title":"Auto Next","description":"Presses 'Next Stage' on the result screen","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0254","sourceId":"input-checkbox-Auto Replay","type":"toggle","title":"Auto Replay","description":"Presses 'Repeat Stage' on the result screen","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0255","sourceId":"input-checkbox-Auto Return Lobby","type":"toggle","title":"Auto Return Lobby","description":"Returns to the lobby after the match ends","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0256","sourceId":"input-checkbox-Auto Run Joiner Features","type":"toggle","title":"Auto Run Joiner Features","description":"When the game ends, if it cannot click Next or Replay, the script will join a game mode based on the Joiner tab's Auto Join settings and priorities. Enabling this is recommended\nThis is mostly for farming the Regular Challenge alongside other modes","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Gameplay","path":["Gameplay"],"controls":[{"key":"NUI-0257","sourceId":"input-checkbox-Auto Vote Start","type":"toggle","title":"Auto Vote Start","description":"When enabled, forces the game's Auto Vote Start setting ON. When disabled, forces it OFF.\nNote: Play Macro and Auto Play already have built-in Auto Start - enabling this is not recommended.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Leaderboard Helper","path":["Leaderboard Helper"],"controls":[{"key":"NUI-0258","sourceId":"button-input-Open Tournament UI","type":"button","title":"Open Tournament UI","description":"Opens the Tournament UI so you can view top players and scores.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Leaderboard Helper › Hit Replace","path":["Leaderboard Helper","Hit Replace"],"controls":[{"key":"NUI-0259","sourceId":"button-input-Set Placement Position","type":"button","title":"Set Placement Position","description":"Stand where the selected unit should be placed. The position is saved separately for the current stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0260","sourceId":"input-checkbox-Auto Hit Replace","type":"toggle","title":"Auto Hit Replace","description":"After the selected wave, place and fully auto-upgrade the selected unit, wait using the selected detection method, sell it, and repeat. Before selling, it pauses and keeps the current unit placed until you can afford the next unit's placement and every upgrade.\nFor the fastest VFX / Damage Based detection, enable <b>Show Own Unit VFX</b> in the game's settings. This lets Hit Replace detect attacks directly from their VFX and avoids the client-server delay that can occur when reading total damage.\n<b>While Hit Replace is enabled, it controls the game's Auto-Upgrade Placed Units setting. When Hit Replace is disabled, that game setting is left unchanged.</b>","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0261","sourceId":"label-Selected Unit: None\nStatus: Disabled","type":"label","title":"Selected Unit: None\nStatus: Disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0262","sourceId":"select-input-Auto Upgrade while Inactive","type":"dropdown","title":"Auto Upgrade while Inactive","description":"Choose the Auto-Upgrade Placed Units setting used while Hit Replace is enabled but waiting for its wave or placement conditions.","currentValue":null,"options":["Enabled","Disabled"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Disabled"},{"key":"NUI-0263","sourceId":"select-input-Detection Method","type":"dropdown","title":"Detection Method","description":"VFX / Damage Based sells after the unit's complete attack is detected. Timing Based starts a precise countdown once the unit reaches maximum upgrade, then sells it.","currentValue":null,"options":["VFX / Damage Based","Timing Based"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"VFX / Damage Based"},{"key":"NUI-0264","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Select the unit to place, hit, sell, and replace. The unit must be equipped in the current hotbar.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0265","sourceId":"slider-input-Sell Delay after Max Upgrade","type":"slider","title":"Sell Delay after Max Upgrade","description":"In Timing Based mode, sell the unit this many seconds after it reaches maximum upgrade.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":60,"rounding":1},{"key":"NUI-0266","sourceId":"slider-input-Start after Wave","type":"slider","title":"Start after Wave","description":"Begin the hit-replace loop when this wave is reached.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Leaderboard Helper › Rewind Loop","path":["Leaderboard Helper","Rewind Loop"],"controls":[{"key":"NUI-0267","sourceId":"input-checkbox-Auto Rewind Loop","type":"toggle","title":"Auto Rewind Loop","description":"Starts as soon as any placed Puppet (Telekinetic) has Complete Control unlocked and any placed Shadow (Divine) has Shadow Realm unlocked. It activates Shadow Realm when ready, otherwise Complete Control, then waits for the selected delay and repeats. Duplicate units are supported because these abilities share a global cooldown. This does not enable either unit's Auto Ability.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0268","sourceId":"label-Status: Disabled","type":"label","title":"Status: Disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0269","sourceId":"slider-input-Delay between Activate","type":"slider","title":"Delay between Activate","description":"Seconds to wait after activating either ability before checking again.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":12,"min":0,"max":60,"rounding":1}]},{"name":"Performance","path":["Performance"],"controls":[{"key":"NUI-0273","sourceId":"input-checkbox-Black Screen","type":"toggle","title":"Black Screen","description":"Disable 3D rendering for better performance","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0274","sourceId":"input-checkbox-Boost FPS","type":"toggle","title":"Boost FPS","description":"Lower the graphics of meshes in the map, reduce effects, and remove lighting also disable animations","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0275","sourceId":"input-checkbox-Delete Enemies","type":"toggle","title":"Delete Enemies","description":"Delete enemies to improve performance\nOnly use if you are using Play Macro or Auto Play","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0276","sourceId":"input-checkbox-Delete Map","type":"toggle","title":"Delete Map","description":"Delete map decorations/environments to improve performance while keeping a lightweight directional path visible.\nOnly enable if you're using Play Macro; enabling it for Auto Play is not recommended.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Smart Auto Ability","path":["Smart Auto Ability"],"controls":[{"key":"NUI-0277","sourceId":"input-checkbox-Auto Ability","type":"toggle","title":"Auto Ability","description":"Enable Smart Auto Ability for the selected unit's chosen ability.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0278","sourceId":"input-checkbox-Only After Enemies Stop Spawning","type":"toggle","title":"Only After Enemies Stop Spawning","description":"Wait until the current wave has finished spawning enemies before firing.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0279","sourceId":"input-checkbox-Smart Auto Ability","type":"toggle","title":"Smart Auto Ability","description":"Master switch for the Smart Auto Ability system. Configure per-unit activation rules below.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0280","sourceId":"label-No unit selected yet - please choose a unit from the list above.","type":"label","title":"No unit selected yet - please choose a unit from the list above.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0281","sourceId":"label-Once <font color=\"#4DA3FF\" weight=\"500\">Activation Wave</font> is reached, the selected unit's","type":"label","title":"Once <font color=\"#4DA3FF\" weight=\"500\">Activation Wave</font> is reached, the selected unit's ability fires automatically whenever it is available (off cooldown).","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0282","sourceId":"label-Starting after <font color=\"#4DA3FF\" weight=\"500\">Start After Wave</font>, the ability fires e","type":"label","title":"Starting after <font color=\"#4DA3FF\" weight=\"500\">Start After Wave</font>, the ability fires every <font color=\"#4DA3FF\" weight=\"500\">Activate Every</font> waves when available, then waits for the next interval.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0283","sourceId":"label-When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> enters the unit's range (","type":"label","title":"When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> enters the unit's range (and only after wave <font color=\"#4DA3FF\" weight=\"500\">Only After Wave</font>), the ability fires if it is available.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0284","sourceId":"label-When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> is present anywhere on th","type":"label","title":"When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> is present anywhere on the map (after wave <font color=\"#4DA3FF\" weight=\"500\">Only After Wave</font>), the ability fires. Enable <font color=\"#4DA3FF\" weight=\"500\">Stop Spawning</font> to wait until enemies have finished spawning first.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0285","sourceId":"select-input-Ability Activation Type","type":"dropdown","title":"Ability Activation Type","description":"Choose how the selected unit's ability should be triggered.","currentValue":null,"options":["Activate after Wave","Activate every Wave","Activate when Enemy in range","Activate when Enemy existed"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0286","sourceId":"select-input-Enemy Type","type":"dropdown","title":"Enemy Type","description":"Which enemy triggers the ability.","currentValue":null,"options":["Boss","Any Enemy"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Boss"},{"key":"NUI-0287","sourceId":"select-input-Select Ability","type":"dropdown","title":"Select Ability","description":"Pick which of this unit's abilities to configure.","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0288","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Pick a unit to configure. Only units with an active ability are listed. Configured units appear first, with each enabled ability listed underneath.","currentValue":null,"options":["Bioinsect (Final Form)","Carrot (Unleashed)","Crimson (Brother)","Cubert","Flame Emperor (Reincarnate)","Head Captain (Char)","Kitsune","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Prodigy (Rage)","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Razorjaw (Hunter)","Reaper (Released)","Sand (Alligator)","Shadow (Divine)","Sharkfang (Abyssal)","The Drink (Juicebox)","True Saint (Holy)","Water Mage (Scholar)","Winged Spirit (Divine)"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0289","sourceId":"slider-input-Activate Every","type":"slider","title":"Activate Every","description":"Re-fire the ability every N waves after the start wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0},{"key":"NUI-0290","sourceId":"slider-input-Activation Delay (seconds)","type":"slider","title":"Activation Delay (seconds)","description":"Delay in seconds before the ability fires once its condition is met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":60,"rounding":1},{"key":"NUI-0291","sourceId":"slider-input-Activation Wave","type":"slider","title":"Activation Wave","description":"The wave at which the ability becomes eligible to fire.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0},{"key":"NUI-0292","sourceId":"slider-input-Only After Wave","type":"slider","title":"Only After Wave","description":"Ignore enemies before this wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0293","sourceId":"slider-input-Start After Wave","type":"slider","title":"Start After Wave","description":"The ability begins firing after this wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0}]},{"name":"Unit Mechanic","path":["Unit Mechanic"],"controls":[]},{"name":"Unit Mechanic › Dark Mage (Sovereign)","path":["Unit Mechanic","Dark Mage (Sovereign)"],"controls":[{"key":"NUI-0294","sourceId":"input-checkbox-Keep Lightning Magic Attack","type":"toggle","title":"Keep Lightning Magic Attack","description":"When Dark Mage (Sovereign)'s passive switches its current attack to the cone-shaped Lightning Magic attack, set its targeting priority to None to preserve that form.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0295","sourceId":"input-checkbox-Set to First on the Final Wave","type":"toggle","title":"Set to First on the Final Wave","description":"For stages with a finite final wave, restore Dark Mage (Sovereign)'s targeting priority to First when the final wave is reached.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Monster Clash","path":["Monster Clash"],"controls":[{"key":"AE-MONSTER-AUTO-FAKE","type":"toggle","title":"Auto Detect & Click Jealousy Fake","default":false,"description":"Uses the current game/map native EnvyMimic unit and Hidden encounter timer. Calls the same RevealEnvy action as clicking the fake. Pauses while recording; does not click ordinary units.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-FAKE-STATUS","type":"label","title":"Auto Fake: OFF","default":null,"description":"","options":[],"multi":false,"sensitive":false}]}],"tree":[{"name":"Auto Put Out","path":["Auto Put Out"],"sectionIndex":1,"children":[]},{"name":"Auto Restart","path":["Auto Restart"],"sectionIndex":2,"children":[]},{"name":"Auto Sell","path":["Auto Sell"],"sectionIndex":3,"children":[{"name":"Auto Sell Farm","path":["Auto Sell","Auto Sell Farm"],"sectionIndex":4,"children":[]},{"name":"Auto Sell Unit","path":["Auto Sell","Auto Sell Unit"],"sectionIndex":5,"children":[]}]},{"name":"Auto Skip Wave","path":["Auto Skip Wave"],"sectionIndex":6,"children":[]},{"name":"Game Failsafe","path":["Game Failsafe"],"sectionIndex":7,"children":[]},{"name":"Game Finished","path":["Game Finished"],"sectionIndex":8,"children":[]},{"name":"Gameplay","path":["Gameplay"],"sectionIndex":9,"children":[]},{"name":"Leaderboard Helper","path":["Leaderboard Helper"],"sectionIndex":10,"children":[{"name":"Hit Replace","path":["Leaderboard Helper","Hit Replace"],"sectionIndex":11,"children":[]},{"name":"Rewind Loop","path":["Leaderboard Helper","Rewind Loop"],"sectionIndex":12,"children":[]}]},{"name":"Performance","path":["Performance"],"sectionIndex":13,"children":[]},{"name":"Smart Auto Ability","path":["Smart Auto Ability"],"sectionIndex":14,"children":[]},{"name":"Unit Mechanic","path":["Unit Mechanic"],"sectionIndex":15,"children":[{"name":"Dark Mage (Sovereign)","path":["Unit Mechanic","Dark Mage (Sovereign)"],"sectionIndex":16,"children":[]}]},{"name":"Monster Clash","path":["Monster Clash"],"children":[],"sectionIndex":17}]},{"name":"Macro","title":"Macro","sections":[{"name":"Importer/Exporter","path":["Importer/Exporter"],"controls":[{"key":"NUI-0501","sourceId":"box-input-Import Macro","type":"text-input","title":"Import Macro","description":"Input Discord Attachment/Raw URL or Macro JSON string","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0502","sourceId":"button-input-Copy Macro json to Clipboard","type":"button","title":"Copy Macro json to Clipboard","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0503","sourceId":"button-input-Send Macro json via Webhook","type":"button","title":"Send Macro .json File via Webhook","description":"Uploads the selected Macro as one downloadable .json attachment using the configured Webhook. Preserves the original file; does not split JSON into chat messages.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Information","path":["Information"],"controls":[{"key":"NUI-0504","sourceId":"label-Select a macro below for a specific game mode\nIf you enable Play Macro and Auto Play at the sa","type":"label","title":"Select a macro below for a specific game mode\nIf you enable Play Macro and Auto Play at the same time, and no macro below is selected, it will run Auto Play instead","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Macro","path":["Macro"],"controls":[{"key":"NUI-0505","sourceId":"input-checkbox-Play Macro","type":"toggle","title":"Play Macro","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0506","sourceId":"input-checkbox-Record Macro","type":"toggle","title":"Record Macro","description":"Experiencing issues with the recorded macro? Try not to place units too close to each other\nThis will also records Unit's Special Move with timing","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false,"portable":false}]},{"name":"Manage","path":["Manage"],"controls":[{"key":"NUI-0507","sourceId":"box-input-Create Macro","type":"text-input","title":"Create Macro","description":"Input a macro name here","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":""},{"key":"NUI-0508","sourceId":"button-input-Delete Selected Macro","type":"button","title":"Delete Selected Macro","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0509","sourceId":"select-input-Select Macro","type":"dropdown","title":"Select Macro","description":"Must be selected with a Macro for Play Macro work","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Misc","path":["Misc"],"controls":[{"key":"NUI-0510","sourceId":"button-input-Check Macro's Unit","type":"button","title":"Check Macro's Unit","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0511","sourceId":"button-input-Equip Macro's Units","type":"button","title":"Equip Macro's Units","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0512","sourceId":"button-input-Copy Hotbar stats to Clipboard","type":"button","title":"Copy Hotbar stats to Clipboard","description":"Copies your hotbar units, traits, stat potentials, and equipment rolls in a Discord-ready format so you can easily share your macro loadout.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0513","sourceId":"input-checkbox-Auto Equip Macro's Units","type":"toggle","title":"Auto Equip Macro's Units","description":"Automatically equips and verifies the macro's full team before voting to start or running the macro. The game will wait and retry if the hotbar has not updated yet.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true}]},{"name":"Play Macro Config","path":["Play Macro Config"],"controls":[{"key":"NUI-0514","sourceId":"input-checkbox-Ignore Timing","type":"toggle","title":"Ignore Timing","description":"Continue play Macro without rely on Time, should be good if your macro doesn't timing the Time to place the Units (This for faster macro/faster time?)\nRecommended/Must enable with Auto Skip\nTHIS DOESNT AFFECT THE TIMING OF THE UNIT'S ABILITY","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0515","sourceId":"input-checkbox-No Ignore Sell Timing","type":"toggle","title":"No Ignore Sell Timing","description":"If set to true, will not ignore the timing of Sell Actions","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0516","sourceId":"slider-input-Macro Retry Limit","type":"slider","title":"Macro Retry Limit","description":"Retries a failed action this many times, then skips only that action and continues the macro. Setting it to 0 retries forever.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Select Infernal Cult Macro","path":["Select Infernal Cult Macro"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":false,"key":"AE-INFERNAL-MACRO-PLAY","sourceId":"infernal-macro-play","type":"toggle","title":"Play Infernal Cult Macro","description":"Requires the main Play Macro switch. Selects only the Macro assigned to the actual Infernal Cult map; no Story/Event/managed-Macro fallback."},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-STATUS","sourceId":"infernal-macro-status","type":"label","title":"Infernal Cult Macro: off","description":""},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-INFO","sourceId":"infernal-macro-info","type":"label","title":"Assign one Macro per map below (Infernal Cult / Hard / Act 1).\nThe actual stage decides which Macro plays, even if the lobby rotation changes mid-match.\nEmpty or missing files pause playback. Main Play Macro + Play Infernal Cult Macro must both be on.\nRecording takes priority; no automatic team changes.","description":""},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-SchoolGrounds","sourceId":"infernal-macro-map-SchoolGrounds","infernalMapId":"SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FlowerForest","sourceId":"infernal-macro-map-FlowerForest","infernalMapId":"FlowerForest","type":"dropdown","title":"Flower Forest","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-Dressrosa","sourceId":"infernal-macro-map-Dressrosa","infernalMapId":"Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FairyKingForest","sourceId":"infernal-macro-map-FairyKingForest","infernalMapId":"FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-KingsTomb","sourceId":"infernal-macro-map-KingsTomb","infernalMapId":"KingsTomb","type":"dropdown","title":"King's Tomb","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-WestCity","sourceId":"infernal-macro-map-WestCity","infernalMapId":"WestCity","type":"dropdown","title":"East Town","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-RedLake","sourceId":"infernal-macro-map-RedLake","infernalMapId":"RedLake","type":"dropdown","title":"Crimson Shore","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FlamingMonastery","sourceId":"infernal-macro-map-FlamingMonastery","infernalMapId":"FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."}]},{"name":"Select Challenge Macro","path":["Select Challenge Macro"],"controls":[{"key":"NUI-0517","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0518","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0519","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0520","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0521","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0522","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0523","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Challenge-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Challenge / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Challenge","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Expedition Macro","path":["Select Expedition Macro"],"controls":[{"key":"NUI-0524","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0525","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0526","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0527","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Infinite Macro","path":["Select Infinite Macro"],"controls":[{"key":"NUI-0528","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0529","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0530","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0531","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0532","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0533","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0534","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0535","sourceId":"select-input-Spirit City","type":"dropdown","title":"Spirit City","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Infinite-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Infinite / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Infinite","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Mastery Macro","path":["Select Mastery Macro"],"controls":[{"key":"NUI-0536","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0537","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0538","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0539","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0540","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0541","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0542","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Mastery-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Mastery / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Mastery","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Portal Macro","path":["Select Portal Macro"],"controls":[{"key":"NUI-0543","sourceId":"select-input-Ancient Temple","type":"dropdown","title":"Ancient Temple","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0544","sourceId":"select-input-Lightning God's Portal","type":"dropdown","title":"Lightning God's Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0545","sourceId":"select-input-Sky Ruins Portal","type":"dropdown","title":"Sky Ruins Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0546","sourceId":"select-input-Sovereign's Portal","type":"dropdown","title":"Sovereign's Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0547","sourceId":"select-input-Summer Portal","type":"dropdown","title":"Summer Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Portal-FlamingMonastery-FireForcePortal","type":"dropdown","title":"Infernal Portal","description":"Assign a Macro recorded for Portal / FlamingMonastery / FireForcePortal. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Portal","MapName":"FlamingMonastery","PortalAsset":"FireForcePortal"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Raid Macro","path":["Select Raid Macro"],"controls":[{"key":"NUI-0548","sourceId":"select-input-Snowy Castle (Act 1)","type":"dropdown","title":"Snowy Castle (Act 1)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0549","sourceId":"select-input-Snowy Castle (Act 2)","type":"dropdown","title":"Snowy Castle (Act 2)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0550","sourceId":"select-input-Snowy Castle (Act 3)","type":"dropdown","title":"Snowy Castle (Act 3)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0551","sourceId":"select-input-Spirit City (Act 1)","type":"dropdown","title":"Spirit City (Act 1)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0552","sourceId":"select-input-Spirit City (Act 2)","type":"dropdown","title":"Spirit City (Act 2)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0553","sourceId":"select-input-Spirit City (Act 3)","type":"dropdown","title":"Spirit City (Act 3)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Story Macro","path":["Select Story Macro"],"controls":[{"key":"NUI-0554","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0555","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0556","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0557","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0558","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0559","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0560","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Story-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Story / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Story","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Tower Macro","path":["Select Tower Macro"],"controls":[{"key":"NUI-0561","sourceId":"select-input-Tower - Crimson Shore","type":"dropdown","title":"Tower - Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0562","sourceId":"select-input-Tower - East Town","type":"dropdown","title":"Tower - East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0563","sourceId":"select-input-Tower - Fairy King Forest","type":"dropdown","title":"Tower - Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0564","sourceId":"select-input-Tower - Flower Forest","type":"dropdown","title":"Tower - Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0565","sourceId":"select-input-Tower - King's Tomb","type":"dropdown","title":"Tower - King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0566","sourceId":"select-input-Tower - Rose Kingdom","type":"dropdown","title":"Tower - Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0567","sourceId":"select-input-Tower - School Grounds","type":"dropdown","title":"Tower - School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-TowerOfGod-FlamingMonastery","type":"dropdown","title":"Tower - Flaming Monastery","description":"Assign a Macro recorded for TowerOfGod / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"TowerOfGod","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Unit Trial Macro","path":["Select Unit Trial Macro"],"controls":[{"key":"NUI-0568","sourceId":"select-input-'s Trial","type":"dropdown","title":"'s Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0569","sourceId":"select-input-8th Sword's Trial","type":"dropdown","title":"8th Sword's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0570","sourceId":"select-input-Bioinsect's Trial","type":"dropdown","title":"Bioinsect's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0571","sourceId":"select-input-Carrot's Trial","type":"dropdown","title":"Carrot's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0572","sourceId":"select-input-Crimson's Trial","type":"dropdown","title":"Crimson's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0573","sourceId":"select-input-Cursed Student's Trial","type":"dropdown","title":"Cursed Student's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0574","sourceId":"select-input-Eclipse Hunter's Trial","type":"dropdown","title":"Eclipse Hunter's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0575","sourceId":"select-input-Elf Mage's Trial","type":"dropdown","title":"Elf Mage's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0576","sourceId":"select-input-Flame Emperor's Trial","type":"dropdown","title":"Flame Emperor's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0577","sourceId":"select-input-Hollow's Trial","type":"dropdown","title":"Hollow's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0578","sourceId":"select-input-Lady Giant's Trial","type":"dropdown","title":"Lady Giant's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0579","sourceId":"select-input-Mechanical Wings's Trial","type":"dropdown","title":"Mechanical Wings's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0580","sourceId":"select-input-Prodigy's Trial","type":"dropdown","title":"Prodigy's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0581","sourceId":"select-input-Puppet's Trial","type":"dropdown","title":"Puppet's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0582","sourceId":"select-input-Reaper's Trial","type":"dropdown","title":"Reaper's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0583","sourceId":"select-input-Salmon Sorcerer's Trial","type":"dropdown","title":"Salmon Sorcerer's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0584","sourceId":"select-input-String Demon's Trial","type":"dropdown","title":"String Demon's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0585","sourceId":"select-input-True Saint's Trial","type":"dropdown","title":"True Saint's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0586","sourceId":"select-input-Vegetable's Trial","type":"dropdown","title":"Vegetable's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Burns","type":"dropdown","title":"Ignition Commander's Trial","description":"Assign a Macro recorded for Trial / Burns. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Burns"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Joker","type":"dropdown","title":"Wild Card's Trial","description":"Assign a Macro recorded for Trial / Joker. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Joker"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Shinra","type":"dropdown","title":"Devil's Trial","description":"Assign a Macro recorded for Trial / Shinra. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Shinra"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Sho","type":"dropdown","title":"Fallen Angel's Trial","description":"Assign a Macro recorded for Trial / Sho. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Sho"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"[EVENT] Select Event Macro","path":["[EVENT] Select Event Macro"],"controls":[{"key":"NUI-0587","sourceId":"select-input-Coral Kingdom","type":"dropdown","title":"Coral Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0588","sourceId":"select-input-CreatorSpotlight","type":"dropdown","title":"CreatorSpotlight","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Boss Rush Macro","path":["Select Boss Rush Macro"],"controls":[{"key":"AE-MACRO-MAP-BossRush-BeniBossRush","type":"dropdown","title":"District 7 — Gates (retain units)","description":"Runs once through the Gate phase, retaining units and progress between Gates. It never restarts placement for every Gate.","macroContext":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Gates"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-BossRush-BeniBossRush-Boss","type":"dropdown","title":"District 7 — Boss (fresh units)","description":"Use a separately recorded Boss phase Macro. Gate files are not reused; missing or mismatched Boss files pause playback.","macroContext":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Boss"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null,"currentValue":null}]},{"name":"Select Ancient One Macro","path":["Select Ancient One Macro"],"controls":[{"key":"AE-MACRO-MAP-CthulhuEvent-CthulhuEvent","type":"dropdown","title":"Invaded Lobby","description":"Assign a Macro recorded for CthulhuEvent / CthulhuEvent. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"CthulhuEvent","MapName":"CthulhuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Eclipse Macro","path":["Select Eclipse Macro"],"controls":[{"key":"AE-MACRO-MAP-EclipseEvent-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for EclipseEvent / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for EclipseEvent / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for EclipseEvent / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for EclipseEvent / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for EclipseEvent / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for EclipseEvent / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for EclipseEvent / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Golden Hour Macro","path":["Select Golden Hour Macro"],"controls":[{"key":"AE-MACRO-MAP-GoldenHourEvent-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for GoldenHourEvent / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for GoldenHourEvent / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for GoldenHourEvent / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for GoldenHourEvent / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for GoldenHourEvent / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for GoldenHourEvent / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for GoldenHourEvent / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for GoldenHourEvent / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Tournament Macro","path":["Select Tournament Macro"],"controls":[{"key":"AE-MACRO-MAP-Tournament-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for Tournament / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for Tournament / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for Tournament / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for Tournament / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for Tournament / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for Tournament / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for Tournament / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Tournament / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-SpiritCity","type":"dropdown","title":"Spirit City","description":"Assign a Macro recorded for Tournament / SpiritCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"SpiritCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Sandbox Macro","path":["Select Sandbox Macro"],"controls":[{"key":"AE-MACRO-MAP-Sandbox-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for Sandbox / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-HillOfSwords","type":"dropdown","title":"Snowy Castle","description":"Assign a Macro recorded for Sandbox / HillOfSwords. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"HillOfSwords"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-Summer2026Event","type":"dropdown","title":"Coral Kingdom","description":"Assign a Macro recorded for Sandbox / Summer2026Event. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"Summer2026Event"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-BeniBossRush","type":"dropdown","title":"District 7","description":"Assign a Macro recorded for Sandbox / BeniBossRush. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"BeniBossRush"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-VillainInvasion","type":"dropdown","title":"Crow Hideout","description":"Assign a Macro recorded for Sandbox / VillainInvasion. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"VillainInvasion"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-KaijuEvent","type":"dropdown","title":"Fractured District","description":"Assign a Macro recorded for Sandbox / KaijuEvent. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"KaijuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for Sandbox / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Sandbox / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for Sandbox / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for Sandbox / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-SpiritCity","type":"dropdown","title":"Spirit City","description":"Assign a Macro recorded for Sandbox / SpiritCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"SpiritCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for Sandbox / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for Sandbox / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for Sandbox / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Villain Invasion Macro","path":["Select Villain Invasion Macro"],"controls":[{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_1","type":"dropdown","title":"Crow Hideout (Act 1)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 1. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 1"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_2","type":"dropdown","title":"Crow Hideout (Act 2)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 2. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 2"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_3","type":"dropdown","title":"Crow Hideout (Act 3)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 3. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 3"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Crow","type":"dropdown","title":"Crow Hideout (Crow)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Crow. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Crow"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Rift Macro","path":["Select Rift Macro"],"controls":[{"key":"AE-MACRO-MAP-KaijuEvent-KaijuEvent","type":"dropdown","title":"① Monster Clash — Normal Stage","description":"Ordinary Monster Clash / Fractured District farming before the helicopter arrives. This configuration is independent of the Monster Rift stage below.","macroContext":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Rift-KaijuEventRift","type":"dropdown","title":"② Monster Rift — Helicopter Stage","description":"Used only after entering Monster Rift by helicopter. Select a separate Macro recorded inside KaijuEventRift; the normal-stage file is never substituted automatically.","macroContext":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent","ActName":"Act 1","Difficulty":"Hard","RiftName":"KaijuEventRift"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-RIFT-INFO","type":"label","title":"Two independent configs: ① normal Monster Clash farming; ② Monster Rift after entering the helicopter.\nUse a separate Rift recording for ②. Changing one selection does not change the other.","description":""}]}],"tree":[{"name":"Importer/Exporter","path":["Importer/Exporter"],"sectionIndex":1,"children":[]},{"name":"Information","path":["Information"],"sectionIndex":2,"children":[]},{"name":"Macro","path":["Macro"],"sectionIndex":3,"children":[]},{"name":"Manage","path":["Manage"],"sectionIndex":4,"children":[]},{"name":"Misc","path":["Misc"],"sectionIndex":5,"children":[]},{"name":"Play Macro Config","path":["Play Macro Config"],"sectionIndex":6,"children":[]},{"name":"Select Infernal Cult Macro","path":["Select Infernal Cult Macro"],"sectionIndex":7,"children":[]},{"name":"Select Challenge Macro","path":["Select Challenge Macro"],"sectionIndex":8,"children":[]},{"name":"Select Expedition Macro","path":["Select Expedition Macro"],"sectionIndex":9,"children":[]},{"name":"Select Infinite Macro","path":["Select Infinite Macro"],"sectionIndex":10,"children":[]},{"name":"Select Mastery Macro","path":["Select Mastery Macro"],"sectionIndex":11,"children":[]},{"name":"Select Portal Macro","path":["Select Portal Macro"],"sectionIndex":12,"children":[]},{"name":"Select Raid Macro","path":["Select Raid Macro"],"sectionIndex":13,"children":[]},{"name":"Select Story Macro","path":["Select Story Macro"],"sectionIndex":14,"children":[]},{"name":"Select Tower Macro","path":["Select Tower Macro"],"sectionIndex":15,"children":[]},{"name":"Select Unit Trial Macro","path":["Select Unit Trial Macro"],"sectionIndex":16,"children":[]},{"name":"[EVENT] Select Event Macro","path":["[EVENT] Select Event Macro"],"sectionIndex":17,"children":[]},{"name":"Select Boss Rush Macro","path":["Select Boss Rush Macro"],"sectionIndex":18,"children":[]},{"name":"Select Ancient One Macro","path":["Select Ancient One Macro"],"sectionIndex":19,"children":[]},{"name":"Select Eclipse Macro","path":["Select Eclipse Macro"],"sectionIndex":20,"children":[]},{"name":"Select Golden Hour Macro","path":["Select Golden Hour Macro"],"sectionIndex":21,"children":[]},{"name":"Select Tournament Macro","path":["Select Tournament Macro"],"sectionIndex":22,"children":[]},{"name":"Select Sandbox Macro","path":["Select Sandbox Macro"],"sectionIndex":23,"children":[]},{"name":"Select Villain Invasion Macro","path":["Select Villain Invasion Macro"],"sectionIndex":24,"children":[]},{"name":"Select Rift Macro","path":["Select Rift Macro"],"sectionIndex":25,"children":[],"defaultExpanded":true}]},{"name":"Webhook","title":"Webhook","sections":[{"name":"Notification","path":["Notification"],"controls":[{"key":"NUI-0589","sourceId":"input-checkbox-Only Mention if Shiny","type":"toggle","title":"Stage Summary: Only Mention Shiny","description":"Applies only to stage-summary mentions when Unit Obtained is off. Unit Obtained always pings for every new owned character.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0590","sourceId":"input-checkbox-Show Session Data","type":"toggle","title":"Show Session Data","description":"Add matches played, session time and the session win/loss ratio to Stage Finished webhooks","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0591","sourceId":"input-checkbox-Stage Finished","type":"toggle","title":"Stage Finished / Restart","description":"Send stage results and confirmed restarts. Restart-only messages never ping. Rewards show +gained [owned]; EXP shows gained amounts only.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0592","sourceId":"input-checkbox-Unit Summoned","type":"toggle","title":"Unit Obtained (All Modes)","description":"Notify and ping for every newly owned character in any gamemode or lobby, regardless of rarity or summon targets; existing inventory is not replayed.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Setting","path":["Setting"],"controls":[{"key":"NUI-0593","sourceId":"box-input-Mention ID","type":"text-input","title":"Mention ID","description":"Discord User ID to ping for new characters. Leave blank to ping @everyone. Invalid nonempty IDs do not ping.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0594","sourceId":"box-input-Webhook URL","type":"text-input","title":"Webhook URL","description":"Paste the url of your Discord Webhook here","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0595","sourceId":"button-input-Test Webhook","type":"button","title":"Test Webhook","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Notification","path":["Notification"],"sectionIndex":1,"children":[]},{"name":"Setting","path":["Setting"],"sectionIndex":2,"children":[]}]},{"name":"Settings","title":"Settings","sections":[{"name":"Auto Execute","path":["Auto Execute"],"controls":[{"key":"AE-SETTINGS-AUTO-EXECUTE","type":"toggle","title":"Auto Execute on Teleport","description":"Opt-in. Caches this exact GUI and library privately, then queues them on teleport. Requires executor queue/file APIs. Turning OFF revokes queued cached loads.","default":false,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-STATUS","type":"label","title":"Settings: checking supported features...","description":"Missing executor or network APIs are reported here; no fake capability is shown.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Failsafe","path":["Failsafe"],"controls":[{"key":"AE-AUTO-REJOIN","sourceId":"auto-rejoin","type":"toggle","title":"Auto Rejoin","description":"Opt-in: after a 267/277 disconnect, send one normal rejoin request. One attempt per session; turning off or unloading cancels the countdown. Does not bypass server access restrictions.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-REJOIN-DELAY","sourceId":"rejoin-delay","type":"slider","title":"Rejoin Delay (seconds)","description":"Delay before the single rejoin request; default 5 seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":1,"max":30,"rounding":0},{"key":"AE-AUTO-REJOIN-STATUS","sourceId":"auto-rejoin-status","type":"label","title":"Rejoin: disabled • 0/1 this session","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-SETTINGS-PING-FREEZE","type":"toggle","title":"Rejoin on Network Freeze (120 seconds)","description":"After verified network activity, rejoin only if receive traffic and progress remain frozen for 120 seconds. Shares one attempt per session with Auto Rejoin; constant ping alone is not a freeze.","default":false,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config","path":["Script Config"],"controls":[{"key":"AE-SETTINGS-CONFIG-INFO","type":"label","title":"Config format: JSON only. Secrets, account-specific selections and Macro file contents are excluded.\nImport/reset requires Preview then Confirm; it does not force a kick or rejoin.","description":"","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-RESET","type":"button","title":"Preview Reset Script Config","description":"Previews default settings. Nothing is changed until Confirm Apply; preserves Macro files and Webhook secrets.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-STATUS","type":"label","title":"Settings ready. Preview required before applying.","description":"","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config / Export","path":["Script Config","Export"],"controls":[{"key":"AE-SETTINGS-CONFIG-MINIFY","type":"toggle","title":"Minify Config","description":"OFF exports readable indented JSON; ON exports compact JSON.","default":false,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-COPY","type":"button","title":"Copy Config JSON to Clipboard","description":"Exports portable settings only. Webhook URL, keys and private account fields are omitted.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-SEND","type":"button","title":"Send Config .json File via Webhook","description":"Sends zen_hub_settings.json through the Webhook tab URL. The URL itself is never included in the file.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config / Import","path":["Script Config","Import"],"controls":[{"key":"AE-SETTINGS-CONFIG-INPUT","type":"text-input","title":"Paste Config JSON","description":"Paste exported JSON, not code or a URL. The pasted text is temporary and is not saved.","default":"","options":[],"multi":false,"sensitive":false,"transient":true,"configExport":false},{"key":"AE-SETTINGS-CONFIG-PREVIEW","type":"button","title":"Preview Import Config","description":"Validates all keys, types and ranges. Shows changed settings and toggles that would be enabled; sends no game actions.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-APPLY","type":"button","title":"Confirm Apply Preview","description":"Applies only the validated preview. This may enable the listed automation toggles. Blocked while Macro recording is active.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-CANCEL","type":"button","title":"Cancel Preview","description":"Discards the pending import/reset without applying it.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"UI Control","path":["UI Control"],"controls":[{"key":"AE-SETTINGS-TOGGLE-KEY","type":"dropdown","title":"Toggle UI Key","description":"Changes the native UI hide/show key.","default":"RightControl","options":["RightControl","LeftControl","RightShift","LeftShift","RightAlt","LeftAlt","Insert","Home","F1","F2","F3","F4","Q"],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-MOBILE","type":"toggle","title":"Display Toggle UI Button (Mobile)","description":"Shows a draggable Zen Hub toggle button near the lower-left corner.","default":true,"options":[],"multi":false,"sensitive":false}]},{"name":"Custom UI Colors","path":["Custom UI Colors"],"controls":[{"key":"AE-SETTINGS-THEME","type":"dropdown","title":"Color Preset","description":"Default preserves the current theme. Custom uses the hex colors below.","default":"Default","options":["Default","Custom"],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-APPLY-COLORS","type":"button","title":"Apply Custom UI Colors","description":"Choose Custom and enter six-digit RGB hex values, then apply.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-RESET-COLORS","type":"button","title":"Restore Default UI Colors","description":"Restores the current Zen Hub default palette without resetting game settings.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-COLOR-Canvas","type":"text-input","title":"Canvas (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"171719","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Surface","type":"text-input","title":"Surface (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"232326","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Inset","type":"text-input","title":"Inset (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"2e2e33","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Text","type":"text-input","title":"Text (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"f5f5f7","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Muted","type":"text-input","title":"Muted (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"b2b2ba","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Line","type":"text-input","title":"Line (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"3a3a41","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Accent","type":"text-input","title":"Accent (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"0a70db","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-OnAccent","type":"text-input","title":"OnAccent (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"ffffff","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Tint","type":"text-input","title":"Tint (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"243d5c","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlFill","type":"text-input","title":"ControlFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"34343b","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlBorder","type":"text-input","title":"ControlBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"8f8f99","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlHoverBorder","type":"text-input","title":"ControlHoverBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"b7b7c2","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlFocusBorder","type":"text-input","title":"ControlFocusBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"6fb5ff","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-HeaderFill","type":"text-input","title":"HeaderFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"303037","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-PopupFill","type":"text-input","title":"PopupFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"1c1c21","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-PopupSelection","type":"text-input","title":"PopupSelection (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"496994","options":[],"multi":false,"sensitive":false,"configExport":true}]},{"name":"Script Information","path":["Script Information"],"controls":[{"key":"AE-SETTINGS-INFO","type":"label","title":"Settings adapted from the captured Nousigi UI Setting / Custom UI reference.\nThis GUI does not use Nousigi Whitelist keys, so license deletion and remaining-key-time actions do not apply.","description":"","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Compatibility","path":["Compatibility"],"controls":[{"key":"AE-PORTABLE-COMPATIBILITY","type":"label","title":"Portable build: checking optional executor APIs...","description":"Feature support depends on executor APIs, not only the operating system."},{"key":"AE-PORTABLE-STORAGE","type":"label","title":"Settings storage: checking...","description":"Verified saves are device-local. Missing or failing file APIs are never treated as a successful save."}]}],"tree":[{"name":"Auto Execute","path":["Auto Execute"],"children":[],"sectionIndex":1},{"name":"Failsafe","path":["Failsafe"],"children":[],"sectionIndex":2},{"name":"Script Config","path":["Script Config"],"children":[{"name":"Export","path":["Script Config","Export"],"children":[],"sectionIndex":4},{"name":"Import","path":["Script Config","Import"],"children":[],"sectionIndex":5}],"sectionIndex":3},{"name":"UI Control","path":["UI Control"],"children":[],"sectionIndex":6},{"name":"Custom UI Colors","path":["Custom UI Colors"],"children":[],"sectionIndex":7},{"name":"Script Information","path":["Script Information"],"children":[],"sectionIndex":8},{"name":"Compatibility","path":["Compatibility"],"children":[],"sectionIndex":9}]}],"macroCatalogBindings":[{"Key":"NUI-0560","Context":{"Gamemode":"Story","MapName":"SchoolGrounds"}},{"Key":"NUI-0557","Context":{"Gamemode":"Story","MapName":"FlowerForest"}},{"Key":"NUI-0559","Context":{"Gamemode":"Story","MapName":"Dressrosa"}},{"Key":"NUI-0556","Context":{"Gamemode":"Story","MapName":"FairyKingForest"}},{"Key":"NUI-0558","Context":{"Gamemode":"Story","MapName":"KingsTomb"}},{"Key":"NUI-0555","Context":{"Gamemode":"Story","MapName":"WestCity"}},{"Key":"NUI-0554","Context":{"Gamemode":"Story","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Story-FlamingMonastery","Context":{"Gamemode":"Story","MapName":"FlamingMonastery"}},{"Key":"NUI-0534","Context":{"Gamemode":"Infinite","MapName":"SchoolGrounds"}},{"Key":"NUI-0531","Context":{"Gamemode":"Infinite","MapName":"FlowerForest"}},{"Key":"NUI-0533","Context":{"Gamemode":"Infinite","MapName":"Dressrosa"}},{"Key":"NUI-0530","Context":{"Gamemode":"Infinite","MapName":"FairyKingForest"}},{"Key":"NUI-0532","Context":{"Gamemode":"Infinite","MapName":"KingsTomb"}},{"Key":"NUI-0529","Context":{"Gamemode":"Infinite","MapName":"WestCity"}},{"Key":"NUI-0528","Context":{"Gamemode":"Infinite","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Infinite-FlamingMonastery","Context":{"Gamemode":"Infinite","MapName":"FlamingMonastery"}},{"Key":"NUI-0535","Context":{"Gamemode":"Infinite","MapName":"SpiritCity"}},{"Key":"NUI-0542","Context":{"Gamemode":"Mastery","MapName":"SchoolGrounds"}},{"Key":"NUI-0539","Context":{"Gamemode":"Mastery","MapName":"FlowerForest"}},{"Key":"NUI-0541","Context":{"Gamemode":"Mastery","MapName":"Dressrosa"}},{"Key":"NUI-0538","Context":{"Gamemode":"Mastery","MapName":"FairyKingForest"}},{"Key":"NUI-0540","Context":{"Gamemode":"Mastery","MapName":"KingsTomb"}},{"Key":"NUI-0537","Context":{"Gamemode":"Mastery","MapName":"WestCity"}},{"Key":"NUI-0536","Context":{"Gamemode":"Mastery","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Mastery-FlamingMonastery","Context":{"Gamemode":"Mastery","MapName":"FlamingMonastery"}},{"Key":"NUI-0527","Context":{"Gamemode":"Expedition","MapName":"SchoolGroundsExpedition"}},{"Key":"NUI-0525","Context":{"Gamemode":"Expedition","MapName":"FlowerForestExpedition"}},{"Key":"NUI-0526","Context":{"Gamemode":"Expedition","MapName":"DressrosaExpedition"}},{"Key":"NUI-0524","Context":{"Gamemode":"Expedition","MapName":"WestCityExpedition"}},{"Key":"NUI-0523","Context":{"Gamemode":"Challenge","MapName":"SchoolGrounds"}},{"Key":"NUI-0520","Context":{"Gamemode":"Challenge","MapName":"FlowerForest"}},{"Key":"NUI-0522","Context":{"Gamemode":"Challenge","MapName":"Dressrosa"}},{"Key":"NUI-0519","Context":{"Gamemode":"Challenge","MapName":"FairyKingForest"}},{"Key":"NUI-0521","Context":{"Gamemode":"Challenge","MapName":"KingsTomb"}},{"Key":"NUI-0518","Context":{"Gamemode":"Challenge","MapName":"WestCity"}},{"Key":"NUI-0517","Context":{"Gamemode":"Challenge","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Challenge-FlamingMonastery","Context":{"Gamemode":"Challenge","MapName":"FlamingMonastery"}},{"Key":"NUI-0567","Context":{"Gamemode":"TowerOfGod","MapName":"SchoolGrounds"}},{"Key":"NUI-0564","Context":{"Gamemode":"TowerOfGod","MapName":"FlowerForest"}},{"Key":"NUI-0566","Context":{"Gamemode":"TowerOfGod","MapName":"Dressrosa"}},{"Key":"NUI-0563","Context":{"Gamemode":"TowerOfGod","MapName":"FairyKingForest"}},{"Key":"NUI-0565","Context":{"Gamemode":"TowerOfGod","MapName":"KingsTomb"}},{"Key":"NUI-0562","Context":{"Gamemode":"TowerOfGod","MapName":"WestCity"}},{"Key":"NUI-0561","Context":{"Gamemode":"TowerOfGod","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-TowerOfGod-FlamingMonastery","Context":{"Gamemode":"TowerOfGod","MapName":"FlamingMonastery"}},{"Key":"NUI-0551","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 1"}},{"Key":"NUI-0552","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 2"}},{"Key":"NUI-0553","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 3"}},{"Key":"NUI-0548","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 1"}},{"Key":"NUI-0549","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 2"}},{"Key":"NUI-0550","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 3"}},{"Key":"NUI-0588","Context":{"Gamemode":"Event","MapName":"CreatorSpotlight"}},{"Key":"NUI-0587","Context":{"Gamemode":"Event","MapName":"Summer2026Event"}},{"Key":"NUI-0568","Context":{"Gamemode":"Trial","TrialUnit":"Ballin"}},{"Key":"AE-MACRO-MAP-Trial-Burns","Context":{"Gamemode":"Trial","TrialUnit":"Burns"}},{"Key":"NUI-0570","Context":{"Gamemode":"Trial","TrialUnit":"Cell"}},{"Key":"NUI-0579","Context":{"Gamemode":"Trial","TrialUnit":"CellEquipment"}},{"Key":"NUI-0578","Context":{"Gamemode":"Trial","TrialUnit":"Diane"}},{"Key":"NUI-0584","Context":{"Gamemode":"Trial","TrialUnit":"Doflamingo"}},{"Key":"NUI-0575","Context":{"Gamemode":"Trial","TrialUnit":"Frieren"}},{"Key":"NUI-0577","Context":{"Gamemode":"Trial","TrialUnit":"Gabimaru"}},{"Key":"NUI-0580","Context":{"Gamemode":"Trial","TrialUnit":"Gohan"}},{"Key":"NUI-0571","Context":{"Gamemode":"Trial","TrialUnit":"GokuSS1"}},{"Key":"NUI-0581","Context":{"Gamemode":"Trial","TrialUnit":"Gowther"}},{"Key":"NUI-0582","Context":{"Gamemode":"Trial","TrialUnit":"Ichigo"}},{"Key":"NUI-0583","Context":{"Gamemode":"Trial","TrialUnit":"Inumaki"}},{"Key":"AE-MACRO-MAP-Trial-Joker","Context":{"Gamemode":"Trial","TrialUnit":"Joker"}},{"Key":"NUI-0576","Context":{"Gamemode":"Trial","TrialUnit":"Sabo"}},{"Key":"AE-MACRO-MAP-Trial-Shinra","Context":{"Gamemode":"Trial","TrialUnit":"Shinra"}},{"Key":"AE-MACRO-MAP-Trial-Sho","Context":{"Gamemode":"Trial","TrialUnit":"Sho"}},{"Key":"NUI-0574","Context":{"Gamemode":"Trial","TrialUnit":"SkullKnight"}},{"Key":"NUI-0586","Context":{"Gamemode":"Trial","TrialUnit":"Vegeta"}},{"Key":"NUI-0573","Context":{"Gamemode":"Trial","TrialUnit":"Yuta"}},{"Key":"NUI-0545","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap","PortalAsset":"SkypieaPortal"}},{"Key":"NUI-0547","Context":{"Gamemode":"Portal","MapName":"Summer2026Event","PortalAsset":"SummerPortal"}},{"Key":"NUI-0546","Context":{"Gamemode":"Portal","MapName":"Summer2026Event","PortalAsset":"SinbadPortal"}},{"Key":"NUI-0544","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap","PortalAsset":"EnelPortal"}},{"Key":"AE-MACRO-MAP-Portal-FlamingMonastery-FireForcePortal","Context":{"Gamemode":"Portal","MapName":"FlamingMonastery","PortalAsset":"FireForcePortal"}},{"Key":"NUI-0543","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap"}},{"Key":"AE-MACRO-MAP-BossRush-BeniBossRush","Context":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Gates"}},{"Key":"AE-MACRO-MAP-KaijuEvent-KaijuEvent","Context":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent"}},{"Key":"AE-MACRO-MAP-CthulhuEvent-CthulhuEvent","Context":{"Gamemode":"CthulhuEvent","MapName":"CthulhuEvent"}},{"Key":"AE-MACRO-MAP-EclipseEvent-SchoolGrounds","Context":{"Gamemode":"EclipseEvent","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FlowerForest","Context":{"Gamemode":"EclipseEvent","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-EclipseEvent-Dressrosa","Context":{"Gamemode":"EclipseEvent","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FairyKingForest","Context":{"Gamemode":"EclipseEvent","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-EclipseEvent-KingsTomb","Context":{"Gamemode":"EclipseEvent","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-EclipseEvent-WestCity","Context":{"Gamemode":"EclipseEvent","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FlamingMonastery","Context":{"Gamemode":"EclipseEvent","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-SchoolGrounds","Context":{"Gamemode":"GoldenHourEvent","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FlowerForest","Context":{"Gamemode":"GoldenHourEvent","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-Dressrosa","Context":{"Gamemode":"GoldenHourEvent","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FairyKingForest","Context":{"Gamemode":"GoldenHourEvent","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-KingsTomb","Context":{"Gamemode":"GoldenHourEvent","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-WestCity","Context":{"Gamemode":"GoldenHourEvent","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-RedLake","Context":{"Gamemode":"GoldenHourEvent","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FlamingMonastery","Context":{"Gamemode":"GoldenHourEvent","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Tournament-SchoolGrounds","Context":{"Gamemode":"Tournament","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-Tournament-FlowerForest","Context":{"Gamemode":"Tournament","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-Tournament-Dressrosa","Context":{"Gamemode":"Tournament","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-Tournament-FairyKingForest","Context":{"Gamemode":"Tournament","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-Tournament-KingsTomb","Context":{"Gamemode":"Tournament","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-Tournament-WestCity","Context":{"Gamemode":"Tournament","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-Tournament-RedLake","Context":{"Gamemode":"Tournament","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Tournament-FlamingMonastery","Context":{"Gamemode":"Tournament","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Tournament-SpiritCity","Context":{"Gamemode":"Tournament","MapName":"SpiritCity"}},{"Key":"AE-MACRO-MAP-Sandbox-KingsTomb","Context":{"Gamemode":"Sandbox","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-Sandbox-HillOfSwords","Context":{"Gamemode":"Sandbox","MapName":"HillOfSwords"}},{"Key":"AE-MACRO-MAP-Sandbox-Summer2026Event","Context":{"Gamemode":"Sandbox","MapName":"Summer2026Event"}},{"Key":"AE-MACRO-MAP-Sandbox-BeniBossRush","Context":{"Gamemode":"Sandbox","MapName":"BeniBossRush"}},{"Key":"AE-MACRO-MAP-Sandbox-VillainInvasion","Context":{"Gamemode":"Sandbox","MapName":"VillainInvasion"}},{"Key":"AE-MACRO-MAP-Sandbox-KaijuEvent","Context":{"Gamemode":"Sandbox","MapName":"KaijuEvent"}},{"Key":"AE-MACRO-MAP-Sandbox-SchoolGrounds","Context":{"Gamemode":"Sandbox","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-Sandbox-FlamingMonastery","Context":{"Gamemode":"Sandbox","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Sandbox-WestCity","Context":{"Gamemode":"Sandbox","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-Sandbox-FlowerForest","Context":{"Gamemode":"Sandbox","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-Sandbox-SpiritCity","Context":{"Gamemode":"Sandbox","MapName":"SpiritCity"}},{"Key":"AE-MACRO-MAP-Sandbox-Dressrosa","Context":{"Gamemode":"Sandbox","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-Sandbox-FairyKingForest","Context":{"Gamemode":"Sandbox","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-Sandbox-RedLake","Context":{"Gamemode":"Sandbox","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_1","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 1"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_2","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 2"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_3","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 3"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Crow","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Crow"}},{"Key":"AE-MACRO-MAP-Rift-KaijuEventRift","Context":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent","ActName":"Act 1","Difficulty":"Hard","RiftName":"KaijuEventRift"}},{"Key":"AE-MACRO-MAP-BossRush-BeniBossRush-Boss","Context":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Boss"}}]}]==])
+local Spec = HttpService:JSONDecode([==[{"source":"reports/nousigi_ui_inventory.json","sourceVersion":44934,"generatedAt":"2026-09-09T11:24:24.000Z","stats":{"Lobby":{"sections":28,"controls":87},"Joiner":{"sections":36,"controls":195},"Game":{"sections":18,"controls":62},"Macro":{"sections":25,"controls":157},"Webhook":{"sections":2,"controls":7},"totalControls":548,"Settings":{"sections":9,"controls":40}},"pages":[{"name":"Lobby","title":"Lobby","sections":[{"name":"Auto Claimer","path":["Auto Claimer"],"controls":[{"key":"NUI-0006","sourceId":"button-input-Enable all Auto Claim","type":"button","title":"Enable all Auto Claim","description":"Turn on every Auto Claim toggle above","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0007","sourceId":"input-checkbox-Auto Claim Battlepass","type":"toggle","title":"Auto Claim Battlepass","description":"Claims available rewards from every loaded regular and event Battlepass, including previous seasons","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0008","sourceId":"input-checkbox-Auto Claim Calendar","type":"toggle","title":"Auto Claim Calendar","description":"Claims available Daily Calendar login rewards","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0009","sourceId":"input-checkbox-Auto Claim Event Rewards","type":"toggle","title":"Auto Claim Event Rewards","description":"Claims completed event quests and calendars discovered from replicated data","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-MONSTER-CLAIM","type":"toggle","title":"Auto Claim Monster Clash Missions","description":"Claims completed Repeatable, Event, Daily and Weekly missions. Also covered by Auto Claim Event Rewards. Waits for native claim/reset acknowledgement; never buys items or opens chests.","default":false},{"key":"AE-MONSTER-CLAIM-STATUS","type":"label","title":"Monster Clash Claims: disabled\nRepeatable / Event / Daily / Weekly","description":"Submitted requests and observed claimed/reset state are tracked separately. No completed mission means no request."},{"key":"NUI-0010","sourceId":"input-checkbox-Auto Claim Index","type":"toggle","title":"Auto Claim Index","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0011","sourceId":"input-checkbox-Auto Claim Level Milestone","type":"toggle","title":"Auto Claim Level Milestone","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0012","sourceId":"input-checkbox-Auto Claim Quest","type":"toggle","title":"Auto Claim Quest","description":"Can be claimed while in game","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0013","sourceId":"input-checkbox-Auto Claim Quest Board","type":"toggle","title":"Auto Claim Quest Board","description":"Claims completed weekly Expedition quests and reached Quest Board milestone rewards","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0014","sourceId":"input-checkbox-Auto Open Event Capsules","type":"toggle","title":"Auto Open Event Capsules","description":"Opens owned event capsules one at a time and confirms the inventory update","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Auto Fishing","path":["Auto Fishing"],"controls":[{"key":"NUI-0015","sourceId":"input-checkbox-Auto Fishing","type":"toggle","title":"Auto Fishing","description":"Automatically moves to tagged water, casts, and solves the fishing minigame.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Auto Shop","path":["Auto Shop"],"controls":[{"key":"AE-SHOP-BATCH-SIZE","sourceId":"shop-batch-size","type":"slider","title":"Purchase Batch Size","description":"Maximum quantity per native purchase request; actual quantity is capped by stock, affordability and inventory capacity.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":1,"max":100,"rounding":0}]},{"name":"Auto Shop › Expedition Shop","path":["Auto Shop","Expedition Shop"],"controls":[{"key":"NUI-0016","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only, bounded by native stock, currency and inventory capacity. Waits for a real shop replica.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0017","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Native restocking items only. Options refresh from the current shop catalog; absent event shops wait for spawn.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"sensitive":false,"default":[],"autoShopSelection":true}]},{"name":"Auto Shop › Gold Shop","path":["Auto Shop","Gold Shop"],"controls":[{"key":"NUI-0018","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only, bounded by native stock, currency and inventory capacity. Waits for a real shop replica.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0019","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Native restocking items only. Options refresh from the current shop catalog; absent event shops wait for spawn.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"sensitive":false,"default":[],"autoShopSelection":true}]},{"name":"Auto Shop › Raid General Shop","path":["Auto Shop","Raid General Shop"],"controls":[{"key":"NUI-0020","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only, bounded by native stock, currency and inventory capacity. Waits for a real shop replica.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0021","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Native restocking items only. Options refresh from the current shop catalog; absent event shops wait for spawn.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"sensitive":false,"default":[],"autoShopSelection":true}]},{"name":"Auto Shop › Boss Rush Shop","path":["Auto Shop","Boss Rush Shop"],"controls":[{"key":"AE-SHOP-BOSSRUSH-AUTO","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only. Requires a native shop replica and enough stock, currency and inventory capacity.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-SHOP-BOSSRUSH-ITEMS","type":"dropdown","title":"Select Item","description":"Select native restocking items by their in-game display name.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"autoShopSelection":true,"sensitive":false,"default":[]}]},{"name":"Auto Shop › Rift Shop","path":["Auto Shop","Rift Shop"],"controls":[{"key":"AE-SHOP-RIFT-AUTO","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only. Requires a native shop replica and enough stock, currency and inventory capacity.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-SHOP-RIFT-ITEMS","type":"dropdown","title":"Select Item","description":"Select native restocking items by their in-game display name.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"autoShopSelection":true,"sensitive":false,"default":[]}]},{"name":"Auto Shop › [EVENT] Event Shop","path":["Auto Shop","[EVENT] Event Shop"],"controls":[{"key":"NUI-0022","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only, bounded by native stock, currency and inventory capacity. Waits for a real shop replica.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0023","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Only restocking Event shops; Wandering Trader has its own controls. Unavailable when no other native shop exists.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"sensitive":false,"default":[],"autoShopSelection":true}]},{"name":"Auto Shop › [EVENT] Wandering Trader","path":["Auto Shop","[EVENT] Wandering Trader"],"controls":[{"key":"NUI-0024","sourceId":"input-checkbox-Auto Buy","type":"toggle","title":"Auto Buy","description":"Buy selected restocking items only, bounded by native stock, currency and inventory capacity. Waits for a real shop replica.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0025","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Native restocking items only. Options refresh from the current shop catalog; absent event shops wait for spawn.","currentValue":null,"options":[],"multi":true,"dynamicOptions":true,"sensitive":false,"default":[],"autoShopSelection":true}]},{"name":"Auto Summon Banner","path":["Auto Summon Banner"],"controls":[]},{"name":"Auto Summon Banner › Mini","path":["Auto Summon Banner","Mini"],"controls":[{"key":"NUI-0026","sourceId":"input-checkbox-Auto Summon Mini","type":"toggle","title":"Auto Summon Mini","description":"Summons only while a selected Mythic unit is the banner's featured main unit.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0027","sourceId":"input-checkbox-Teleport Lobby if in Banner","type":"toggle","title":"Teleport Lobby if in Banner","description":"While in a match, instantly returns to the lobby when a selected unit is featured and at least 50 summons are affordable.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0028","sourceId":"input-checkbox-Unselect if Summoned","type":"toggle","title":"Unselect if Summoned","description":"Unselects a target from this banner after that unit is summoned.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0029","sourceId":"select-input-Auto Sell Rarity","type":"dropdown","title":"Auto Sell Rarity","description":"Synchronizes AE's normal and shiny auto-sell settings for this banner.","currentValue":null,"options":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary","Shiny Mythic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Epic","Legendary","Shiny Rare","Shiny Epic","Shiny Legendary"]},{"key":"NUI-0030","sourceId":"select-input-Select Summon Unit","type":"dropdown","title":"Select Summon Unit","description":"Select obtainable Mythic units. Summoning starts when one is the featured main unit.","currentValue":null,"options":["Bioinsect","Carrot","Cursed Student","Elf Mage","Flame Emperor","Hollow","Lady Giant","Puppet","Salmon Sorcerer","String Demon","Vegetable"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Auto Summon Banner › Standard","path":["Auto Summon Banner","Standard"],"controls":[{"key":"NUI-0031","sourceId":"input-checkbox-Auto Summon Standard","type":"toggle","title":"Auto Summon Standard","description":"Summons only while a selected Mythic unit is the banner's featured main unit.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0032","sourceId":"input-checkbox-Teleport Lobby if in Banner","type":"toggle","title":"Teleport Lobby if in Banner","description":"While in a match, instantly returns to the lobby when a selected unit is featured and at least 50 summons are affordable.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0033","sourceId":"input-checkbox-Unselect if Summoned","type":"toggle","title":"Unselect if Summoned","description":"Unselects a target from this banner after that unit is summoned.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0034","sourceId":"select-input-Auto Sell Rarity","type":"dropdown","title":"Auto Sell Rarity","description":"Synchronizes AE's normal and shiny auto-sell settings for this banner.","currentValue":null,"options":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary","Shiny Mythic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Epic","Legendary","Mythic","Shiny Rare","Shiny Epic","Shiny Legendary"]},{"key":"NUI-0035","sourceId":"select-input-Select Summon Unit","type":"dropdown","title":"Select Summon Unit","description":"Select obtainable Mythic units. Summoning starts when one is the featured main unit.","currentValue":null,"options":["Bioinsect","Carrot","Cursed Student","Elf Mage","Flame Emperor","Hollow","Lady Giant","Puppet","Salmon Sorcerer","String Demon","Vegetable"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Event","path":["Event"],"controls":[]},{"name":"Event › [EVENT] Dragon's Wish","path":["Event","[EVENT] Dragon's Wish"],"controls":[{"key":"NUI-0036","sourceId":"input-checkbox-Auto Collect Wishing Orb","type":"toggle","title":"Auto Collect Wishing Orb","description":"Automatically collects unlocked, uncollected Wish Orbs while playing East Town Story.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Event › [EVENT] Guess That Unit","path":["Event","[EVENT] Guess That Unit"],"controls":[{"key":"NUI-0037","sourceId":"input-checkbox-Auto Guess That Unit","type":"toggle","title":"Auto Guess Who Am I","description":"Automatically solve the available Who Am I event using ranked clues and at most three native guesses; waits for the next reset after completion.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-GOLD-RETRY","sourceId":"whoami-gold-retry","type":"toggle","title":"Auto Use Gold to Retry","description":"Opt-in: use the native Gold retry only after an unsuccessful attempt. Requires Auto Guess Who Am I. Pending or unknown outcomes are never charged again.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-GOLD-LIMIT","sourceId":"whoami-gold-limit","type":"slider","title":"Gold Retry Limit per Hour","description":"3 by default. 0 retries until victory or insufficient Gold. Attempt budget is saved before each charge and survives reload.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":3,"min":0,"max":20,"rounding":0},{"key":"AE-WHOAMI-STATUS","sourceId":"whoami-status","type":"label","title":"Who Am I: disabled\nGold retry: off","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-WHOAMI-DEEPSEEK","sourceId":"whoami-deepseek","type":"toggle","title":"Use DeepSeek for New Questions","description":"Optional DeepSeek HTTPS for new clues. Provide your own ZenHubDeepSeekApiKey in the executor environment before loading. No API key is bundled or exported.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-WHOAMI-AI-RECONNECT","sourceId":"whoami-ai-reconnect","type":"button","title":"Check AI Connection","description":"Check the direct provider model catalogue (no completion charge). Never starts a question, resets its schedule, or charges Gold. Checks are limited to once every 3 seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-WHOAMI-AI-STATUS","sourceId":"whoami-ai-status","type":"label","title":"DeepSeek: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Expedition Hub","path":["Expedition Hub"],"controls":[{"key":"AE-FUEL-BATCH-SIZE","sourceId":"fuel-batch-size","type":"slider","title":"Add Fuel Batch Size","description":"Maximum fuel items per request; uses remaining native fuel-item capacity and owned fuel, not displayed seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":1,"max":100,"rounding":0}]},{"name":"Expedition Hub › Auto Construct","path":["Expedition Hub","Auto Construct"],"controls":[{"key":"NUI-0038","sourceId":"input-checkbox-Auto Construct","type":"toggle","title":"Auto Construct","description":"Constructs selected buildings that have not reached level 1 yet when their requirements and costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0039","sourceId":"select-input-Select Building","type":"dropdown","title":"Select Building","description":"Choose which buildings may be constructed.","currentValue":null,"options":["Expedition Center","Gold Mine","Resource Drill","Research Lab","Training Grounds","Expedition Shop","Armory","Quest Board"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Hub › Auto Upgrade Building","path":["Expedition Hub","Auto Upgrade Building"],"controls":[{"key":"NUI-0040","sourceId":"input-checkbox-Auto Upgrade Building","type":"toggle","title":"Auto Upgrade Building","description":"Upgrades selected constructed buildings to their next available level when requirements and costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0041","sourceId":"select-input-Select Building","type":"dropdown","title":"Select Building","description":"Choose which buildings may be upgraded.","currentValue":null,"options":["Expedition Center","Gold Mine","Resource Drill","Research Lab","Training Grounds","Expedition Shop","Armory","Quest Board"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Hub › Gold Mine","path":["Expedition Hub","Gold Mine"],"controls":[{"key":"NUI-0042","sourceId":"input-checkbox-Auto Add Fuel","type":"toggle","title":"Auto Add Fuel","description":"Fills the Gold Mine with available Expedition Fuel.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0043","sourceId":"input-checkbox-Auto Collect","type":"toggle","title":"Auto Collect","description":"Collects completed Gold Mine rewards.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0044","sourceId":"input-checkbox-Return Lobby When Fuel Empty","type":"toggle","title":"Return Lobby When Fuel Empty","description":"After the current match ends, returns to the lobby when the Gold Mine is empty and you have Expedition Fuel available.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Research Lab","path":["Expedition Hub","Research Lab"],"controls":[{"key":"NUI-0045","sourceId":"input-checkbox-Auto Upgrade Skill Tree","type":"toggle","title":"Auto Upgrade Skill Tree","description":"Buys available Research Lab skill-tree upgrades whenever all requirements and material costs are met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Resource Drill","path":["Expedition Hub","Resource Drill"],"controls":[{"key":"NUI-0046","sourceId":"input-checkbox-Auto Add Fuel","type":"toggle","title":"Auto Add Fuel","description":"Fills the Resource Drill with available Expedition Fuel.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0047","sourceId":"input-checkbox-Auto Collect","type":"toggle","title":"Auto Collect","description":"Collects completed Resource Drill rewards.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0048","sourceId":"input-checkbox-Auto Open Geode","type":"toggle","title":"Auto Open Geode","description":"Opens every Expedition Geode before Auto Joiners enter a stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0049","sourceId":"input-checkbox-Ignore if Sprite Reached Limit","type":"toggle","title":"Ignore if Sprite Reached Limit","description":"Keeps opening Expedition Geodes even when Grey Sprite inventory is full.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0050","sourceId":"input-checkbox-Return Lobby When Fuel Empty","type":"toggle","title":"Return Lobby When Fuel Empty","description":"After the current match ends, returns to the lobby when the Resource Drill is empty and you have Expedition Fuel available.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Hub › Training Grounds","path":["Expedition Hub","Training Grounds"],"controls":[{"key":"NUI-0051","sourceId":"input-checkbox-Auto Train Units","type":"toggle","title":"Auto Train Units","description":"Manages Training Grounds while in the Lobby: fills every available slot with selected units below 400% Worthiness and retrieves units when they reach 400%. Enable the return option below to rotate completed trainees after a match.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0052","sourceId":"input-checkbox-Ignore Z Stat Units","type":"toggle","title":"Ignore Z Stat Units","description":"Prevents selected units with a Z Damage, SPA, or Range stat from being assigned to the Training Grounds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0053","sourceId":"input-checkbox-Return Lobby if Full Worthiness","type":"toggle","title":"Return Lobby if Full Worthiness","description":"Training Grounds actions only work in the Lobby. After the current match ends, returns to the Lobby when a trainee reaches 400% Worthiness and another selected, eligible unit below 400% is waiting to take the freed slot.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0054","sourceId":"select-input-Select Units","type":"dropdown","title":"Select Units","description":"Select the exact inventory units to train.\n<b>WARNING: Copying this configuration also copies the selected units' UIDs. Be careful when sharing it.</b>","currentValue":null,"options":["Zoro#30023217-fa19-4c91-9418-fa32289f83ea\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B-/B/C)</font>","Zoro#7d62790a-7eda-4191-aca8-8411a8fc560f\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B-/C/C+)</font>","Zoro#a7ac442f-144c-46fa-8237-f4fcc1d3f680\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Bounty Hunter (B/B-/C)</font>","Levi#3fc2bfc6-2015-4b5c-92ef-5465f9ca8098\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (B-/B/B)</font>","Levi#caf1ddbc-8986-4731-860d-83a6e1af209b\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (B-/B/C+)</font>","Levi#6b5d01b2-a861-4576-a8fc-7a0b8f0043e2\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (C/B-/C)</font>","Levi#9e7169a8-4219-43c6-a023-4de8485e0598\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Corps Captain (C/B/B+)</font>","Gon#b375b827-2f31-4cc0-a799-35387a518632\n<font color=\"#A5A5A5\">[Epic] Lvl 1 Nen Hunter (B+/C+/C+)</font>","Senku#3c87fd41-22f0-4b8e-8671-f4a9c098d462\n<font color=\"#A5A5A5\">[Epic] Lvl 50 Stone Alchemist (C/B/B)</font>","Kite#882f9c5a-84a9-4e53-8c8d-e210a2baf646\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Jester (B-/C/C)</font>","Sparkle#5e25f19e-279f-4323-99a8-6e49675342b4\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (B-/C+/C+)</font>","Sparkle#2e266cfd-6e68-4146-8d13-5a4620ade92c\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C+/C/C+)</font>","Sparkle#cb2eb430-ed45-4bb6-acd5-636537950fa2\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C/C+/B-)</font>","Sparkle#dae7414a-85a8-41ed-a0df-592211f458d7\n<font color=\"#A5A5A5\">[Exclusive] Lvl 1 Kitsune (C/C/B)</font>","Choso#118cd9dc-4a5b-4905-bcd2-e65bfb748bcd\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Crimson (A/SSS/A)</font>","Khun#a65f3bce-1f2e-4260-90ee-1247f6517399\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Cubert (C/C/C)</font>","Khun#60d675fc-bd0d-4061-8085-b179c4ae8c2a\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Cubert (SSS/SSS/SSS)</font>","Sugar#04f70944-dc41-4168-96e5-734e9bd472dd\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (B+/B/C+)</font>","Sugar#d9e39ed8-571c-4e94-867e-3beb1eda1a95\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (SSS/SSS/A+)</font>","Sugar#5b10502b-0504-4901-b20f-86819525c826\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 Toy Maker (Z/Z/Z)</font>","Hinata#6d71e009-d970-4e55-9f3c-ca0ed52a8027\n<font color=\"#A5A5A5\">[Exclusive] Lvl 50 True Saint (SSS/SSS/SSS)</font>","HimmelTheHero#6c31c058-9024-493b-8906-5c5f66c1de61\n<font color=\"#A5A5A5\">[Legendary] Lvl 1 The Hero (B+/B-/C)</font>","HimmelTheHero#6fc752a7-227a-481f-9e02-68c89f39fa52\n<font color=\"#A5A5A5\">[Legendary] Lvl 10 The Hero (C/B+/SSS)</font>","Utahime#6e0c9ec5-920c-4bbd-b521-bb1d8a78cdf1\n<font color=\"#A5A5A5\">[Legendary] Lvl 50 Forbidden Teacher (B-/C/SSS)</font>","Ichiraku#1df2aa1e-c024-4c7b-9174-0b8e3df0d1f0\n<font color=\"#A5A5A5\">[Legendary] Lvl 50 Ramen Guy (B/C+/B)</font>","GokuSS1#36e2f746-e36e-4430-b420-0c0fc3fd9b35\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B-/C+/C)</font>","GokuSS1#c681c363-88e2-48a3-98eb-32ce5f162b94\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B-/C/C)</font>","GokuSS1#4b92f00e-ddf9-45a7-91e9-68066d65c301\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (B/B/B-)</font>","GokuSS1#ab2d921e-81fa-417e-950e-74b89aacc54f\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Carrot (C/C/C)</font>","Zeref#9e02e741-7160-4b11-8838-3fc93e81f974\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B-/B/C)</font>","Zeref#c5113d7f-ac74-4157-af70-904508d5a459\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B-/C+/B)</font>","Zeref#b2fbfa5d-48ab-4aea-91a8-695dc8af9685\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (B/B/B)</font>","Zeref#0a3f77dd-79e5-4e5a-a246-22825476874a\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Immortal (C/C/C)</font>","Yuta#af9310ad-292d-40b1-825e-b5b7c2d40181\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Cursed Student (C/B/C)</font>","SkullKnight#5c6fa078-d21c-4414-adc3-d97356c2f8a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Eclipse Hunter (C/C/B)</font>","Harribel#81778526-b624-4381-a453-48f9aa127bd1\n<font color=\"#A5A5A5\">[Mythic] Lvl 1 Sharkfang (B-/C+/C)</font>","Gowther#09d32bd0-e140-4aee-8ce8-9abd7a5eb7b8\n<font color=\"#A5A5A5\">[Mythic] Lvl 42 Puppet (C/C-/C)</font>","Cell#4da14f8e-b094-497e-bfd9-18329444b34f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (A+/Z/SS)</font>","Cell#677a179e-7774-4164-85cb-93f5e3726905\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (Final Form) (SSS/SSS/SSS)</font>","Cell#fb662745-e813-4d9d-bbf6-46aa4f1c1136\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (Final Form) (SSS/SSS/SSS)</font>","Cell#1bfa4857-4596-4e6d-975c-5be989385dee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (S/A/S)</font>","Cell#3de2e347-a920-4231-a55e-cc8b2e3fbfc9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (SS/SS/A+)</font>","Cell#4451c43e-b5bf-44d7-90af-496a39865619\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Bioinsect (SSS/A+/S)</font>","GokuSS1#0d0d04e1-da8d-47b2-bcb7-b7b4564c551a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (S/SS/A+)</font>","GokuSS1#38d474b6-5608-4cd3-b393-f205c585191b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (SSS/SSS/A)</font>","GokuSS1#a2a0ef9a-63ef-42fe-b37b-3c4b9bec04cd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Carrot (Unleashed) (SSS/SSS/SSS)</font>","Zeref#5a08e5bd-72ad-41d0-85f3-eba470726ee7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A+/A)</font>","Zeref#596871ae-0cca-4266-a754-b64129afae0d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A+/A+)</font>","Zeref#0716d898-afc0-4462-bc7f-9bc1a45d4207\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A/S)</font>","Zeref#f551447d-df7d-41a5-b582-625b77451c06\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/A/S)</font>","Zeref#1e431e39-64dd-4472-be11-0ad57705346d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/S/A+)</font>","Zeref#9fa88dba-a010-4528-b835-5884a8742a63\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/S/A+)</font>","Zeref#01d524ab-3433-49db-ac00-dadaeafaaac7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/SS/A+)</font>","Zeref#0544b1e6-d96e-4ee2-ab2b-b95ab5d89603\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/SS/A+)</font>","Zeref#28ac7136-42ee-417a-a369-d1622b3a0597\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A+/Z/A+)</font>","Zeref#9d1c6b5a-6ca8-4450-9e4d-b74a9a7af2ef\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A+/A+)</font>","Zeref#266e34f7-ac4e-45b6-870d-c77e2b52df5f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A+/S)</font>","Zeref#e736e370-33d3-41dd-895f-b7e8f2b55c78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/A/S)</font>","Zeref#cbc1212a-df8e-41ea-ae5d-246edf99dd1a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/S/SS)</font>","Zeref#51ef5bd9-e36c-4a74-a724-8f439dfe7747\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/SSS/A)</font>","Zeref#02306892-e5db-41f1-ba5d-1252ed066e6d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (A/SSS/SSS)</font>","Zeref#87a204a5-1d8e-4fe2-a498-96311ac6182d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (Black Sun) (SSS/SSS/SSS)</font>","Zeref#61e825de-42c9-40ab-ac8a-58a9250af61d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A+/A)</font>","Zeref#f4606458-9d03-402a-8323-e6ade6d4d062\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A+/A+)</font>","Zeref#5f3a9f29-d9cc-4a7b-9406-922f2830c3be\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A/A)</font>","Zeref#bdd97b13-4a40-4bc0-a796-2c9882af3ce7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/A/SSS)</font>","Zeref#34668f92-d2f0-4854-8845-6ba3ae95a294\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/B-/C+)</font>","Zeref#1ab8d4fd-40be-464e-a9ae-d0f1691794ca\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (S/SSS/SS)</font>","Zeref#0d10a790-3281-402b-ab3a-8f76c3966dba\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/A)</font>","Zeref#708b2ad2-688a-463d-81ea-dc75553c35ad\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/A+)</font>","Zeref#9baa66d9-3e13-440c-a8f6-41c752f58555\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/A/S)</font>","Zeref#05131031-ae01-46cf-8ff3-e5d8a8e67ae8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#286eda82-7f81-4739-aca8-2b3ccc5df396\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#6bed19d9-997b-4cb8-be84-96830e7d8009\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SS/S/A+)</font>","Zeref#239a6f30-7dde-421d-9eb9-959f62c87093\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SSS/A/A+)</font>","Zeref#d9e1562d-3dda-4e74-9efe-58c775a2eba7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Immortal (SSS/SS/SS)</font>","Yuta#f67fbe70-7f64-4a98-9fc9-9c833d01dcb8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A+/S/S)</font>","Yuta#531e6ca3-56e8-4db0-aa37-d034e297eacf\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A+/Z/A)</font>","Yuta#e9e82407-9a49-414e-87be-e560dc96b852\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (A/A/A)</font>","Yuta#eb5741b4-3a9e-4dc4-8b87-7b60c53d35a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (S/A+/A)</font>","Yuta#19d8da38-37d9-4295-8fa5-eca8d135c1aa\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (S/A/A+)</font>","Yuta#c13109e6-8bae-43ce-85bc-a4e125b1a58b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SS/A+/A)</font>","Yuta#5517c4a4-f17a-45a4-8970-b5e79349d3d9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SSS/A/SS)</font>","Yuta#b8b12d76-1a7e-40b0-be55-f0594bb18a7b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (SSS/S/S)</font>","Yuta#cedfc2e7-1b48-45de-a6bd-59b112a97522\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (True Love) (SSS/SSS/SSS)</font>","Yuta#2f3d3769-8612-449d-83f7-c89a00d299ac\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Cursed Student (Z/S/SS)</font>","Judar#7d09d48b-ad93-4298-a594-64c44d64730e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SS)</font>","Judar#8694c8cb-d6e5-4628-ba60-845105cfe9a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SSS)</font>","Judar#cd63b0c0-4b53-4ec9-80a2-9ba02be5f612\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A+/SSS)</font>","Judar#4fb12350-0bd2-4732-ae16-57c17a5418b3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A/S)</font>","Judar#1f8b0804-da28-4c7e-8ce5-e6ab529991c5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/A/Z)</font>","Judar#ed3958b9-2874-4b23-a247-5e5ddf1de1b0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/S/A)</font>","Judar#3b20df0d-04f8-4b2f-8fd8-9753b5d3d1cb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/S/SSS)</font>","Judar#aa26344a-95f9-442e-ad01-0f6152959997\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/A)</font>","Judar#be0d4c13-0e1d-4d49-b7bf-ab2647a8d10d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/SS)</font>","Judar#dbdf6822-9f29-42a7-a03e-803b992e20a7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SS/SSS)</font>","Judar#c84f9ab6-9076-421a-b3e2-8e1fda07a146\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A)</font>","Judar#b0e05ff3-e826-403b-8f0b-d5ef0cfbd3a4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A+)</font>","Judar#b56f3106-918c-4cc4-9fa5-701116701117\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/A+)</font>","Judar#3c0bc368-9cf1-4a0a-9772-9e06e90623ea\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/S)</font>","Judar#69c06930-6781-484e-8a8b-95baa25d3872\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A+/SSS/S)</font>","Judar#36ec33f0-486f-48b3-8a58-35fc78c9be84\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A+/S)</font>","Judar#2e3ba020-e6f0-4c82-b6e1-599ebcc0f67a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A+/SS)</font>","Judar#2176d2e8-41df-4b19-8ea5-50915f7e3fa3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#8028ca02-5498-4519-8ca4-681d1d034677\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#9e893522-79e6-45de-89e3-dbcefd6cdb4a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/A/SSS)</font>","Judar#04544417-2eb6-4d88-8361-bfec0288058d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/S)</font>","Judar#61947e67-560b-4849-84a9-6354a5093d27\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/S)</font>","Judar#3215af8c-cfd6-494e-b030-c7040b81470f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/S/SSS)</font>","Judar#0621500f-8db6-47c4-ad04-dffbc469c92d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/SS/A)</font>","Judar#e990dee7-c164-482e-9e2d-86e795467b04\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/SSS/A+)</font>","Judar#58b133b0-3366-45e3-b192-b8e2ef79f6f6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (A/Z/A+)</font>","Judar#668a2078-fc0a-4a15-94e8-3c27fff3e6ec\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/SSS)</font>","Judar#a1db7c86-a7c1-4a34-af81-6c3f306d9add\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/SSS)</font>","Judar#79efe070-6e33-4aa1-ad2a-796db6242dd1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/A/Z)</font>","Judar#6280ee86-4427-4c20-bcaf-1e75c0145a13\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/S/SS)</font>","Judar#001d622a-868b-4dc6-a277-52ec8c261229\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/A+)</font>","Judar#f1f0807c-e55a-456e-805c-34114088a20c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/A+)</font>","Judar#5f318a44-a410-47a8-b7c8-1f3c0333810f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/S)</font>","Judar#252fb301-9861-41bb-912c-45198cd5e546\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (S/SSS/SS)</font>","Judar#c1e83547-ba6d-4a22-b2f2-a4fbf72b0d38\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A+/SSS)</font>","Judar#61763696-900a-4f6e-854b-b13b5f474822\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/SS)</font>","Judar#1ea22950-8083-44a4-b08d-de046bd590ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/Z)</font>","Judar#3c8c5a50-3a53-4b0d-aaf6-f9227c448a62\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/A/Z)</font>","Judar#9121d767-1344-492f-bf6c-b7771a99896b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SS/SSS/A)</font>","Judar#8d4d53a0-c2c9-46a1-8616-13b8a5b7201c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/A)</font>","Judar#e7aca438-4294-42b0-aab1-a1919c50d3f5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/A)</font>","Judar#32fc6a4d-4dfe-4da3-aeee-7e50a9ffc98e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#46405b35-2f0c-4ba8-9755-d6c9fa179191\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#c28ce858-2727-4851-b90d-5eff08306241\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A+/S)</font>","Judar#bbe5935e-6ac7-4357-8599-93bc0ef3f93b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/A+)</font>","Judar#df5bb99b-252f-47e1-abd9-d040b9bff99a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/A+)</font>","Judar#ba31c507-b76d-4542-abd4-5cd4d439c656\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SS)</font>","Judar#26e4bc4f-bd75-4c4a-98e7-79e56fe842af\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SSS)</font>","Judar#682206fb-f192-4dd5-8290-7ad1717ba9ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/A/SSS)</font>","Judar#ca7f3783-b04c-4eaa-b2b4-8f76cbd2ea92\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/S/A+)</font>","Judar#ea166d9e-cd1d-4510-b24d-37f728ae4e93\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/S/SSS)</font>","Judar#ad666489-184f-4598-8a8b-0bdb44559020\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/A)</font>","Judar#c34660d1-d7c9-4a6c-aa5a-748d1464b7cf\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/SSS)</font>","Judar#e8730c70-e5f7-4e66-8c34-2663ee33270f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (SSS/SS/SSS)</font>","Judar#d6129ff3-7706-4d20-93a3-a96f91dfe11d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Dark Mage (Sovereign) (Z/SSS/SSS)</font>","Frieren#0004ceba-78a4-4a45-8231-c00a4f3631a0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/A/SSS)</font>","Frieren#794e6316-6b55-4b56-b80c-12730f601d93\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/S/A)</font>","Frieren#c4b40580-b0b0-4b7f-aaba-c069bcb5e1f4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A+/S/SSS)</font>","Frieren#1131fdb9-6c1a-45e4-b353-b10e7e3d8aeb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (A/SS/A)</font>","Frieren#6dab59f3-ef07-4fa6-859d-0b065101673a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (S/SSS/A)</font>","Frieren#5f4fddc7-7670-4fb3-be1c-0a49e0826e06\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A+/A)</font>","Frieren#d09e0749-212a-4495-a364-f5bb37e43276\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A+/A+)</font>","Frieren#66ccb90c-4773-4b9d-91d4-b5de9c2c4c0e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A/A)</font>","Frieren#750c1531-8121-4920-8f05-e38a76357b80\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (SSS/A/A)</font>","Frieren#40ee1d5b-4191-4bd7-aaf7-9f41868a8437\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Elf Mage (Unleashed) (Z/SSS/SSS)</font>","Sabo#f7ee7c65-6273-4b6b-82e1-9eb8e879184d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (A/A/A+)</font>","Sabo#ae457f3a-0c5a-4b92-9db4-58b6f8f55898\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (A/A/S)</font>","Sabo#8a335584-2101-4bdb-a389-ceb16e0ba6a6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (Reincarnate) (SSS/SSS/SSS)</font>","Sabo#4ad218bb-de19-464b-b309-5b248088cbf3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (S/SS/SSS)</font>","Sabo#5fe69edc-b6e0-4a05-b6f2-d5706f6a8c3c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SS/A/SS)</font>","Sabo#b36217bb-46b9-4750-a678-ce4383cf25ed\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SS/SS/A)</font>","Sabo#c9c1d029-b638-4243-855a-57da9158b50d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Flame Emperor (SSS/SSS/Z)</font>","Yamamoto#82994189-dfdb-414b-8053-a164c4bf2d5f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Head Captain (Char) (SSS/SSS/SSS)</font>","Gabimaru#252291be-b0a8-41f0-827b-f2ccf870668e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A+/A+/A+)</font>","Gabimaru#2e8ecc4d-bf7c-4d3f-9498-1cf0bc1fba28\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A+/A/S)</font>","Gabimaru#1bc3d0da-3c48-4427-a794-945abaa1816f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/A/S)</font>","Gabimaru#c906458f-bc92-4f19-b68b-bce98bae00c8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/S/Z)</font>","Gabimaru#b2bff2ef-5c1b-4da0-b77b-37522dee8793\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (A/Z/A+)</font>","Gabimaru#46820cd6-44a0-4894-adb3-9746e9d17f78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (B-/B-/C)</font>","Gabimaru#7436297b-da27-403b-8203-aca56e4655f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (C+/C/C)</font>","Gabimaru#c5f4ca60-8286-4a27-8ddf-54d3213bc305\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (C+/C/C)</font>","Gabimaru#a774196b-b67f-4ea3-bb5b-fcda2f568a78\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/A)</font>","Gabimaru#4e5f4980-de74-47f3-8a10-bc1ef99cc0ab\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/A+)</font>","Gabimaru#5c46ffdb-0bdd-453f-8b90-6bcfb5612ea2\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (S/SSS/SSS)</font>","Gabimaru#96de9a26-070a-4fc3-a186-4350b13c6fd4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/A+/A)</font>","Gabimaru#943bc045-9f01-44cc-a0ab-538a4ad9f4e8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/A/A)</font>","Gabimaru#4c14f4fb-d67b-46d4-bb39-959b5d30d02e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Hollow (SSS/S/A+)</font>","Diane#7f1f64ef-543f-4541-82bb-64991df3773b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (A/A/SSS)</font>","Diane#8e161d2f-20c6-4cc7-99ba-3dc6302dccce\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (A/S/SSS)</font>","Diane#0ce23fa3-3be4-4e72-beb2-da94e93fd4e1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (B/B-/B-)</font>","Diane#b038ad6b-d0f6-47e0-ab70-3ebb5f6e1e2d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (B/B-/C+)</font>","Diane#bb9380b2-5d7e-4ecd-a9f8-51f2fe21e7c3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C+/C/C)</font>","Diane#946f42fb-ea34-4e19-adba-349884ae36d1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/B+/B-)</font>","Diane#a076bbf1-e3c9-4f73-9de6-90ff8b5f49f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/B/B+)</font>","Diane#7affc4a0-5ecd-49ad-9b82-bea6e17b2c11\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/C+/B-)</font>","Diane#8c1e14ce-28c0-4a36-807a-2736bdcfb957\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (C/C+/B-)</font>","Diane#89053b0d-a0ef-4f3b-8da2-82cc7e6fc66e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (Envy) (SSS/SSS/SSS)</font>","Diane#a746853a-8892-470c-a44c-e980656d2f94\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Lady Giant (S/A+/SSS)</font>","Gowther#d99020a4-5e44-4d51-9e78-683e10520ff3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (A/A+/SSS)</font>","Gowther#e6924adf-4805-44b3-ada5-183a57b971e1\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (A/SSS/SSS)</font>","Gowther#2dde5ced-37dc-48ce-9957-e78a96552434\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (S/A/SSS)</font>","Gowther#bb76ec96-1b94-4eff-9a23-d38d2a819c10\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (SSS/A/SS)</font>","Gowther#9722a417-df3a-4c71-bef2-991e26989bfd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Puppet (Telekinetic) (Z/Z/Z)</font>","Grimmjow#ebd02e6a-081a-4039-b144-80032e356b52\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/S)</font>","Grimmjow#61fe04b7-8fc1-40d0-a04c-ccd2de89651f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/SSS)</font>","Grimmjow#ba5c1535-3ccb-44ff-9655-9e87a1c77081\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A+/SSS)</font>","Grimmjow#1e044b02-5953-4d85-ab4d-9159994c6fb7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A/SSS)</font>","Grimmjow#91a5bce6-1b9b-4c6e-a566-16394a544d4f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/A/SSS)</font>","Grimmjow#257f4dc4-7a94-42c8-b6be-62dec1511d0f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/A)</font>","Grimmjow#7a8ada70-7ce0-4236-881b-16f8af1348c5\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/A)</font>","Grimmjow#a7a7e2a0-fa10-45fb-a69c-253d56be87ae\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/S/Z)</font>","Grimmjow#c1aa6b60-ce49-4d6c-8474-87bb95097045\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SS/SSS)</font>","Grimmjow#684400c4-ce2d-42e4-a985-73c536db5cd3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/A)</font>","Grimmjow#28dcd748-f1b9-4262-a47a-7ec3859a3faa\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/S)</font>","Grimmjow#526b27f9-fd94-44a6-8fdc-a84ab518b582\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/S)</font>","Grimmjow#54c28762-fd29-47f0-8c5d-cf7132eb8004\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A+/SSS/SS)</font>","Grimmjow#d8b87b23-44c1-478d-90b0-22002d52db2f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A+/SSS)</font>","Grimmjow#3840776b-6c61-4c5d-acfa-1f6abb5fe8f3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/A)</font>","Grimmjow#0e24fc72-67ce-4b37-bf4c-3d5a2a2363a9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/A+)</font>","Grimmjow#11f997bc-a9d0-49e5-b331-7c56e0cdc24e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#1b0c1a79-32ec-4cb2-a507-ab0b3c57313c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#8749773c-3828-4d80-8823-115546dfe37a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/A/SSS)</font>","Grimmjow#a7257c44-e003-46aa-933b-1218e5ff3a8f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/S/SSS)</font>","Grimmjow#e3ad3e11-fdf7-4804-adfb-91807e3c81ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SS/A)</font>","Grimmjow#251374d9-c894-4fb5-9cdc-eea526d81898\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/A)</font>","Grimmjow#d6c3e541-85f5-4e68-8e82-353999de49a7\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/A)</font>","Grimmjow#9c0c98dc-56ac-419a-afbb-bf7a7955ee4e\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (A/SSS/SS)</font>","Grimmjow#8f2306ba-c696-411d-a74b-4127b875667d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B+/C+/C)</font>","Grimmjow#817c581b-bd32-4942-94d6-0d5a12d226d0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/B+/B)</font>","Grimmjow#81aba922-60bb-4fc7-bee6-07b2258340b4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/B+/C+)</font>","Grimmjow#a9b2ebb0-c0c1-4e45-9e13-91ed7cd1be05\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B-/C+/B+)</font>","Grimmjow#8f7b1f1e-4548-4ab4-a8ce-31bb62fc7583\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (B/B-/C+)</font>","Grimmjow#7fdbb482-695f-4af4-9203-8176355f7a08\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (C/SSS/B)</font>","Grimmjow#08374f74-1c3e-4920-80e4-907d960d4260\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (Hunter) (SSS/SSS/SSS)</font>","Grimmjow#f0ee7136-154e-453c-a206-59c5c4b94e13\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A+/A)</font>","Grimmjow#47fb32ca-b868-4b2b-966d-05ce29186a5a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A+/A+)</font>","Grimmjow#4abd89d5-7e20-492b-9f8f-483812e77e50\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A/SSS)</font>","Grimmjow#dd172ad6-6a8e-496b-8d51-29b3506316fe\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/A/SSS)</font>","Grimmjow#18fa0412-adc2-49c2-a7ef-d51b52e95916\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/SS/S)</font>","Grimmjow#36b4feb3-4c29-4bad-a34c-92428d15576c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (S/SSS/S)</font>","Grimmjow#299ec4c1-88a9-49cb-9585-efd81e381eb4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/A)</font>","Grimmjow#15377e10-d8d8-42f9-b7fd-c9de75c2e34c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/S)</font>","Grimmjow#4b36975d-bd90-4b16-9c0d-418a1dd4473d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/A/SSS)</font>","Grimmjow#20175903-0acc-40d0-83ac-b06f4a5e8284\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SS/SS/A+)</font>","Grimmjow#c6bdd97d-1ed6-4a12-a3a0-7dca9db60118\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A)</font>","Grimmjow#fb594d7a-cc3b-4cac-80b4-3706169d67b0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A)</font>","Grimmjow#2a821426-f590-4d20-824b-08eac2f826da\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A+/A+)</font>","Grimmjow#4a61c790-be2f-4c0c-a667-c71cf355c63b\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/A+)</font>","Grimmjow#11ff616f-fe9f-42a1-baf7-3a4b2b1818db\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#74839d70-eb33-46d4-b217-1c690c5698fc\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#c1cf99f5-5ca8-4d14-94be-f8ca139f048d\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#c6d0fe03-b5fa-4595-a3f0-daf6afb141f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/A/S)</font>","Grimmjow#ea32c548-631b-4d3a-8cee-ec619bcf0e62\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A)</font>","Grimmjow#4e010a85-4b6c-41db-9964-43b861b46bdd\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A+)</font>","Grimmjow#5d1e55db-fd6a-4fdf-9da8-9d8ba3331aae\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/A+)</font>","Grimmjow#00751e09-483a-47da-8cc5-7623dc8ab5e8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/SSS)</font>","Grimmjow#460b12aa-19bb-473f-a549-9569d49715d0\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/S/SSS)</font>","Grimmjow#32507ad5-6fd4-4e58-b2a0-8097abda7f68\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/SS/A)</font>","Grimmjow#23eadb4c-a16b-4573-a629-0277b7dfab21\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Razorjaw (SSS/SSS/A+)</font>","Inumaki#549aa5e1-728b-4612-935f-33a36dea7b30\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SS/A)</font>","Inumaki#664472e7-0f93-4082-9abe-770682a2d060\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SSS/A+)</font>","Inumaki#cb74e586-9bfe-43f7-8e9b-982fdab75779\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A+/SSS/S)</font>","Inumaki#7373f346-40ef-4036-be45-939a868da4bb\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (A/A+/Z)</font>","Inumaki#1b1a14c0-0ac9-4c31-b9ed-97e6d98cce1a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (Grade 1) (SSS/SSS/SSS)</font>","Inumaki#0c59aecd-993c-41fa-b50b-1473760fa024\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/A/A+)</font>","Inumaki#4d1ccbab-4374-42e3-b0a9-902ae0bed195\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/A/S)</font>","Inumaki#f4c3b422-f331-497d-972a-cc48d86517ba\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SS/S/SSS)</font>","Inumaki#3a4f45f1-8075-43ab-8a10-bc295aabccce\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SSS/A/A)</font>","Inumaki#968cfeb0-1e83-45b7-a223-e814193ec6f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Salmon Sorcerer (SSS/S/SS)</font>","Crocodile#dd6ded16-9996-4e5f-8eaa-fb626505b272\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (Alligator) (SSS/SSS/SSS)</font>","Crocodile#5714c644-c360-477a-bfa4-19475b660702\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B+/B-/C)</font>","Crocodile#9f6b341b-a362-4a6d-971a-850f28eb186a\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B-/B/C)</font>","Crocodile#658101d5-d476-44a7-8d1a-4dcc3ca3b7ee\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (B-/C+/B-)</font>","Crocodile#6f39df0a-b76d-444e-b9c1-d487a21c9009\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B)</font>","Crocodile#67cfcd80-de3d-4a61-aac4-68fda49fa527\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B+)</font>","Crocodile#ad98c653-91a9-4fdf-b799-9901458478f8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C+/C/B-)</font>","Crocodile#6605943f-db29-4ab4-b893-1947f60f05c9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/B-)</font>","Crocodile#b0e3b073-e5a3-4509-93a5-2aa7fd9a78e6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/B-)</font>","Crocodile#ace948ab-72dc-46b3-b7cb-419504ee617c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Sand (C/C+/C)</font>","Doflamingo#e2f9093a-0be1-46ca-af1c-28b076049e03\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 String Demon (Awakened) (SSS/SSS/SSS)</font>","Doflamingo#b52d4908-3612-4d66-a7a4-61938c807fb9\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 String Demon (B+/B+/C)</font>","Trunks#e6f1e575-339b-4702-b3ec-117aae0fe479\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A+/SSS/SS)</font>","Trunks#4a808323-3242-423d-9d18-fbc713e70617\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/S/A+)</font>","Trunks#afdb2ee5-e09a-4033-a08e-2cb3817060c3\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/SSS/A)</font>","Trunks#8531607c-fb7c-47ba-8f74-e627aa537a3f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (A/SSS/S)</font>","Trunks#c0c8e24a-6b6b-42eb-a3e5-5b42f399b599\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (Juicebox) (SSS/SSS/SSS)</font>","Trunks#864ee1b7-6170-44e2-abbc-1128d54312a6\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 The Drink (SSS/A/SS)</font>","Vegeta#4f446ca2-df02-4d28-8cb2-4ef07531fb61\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (A+/A/SSS)</font>","Vegeta#3653fa23-a792-4a94-b7a5-230a0c044562\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (A/SSS/A+)</font>","Vegeta#89857591-9084-4183-bbcd-3195eec5d969\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (C+/Z/Z)</font>","Vegeta#335c54a2-5e4f-4534-bfc7-a40e27aa2728\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (C-/C-/A)</font>","Vegeta#971ef26c-0e2d-45d2-8c8b-d2904610da46\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (Prince) (SSS/Z/Z)</font>","Vegeta#6b56c7b3-cfa3-4346-9e23-afec1aa1bb83\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SS/SSS/A+)</font>","Vegeta#dc38307a-693c-49fe-af42-1a696a425d89\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A+/SSS)</font>","Vegeta#7ad156c1-44a6-4d17-93be-3cfeadd9d72c\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A/A)</font>","Vegeta#3f40f3eb-889d-490c-a07f-30dd45762ab8\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/A/A+)</font>","Vegeta#7444b4a9-5a1e-4057-8994-0dd920fbab60\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/S/S)</font>","Vegeta#66d0f057-6fd5-452a-b286-4e36b11f5cb4\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/SS/A)</font>","Vegeta#61f8c580-4eab-41d5-9400-68dacc85be2f\n<font color=\"#A5A5A5\">[Mythic] Lvl 50 Vegetable (SSS/SS/A+)</font>","Sanji#56647173-4928-4e6b-88d1-f47098fe4de4\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/B-/C+)</font>","Sanji#520b1134-8896-48e3-ac9f-6f8fb070cbd1\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/B/C+)</font>","Sanji#53c8dcd0-574e-452c-a3cf-e55b3d5dcac0\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (B+/C+/C)</font>","Sanji#94e17c7e-7f8a-4d31-b7e5-0f2353a01016\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/B+/B-)</font>","Sanji#f4c12744-a0cc-4f7c-8364-dcfba94d7486\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C+/C)</font>","Sanji#8486efe7-2de7-4f9a-a8d3-ad82491abbf2\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C/C+)</font>","Sanji#ae82992f-cc59-449d-ba56-28330db5f841\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Curly Brow (C/C/C+)</font>","Killua#b325331c-4899-4dd4-a3ef-a7ee2fa2b8fa\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B+/C+)</font>","Killua#473d8bda-4e4b-4c1b-a3c9-237245ef6b08\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B-/C)</font>","Killua#cec76969-dbb1-4a36-8e3d-f11e66830e83\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/B-/C)</font>","Killua#737a603b-272a-48c6-ab47-350fc71e205b\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (B+/C/B-)</font>","Killua#47f403f9-3974-45c0-bf68-1aa353513a87\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Kid Assassin (C+/B/C)</font>","Goku#290a8163-f731-490e-b384-5e48183ade62\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B+/C/C)</font>","Goku#05f7be2e-92bb-4162-9754-44c37431b3f3\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B-/C/C)</font>","Goku#bfa6a219-474c-48bd-82f4-6cc3fd82a1ea\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B-/C/C+)</font>","Goku#6a2b9044-79ff-4544-a80b-981b3fb6c38f\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B/B-/B)</font>","Goku#ec6856f7-77ea-4bb5-96bb-ce2fa74526c1\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (B/B-/C)</font>","Goku#bd623d92-6723-43e2-b901-93d7efa0aaf7\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (C+/B/C)</font>","Goku#a3f23b59-b7d5-4c29-b18a-1d09554ab57e\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Little Carrot (C+/C/C+)</font>","Uryu#760c0aeb-ea24-4018-88a3-f69b70b4b6e7\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C+/C/C)</font>","Uryu#5577b95c-bb18-43cd-88ae-6dcf94a858af\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C/C+/C)</font>","Uryu#5886163d-2dea-40b2-b46c-d513c062e058\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Reishi Archer (C/C/C)</font>","Luffy#f076084a-bd83-4341-9130-830cbdeaa639\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B+/B+/C+)</font>","Luffy#5a2e9dca-23f5-44c0-9548-4c7408a452b8\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B+/C/B-)</font>","Luffy#b562c464-356c-4e02-a451-24f51ef9843a\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B-/C/C)</font>","Luffy#d65dc191-9265-4cf0-a714-f024a93d1735\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (B/B-/C)</font>","Luffy#d91650be-741f-43be-b4ae-d6703e9a0d60\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (C/B+/B+)</font>","Luffy#b6364ac4-58b6-43b9-ba0c-2599ae9fc2a2\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Rubber Boy (C/B-/B+)</font>","Sasuke#4e9ba304-cd03-4f04-809b-488a93bfff21\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B+/B+/B+)</font>","Sasuke#c7704293-3a3b-451a-a8c6-e4c16cedf029\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B+/C/C)</font>","Sasuke#8395cee9-5a8e-4694-a21a-45efe2574499\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B-/B+/C+)</font>","Sasuke#c9b60d02-bedb-4975-9bf2-c7fb0de50b0d\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B-/B-/C)</font>","Sasuke#68ec9a27-7a8b-455a-863e-fe1e651f289a\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (B/B-/C)</font>","Sasuke#b59d0b2a-b9e9-4460-b259-6377ad7158fd\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (C/C+/B)</font>","Sasuke#fe0cd03d-1014-4aa5-b638-74ca81fbabfa\n<font color=\"#A5A5A5\">[Rare] Lvl 1 Thunder Shinobi (C/C+/C)</font>","Kenpachi#8fa91eeb-101c-40d7-a2e1-e2a834791c77\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C+/C)</font>","Kenpachi#2e0500e0-caf4-428f-95eb-7fd261f7804d\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/B)</font>","Kenpachi#7d4b5fa1-4850-43a2-8d73-5205defab794\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/B-)</font>","Kenpachi#b1804a27-c1df-495e-869f-ad52bc582993\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B+/C/C)</font>","Kenpachi#ea9013ea-3590-4208-90a0-5bc328279a30\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/B+/B+)</font>","Kenpachi#fdef5319-995c-457d-94dd-93760b99362f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/B-/B+)</font>","Kenpachi#4eda49cc-fbed-4f11-b331-827ae7bd8fca\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C+/B-)</font>","Kenpachi#2f53fb80-3a9a-4753-b791-9f4ae804f25f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C/C)</font>","Kenpachi#0a4f2290-63fd-4ccd-9b61-22f4205a4033\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B-/C/C+)</font>","Kenpachi#a294b1f1-42fb-468a-92c8-0cbedfba11da\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/B/B+)</font>","Kenpachi#403d0e10-e4ed-4aca-ac4e-ea6093e284fd\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C+/B)</font>","Kenpachi#46b5487e-3f68-4873-b71b-3427304fc8ca\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C+/C+)</font>","Kenpachi#5555b7ec-c918-436d-80ca-c07ab0ff7953\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C/B)</font>","Kenpachi#457d35b2-88a9-4494-8803-4ecbe0bc9a40\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (B/C/C+)</font>","Kenpachi#2d11ea4d-7818-413b-8c3a-fed9af13d229\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B+/C)</font>","Kenpachi#96534dc3-69c3-4bcb-95b0-76785af7e9b6\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/B+)</font>","Kenpachi#3672d5db-7a24-46f5-8e2d-795cf1aa26b8\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/C)</font>","Kenpachi#fe554204-fe3b-4401-88e3-74bbce6d60e5\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B-/C+)</font>","Kenpachi#87915fce-945a-4655-8973-d3fb05cc5142\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/B/B-)</font>","Kenpachi#6f4b11ec-d23d-42be-ad58-60bd15c8484f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C+/C/B)</font>","Kenpachi#664fd858-8aa5-4307-ba2b-0a201b43c22e\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B+/B-)</font>","Kenpachi#42f06b65-0167-49d0-915a-e8c493b948b7\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B+/C+)</font>","Kenpachi#0d43eef7-e728-4c8c-8ba6-591924fb4347\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/B/C)</font>","Kenpachi#48cebc5e-6cd1-4966-8957-3a71f1f25cfc\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C+/C)</font>","Kenpachi#8f527bb7-863b-445b-8dea-fa485d03b883\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/B+)</font>","Kenpachi#4b4c6e63-7050-43d0-a581-ae47614a53cf\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/B-)</font>","Kenpachi#1250350d-0897-4f9f-b49e-aec3efa19a52\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/C)</font>","Kenpachi#b5a0a1f8-fc48-4246-8607-4ccd67485605\n<font color=\"#A5A5A5\">[Secret] Lvl 1 8th Sword (C/C/C)</font>","Griffith#1e23762d-db8f-44e0-8488-57aec8c954c9\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Broken Falcon (C/B-/B+)</font>","Itachi#068fe869-4794-470c-8e3a-7b6cf366ce22\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (A+/S/Z)</font>","Itachi#26f67b88-9f90-4621-bf32-b38badee863a\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (A/A/Z)</font>","Itachi#b8c7e47a-8d94-4b5c-9d2e-5d4a9e3a0060\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (C-/F/C-)</font>","Itachi#b0997bd9-25f5-43f6-867e-5bf46ef5f6f1\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (F/C/C)</font>","Itachi#352819dc-3694-45d7-81d9-9519187de72f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Crow (S/A+/Z)</font>","Guts#816b18fd-0468-44aa-bb3c-d34ad56dea77\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Iron Wolf (B/C+/C+)</font>","Enel#7a491e51-9daf-4f4f-b7e6-820387fbe924\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B+/C+/B)</font>","Enel#baa4e665-8c01-4ffb-af9e-b58acc2080c2\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B+/C/C+)</font>","Enel#3a80813d-c6ab-45de-afdd-144989fc1dcf\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B/B+/C)</font>","Enel#a43edf09-f192-49f0-a14d-7017da3e839a\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (B/C+/C)</font>","Enel#3e6b2c4d-e1c3-4025-8169-bc94b016a1db\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C+/C+/B-)</font>","Enel#4839acb9-4538-45e7-ba4f-8295deb24b17\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B-/C)</font>","Enel#90659079-a062-4e20-9249-3adf83ee242f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B-/C)</font>","Enel#004673e0-b6c9-4882-b92a-c12ed5f3bac2\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/B/C+)</font>","Enel#c1a451f9-8a56-40c6-9c24-21d3e680adb3\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/C/B-)</font>","Enel#faf304f3-4b84-44da-a8a4-23de48217ae1\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Lightning God (C/C/C+)</font>","Sinbad#fddb4c34-33b5-42fa-a3f9-3fd9ba3fac44\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/B/B-)</font>","Sinbad#da341814-a550-4c4a-811d-caab80145444\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C+/C)</font>","Sinbad#edaf445c-f489-4d86-ac96-f31dfa0e6257\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C/B-)</font>","Sinbad#55134d31-0761-42a6-8834-07e7dfc3bd2e\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B+/C/C+)</font>","Sinbad#6a0ea2b0-526d-46d3-b344-7211a8e9b8ab\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B/B-/C+)</font>","Sinbad#576f2292-0d6f-4784-8de0-2d289391ecb0\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (B/C+/C)</font>","Sinbad#8d71b007-596f-49b5-b554-eae7bb5b510f\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B+/C)</font>","Sinbad#e77dcef6-b287-4703-929d-ba137e9940dc\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B-/B-)</font>","Sinbad#a5345489-4938-4503-8c7d-84cc4d7d7514\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/B/C+)</font>","Sinbad#3c9ae98f-cd86-4f76-92b8-ab2aa70d3ac4\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/C/C)</font>","Sinbad#15ae680a-e2d8-416e-9786-8e8088ed3bb4\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C+/C/C+)</font>","Sinbad#eb82a47d-4c35-40b5-b524-5ab9de7b923c\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/B+/C+)</font>","Sinbad#8b81cdd8-dc58-4136-8fcb-414168236a85\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/B-/C)</font>","Sinbad#c05c5e11-1d23-460b-8431-a2bfcfafe077\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/C/B+)</font>","Sinbad#47434b37-0dc4-4b71-98d6-baa7ac311dac\n<font color=\"#A5A5A5\">[Secret] Lvl 1 Sovereign (C/C/B-)</font>","Griffith#28ac6e50-c405-49b0-a659-ef1a2d756489\n<font color=\"#A5A5A5\">[Secret] Lvl 50 5th God Hand (Z/Z/Z)</font>","Kenpachi#33214c70-fadc-48ce-bb28-dd301d3ea91d\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A+/A-/B+)</font>","Kenpachi#b8c247be-e863-4f77-b335-5e4c4c636843\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A/A/A)</font>","Kenpachi#8b31fac2-4693-444d-b43c-7d575c458554\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (A/S/A)</font>","Kenpachi#798625b9-3267-4d74-8706-72eb6fe868d3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (B+/Z/C)</font>","Kenpachi#6b8a857e-1c25-414c-b976-d337be467d4b\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (B/B-/Z)</font>","Kenpachi#ae9cd153-d42e-4162-bb94-99f8eb83e39f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (Berserk) (SSS/SSS/SSS)</font>","Kenpachi#580baf7c-6557-4336-ac55-1f87b22677de\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C+/B/Z)</font>","Kenpachi#e8600b41-27be-4271-b2ed-e97a3b051ccd\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C-/C+/C)</font>","Kenpachi#3ad4518c-15f6-4577-983e-11eb72e5bfc4\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (C/A/B+)</font>","Kenpachi#90257114-f558-4522-8353-985bc3b2c0ad\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (S/SS/SSS)</font>","Kenpachi#8e0d9c42-5501-4569-8536-dbd0c7f5b521\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SS/A+/A+)</font>","Kenpachi#06acb6ca-a905-49c5-8276-250dfddc1086\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SS/A/A+)</font>","Kenpachi#8e31260d-6998-4b16-9b67-5e7b30ecafd2\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SSS/S/SSS)</font>","Kenpachi#5c8d3af7-ebfd-44be-b346-47e4357bb69c\n<font color=\"#A5A5A5\">[Secret] Lvl 50 8th Sword (SSS/SS/S)</font>","Itachi#88bb0516-69d4-42ce-8355-111711889eef\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A+/A)</font>","Itachi#a77292e1-fef8-46b7-9a2a-be07d2dc5dcd\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A+/A)</font>","Itachi#fd5bbd90-c6e9-451b-9381-1ceb4470a604\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/A/A)</font>","Itachi#47fa68c4-63a8-47ac-8f3e-835cb4b92235\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/S/Z)</font>","Itachi#6ce4a060-dd1c-4dd7-a648-257d397b099d\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A+/SSS/SS)</font>","Itachi#d2826aa6-4d64-4e0d-8d2c-00502f859560\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A+/A)</font>","Itachi#bb2f06c7-da16-4254-93d4-7163dc454ccb\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/A)</font>","Itachi#bef583cc-ffc7-4b25-b643-035d7f0ad9c3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/A)</font>","Itachi#24948e8a-b0c5-4107-8611-36974068c04e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/A/SSS)</font>","Itachi#cae39719-00b6-4e9d-bccd-d258a8962df1\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/S/A+)</font>","Itachi#6764679e-a14b-4755-8a7c-9e590c4e96b0\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/SS/S)</font>","Itachi#68daa0f5-736e-4e27-b934-118bda8d1d2e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/Z/A)</font>","Itachi#5b2d36f3-4045-4b26-944a-03942afe2940\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (A/Z/C)</font>","Itachi#b1ac7d52-5d75-4d40-93af-4ed0dc0f7176\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (B/C+/A-)</font>","Itachi#062d409b-85c6-4145-b80a-552b5a37747f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (Black Fire) (Z/Z/Z)</font>","Itachi#14b87284-9fed-4040-a95b-4d2984615b3c\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/A)</font>","Itachi#1678c1c8-6f99-4a05-b3ea-678c785a0a9a\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/A+)</font>","Itachi#61db234f-37b5-4b8b-810c-37e31bcb574b\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A+/Z)</font>","Itachi#ab948ecc-fe9f-4730-8bb1-801931dfdb8f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/A/Z)</font>","Itachi#1ee63c64-41c2-45e1-9b36-4eeaf0b0c451\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/S/S)</font>","Itachi#538e7228-6a5e-4027-9e42-27d0834ab545\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (S/SS/A+)</font>","Itachi#d4921b5b-ad2b-43d1-97c6-c2c8e6402b8e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SS/A+/A+)</font>","Itachi#507fcf18-6975-4fbe-94f4-a7e879538f59\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SS/SS/S)</font>","Itachi#baf86896-9063-4510-81a3-bcdaa733e259\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SSS/A/Z)</font>","Itachi#683fad07-15fc-492e-aa80-68ed40566422\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Crow (SSS/SS/S)</font>","Enel#83474d06-6859-4e16-8cf8-308d0664ea1a\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Lightning God (Overcharged) (SSS/Z/Z)</font>","Gohan#4be1ec2a-87f4-4666-bb34-c9ae001d277f\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Prodigy (Rage) (Z/Z/Z)</font>","Megumi#2c197b8d-3ef5-4bad-82ad-8563976edc6e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (A/A/A)</font>","Megumi#9c19a518-e778-4caa-a3a7-259775b42762\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (A/S/A+)</font>","Megumi#a9faf2e3-e339-4e1f-81cd-54a2f6cd49b3\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (B/Z/C)</font>","Megumi#cc68644a-a5f4-42a6-a3b4-0d81a74a7255\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Shadow (Divine) (Z/Z/Z)</font>","Griffith#3b8079ed-b72b-4a44-baa9-55deaafa8214\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Silver Falcon (SSS/Z/Z)</font>","Sinbad#446ba52f-1a0c-406f-ad67-2a5338f3415e\n<font color=\"#A5A5A5\">[Secret] Lvl 50 Sovereign (Djinn) (Z/Z/Z)</font>"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[],"portable":false}]},{"name":"Expedition Hub › Training Grounds › Bulk Select","path":["Expedition Hub","Training Grounds","Bulk Select"],"controls":[{"key":"NUI-0055","sourceId":"button-input-Select Non-Trait Mythics","type":"button","title":"Select Non-Trait Mythics","description":"Add every Mythic unit without a trait to the Auto Train selection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0056","sourceId":"button-input-Select Non-Trait Secrets","type":"button","title":"Select Non-Trait Secrets","description":"Add every Secret unit without a trait to the Auto Train selection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-TRAINING-IGNORE-FULL","sourceId":"training-ignore-full-worthiness","type":"button","title":"Ignore Full Worthiness","description":"Remove fully worthy units from Select Units once, including worthiness already earned in Training Grounds. Does not remove units from the building.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Misc","path":["Misc"],"controls":[{"key":"NUI-0057","sourceId":"input-checkbox-Auto Redeem Code","type":"toggle","title":"Auto Redeem Code","description":"Uses native code metadata plus maintained supplemental codes such as Bossrush, respecting native server validation and confirmed redeemed state. No external code websites are queried.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-DMCA-SEARCH","sourceId":"dmca-native-unit-search","type":"toggle","title":"Searchable DMCA Name","description":"Enable original unit-name aliases directly in the native Unit Inventory search. No extra native filter switch is required. After updating, reopen Units once. Names, inventory and other filters are unchanged.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"AE-DMCA-STATUS","sourceId":"dmca-native-unit-search-status","type":"label","title":"DMCA name search: initializing (single GUI switch)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-STREAMER-MODE","type":"toggle","title":"Streamer Mode","description":"Local display only: your overhead and leaderboard name become Zen Hub; your player level bar becomes LVL 999. Turn off to restore current native text. Does not change real levels, stats, unit cards or other players.","default":false,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false},{"key":"NUI-0058","sourceId":"label-Fun facts after running the script:\n- Enable Searchable DMCA Name in the Unit Inventory filter","type":"label","title":"Unit Inventory:\n- Enable Searchable DMCA Name here, then search the native Units inventory using original names. After updating, close and reopen Units once; no second filter switch is needed.\n- While in-game, event menus remain available even after the match has started.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0059","sourceId":"select-input-Open UI","type":"dropdown","title":"Open UI","description":"Open a game menu directly while in the Lobby.","currentValue":null,"options":["Achievements","Areas","Battlepass","Codes","Crafting","Event Calendar","Event Shop","Events","Evolve","Expedition Shop","Gold Shop","Guild","Index","Item Inventory","Join Friend","Level Milestones","Lobby Music","Play","Profile","Quests","Raid Shop","Settings","Shop","Shiny Normalizer","Shiny Transfer","Stat Reroll","Stat Transfer","Summon Banner","Trait Reroll","Unit Ascension","Unit Inventory","Update Log","Wiki Tools"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-ANTI-AFK","sourceId":"built-in-anti-afk","type":"toggle","title":"Built-in Anti-AFK","description":"Responds to LocalPlayer.Idled while this GUI is running; automatically disconnects on unload.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"AE-ANTI-AFK-CHAMBER","sourceId":"anti-afk-chamber","type":"toggle","title":"Anti-AFK Chamber","description":"Pauses only the native ClientAFKHandler idle-to-Chamber timer. Restores owned state when disabled or unloaded; manual entry and normal teleports are untouched.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-HIDE-REWARD-POPUP","sourceId":"hide-obtained-rewards","type":"toggle","title":"Hide Obtained Rewards","description":"Hide new obtained-reward cards popups only. Keeps native close acknowledgements, reward delivery and other listeners intact; off/unload restores normal display without replaying old popups.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Sprite Crafter","path":["Sprite Crafter"],"controls":[{"key":"NUI-0060","sourceId":"input-checkbox-Auto Craft Sprite","type":"toggle","title":"Auto Craft Sprite","description":"Automatically craft Sprites from Grey Sprites\nThis feature work both Lobby and in game","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0061","sourceId":"select-input-Select Sprite","type":"dropdown","title":"Select Sprite","description":"Which Sprites to auto-craft (Grey Sprite is the base, not selectable)","currentValue":null,"options":["Red Sprite","Blue Sprite","Green Sprite","Yellow Sprite","Purple Sprite","Pink Sprite","Rainbow Sprite"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Sprite Crafter › Sprite Limit","path":["Sprite Crafter","Sprite Limit"],"controls":[{"key":"NUI-0062","sourceId":"slider-input-Blue Sprite Limit","type":"slider","title":"Blue Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0063","sourceId":"slider-input-Green Sprite Limit","type":"slider","title":"Green Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0064","sourceId":"slider-input-Pink Sprite Limit","type":"slider","title":"Pink Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0065","sourceId":"slider-input-Purple Sprite Limit","type":"slider","title":"Purple Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0066","sourceId":"slider-input-Rainbow Sprite Limit","type":"slider","title":"Rainbow Sprite Limit","description":"Max amount to craft (costs 30 Grey per craft, cap 25)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":25,"min":0,"max":100,"rounding":0},{"key":"NUI-0067","sourceId":"slider-input-Red Sprite Limit","type":"slider","title":"Red Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0},{"key":"NUI-0068","sourceId":"slider-input-Yellow Sprite Limit","type":"slider","title":"Yellow Sprite Limit","description":"Max amount to craft (costs 5 Grey per craft, cap 50)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0}]},{"name":"Event › [EVENT] Lost Shipment","path":["Event","[EVENT] Lost Shipment"],"controls":[{"key":"AE-LOST-SHIPMENT-AUTO","sourceId":"lost-shipment-auto","type":"toggle","title":"Auto Farm Lost Shipment","description":"Accepts the native quest, approaches spawned crates using the selected movement mode, picks them up and returns them to the event NPC. Yields to fishing/macros and stops when disabled.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-LOST-SHIPMENT-MOVEMENT","sourceId":"lost-shipment-movement","type":"dropdown","title":"Movement Mode","description":"Pathfinding walks through native waypoints. Teleport moves to validated ground beside the current event target. Changing modes cancels old navigation; native pickup and confirmed-return checks stay unchanged.","currentValue":null,"options":["Pathfinding","Teleport"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Pathfinding"},{"key":"AE-LOST-SHIPMENT-STATUS","sourceId":"lost-shipment-status","type":"label","title":"Lost Shipment: disabled\nMovement: Pathfinding","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Auto Claimer","path":["Auto Claimer"],"sectionIndex":1,"children":[]},{"name":"Auto Fishing","path":["Auto Fishing"],"sectionIndex":2,"children":[]},{"name":"Auto Shop","path":["Auto Shop"],"sectionIndex":3,"children":[{"name":"Expedition Shop","path":["Auto Shop","Expedition Shop"],"sectionIndex":4,"children":[]},{"name":"Gold Shop","path":["Auto Shop","Gold Shop"],"sectionIndex":5,"children":[]},{"name":"Raid General Shop","path":["Auto Shop","Raid General Shop"],"sectionIndex":6,"children":[]},{"name":"Boss Rush Shop","path":["Auto Shop","Boss Rush Shop"],"children":[],"sectionIndex":7},{"name":"Rift Shop","path":["Auto Shop","Rift Shop"],"children":[],"sectionIndex":8},{"name":"[EVENT] Event Shop","path":["Auto Shop","[EVENT] Event Shop"],"sectionIndex":9,"children":[]},{"name":"[EVENT] Wandering Trader","path":["Auto Shop","[EVENT] Wandering Trader"],"sectionIndex":10,"children":[]}]},{"name":"Auto Summon Banner","path":["Auto Summon Banner"],"sectionIndex":11,"children":[{"name":"Mini","path":["Auto Summon Banner","Mini"],"sectionIndex":12,"children":[]},{"name":"Standard","path":["Auto Summon Banner","Standard"],"sectionIndex":13,"children":[]}]},{"name":"Event","path":["Event"],"sectionIndex":14,"children":[{"name":"[EVENT] Dragon's Wish","path":["Event","[EVENT] Dragon's Wish"],"sectionIndex":15,"children":[]},{"name":"[EVENT] Guess That Unit","path":["Event","[EVENT] Guess That Unit"],"sectionIndex":16,"children":[]},{"name":"[EVENT] Lost Shipment","path":["Event","[EVENT] Lost Shipment"],"sectionIndex":28,"children":[]}]},{"name":"Expedition Hub","path":["Expedition Hub"],"sectionIndex":17,"children":[{"name":"Auto Construct","path":["Expedition Hub","Auto Construct"],"sectionIndex":18,"children":[]},{"name":"Auto Upgrade Building","path":["Expedition Hub","Auto Upgrade Building"],"sectionIndex":19,"children":[]},{"name":"Gold Mine","path":["Expedition Hub","Gold Mine"],"sectionIndex":20,"children":[]},{"name":"Research Lab","path":["Expedition Hub","Research Lab"],"sectionIndex":21,"children":[]},{"name":"Resource Drill","path":["Expedition Hub","Resource Drill"],"sectionIndex":22,"children":[]},{"name":"Training Grounds","path":["Expedition Hub","Training Grounds"],"sectionIndex":23,"children":[{"name":"Bulk Select","path":["Expedition Hub","Training Grounds","Bulk Select"],"sectionIndex":24,"children":[]}]}]},{"name":"Misc","path":["Misc"],"sectionIndex":25,"children":[]},{"name":"Sprite Crafter","path":["Sprite Crafter"],"sectionIndex":26,"children":[{"name":"Sprite Limit","path":["Sprite Crafter","Sprite Limit"],"sectionIndex":27,"children":[]}]}]},{"name":"Joiner","title":"Joiner","sections":[{"name":"Boss Rush Cards and Gates","path":["Boss Rush Cards and Gates"],"controls":[{"key":"AE-BOSSRUSH-AUTO-JOIN","sourceId":"ae-bossrush-auto-join","type":"toggle","title":"Auto Join Boss Rush","description":"Automatically joins the native Boss Rush queue from the lobby. Uses the game's verified map/difficulty/level requirements; waits for native queue acknowledgement. Does not place units or alter Macro.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-MANUAL","type":"toggle","title":"Boss Rush Manual / Recording Mode","default":false,"description":"Pauses Macro playback, starts, gate movement and Continue/Fight Boss votes. Auto Select Cards remains independent. Actual Macro recording pauses card selection too."},{"key":"AE-BOSSRUSH-AUTO-START","type":"toggle","title":"Auto Start Boss Rush","default":false,"description":"Separately accepts Start Game prompts only with Play Macro ON and recording/manual mode OFF. Keep OFF when preparing or recording."},{"key":"AE-BOSSRUSH-MOVEMENT","type":"dropdown","title":"Boss Rush Gate Movement","options":["Teleport","Walk"],"default":"Teleport","multi":false,"description":"Teleport moves near a currently valid native Gate prompt, then uses its normal Enter action. Walk uses pathfinding."},{"key":"AE-BOSSRUSH-AUTO-CARDS","sourceId":"bossrush-auto-cards","type":"toggle","title":"Auto Select Boss Rush Cards","description":"Automatically selects offered cards using your element priority, then card-type priority. Works in Manual Setup mode and with Play Macro OFF. Pauses during actual Macro recording. No rerolls or purchases.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-AUTO-ENTER","sourceId":"ae-bossrush-auto-enter","type":"toggle","title":"Auto Move To & Enter Boss Rush Gates","description":"Move to and enter native Gates only while Play Macro is ON and not recording/manual. Does not start a wave or vote Continue.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-AUTO-GATES","sourceId":"bossrush-auto-gates","type":"toggle","title":"Auto Continue Boss Rush Gates","description":"Vote Continue until N Gates are confirmed cleared, then Fight Boss. Requires Play Macro ON; never starts a wave. Pauses for recording/manual mode.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-BOSSRUSH-TARGET-GATES","sourceId":"bossrush-target-gates","type":"slider","title":"Gates Before Fight Boss","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":2,"min":2,"max":6,"rounding":0},{"key":"AE-BOSSRUSH-ELEMENT-PRIORITY","sourceId":"bossrush-element-priority","type":"priority-list","title":"Boss Rush Element Priority","description":"Higher list priority wins first, even if a lower-priority element offers a preferred card type. Only legal offered cards are considered.","currentValue":null,"options":["Flame","Light","Dark","Hydro","Gale","Storm","Terra","Neutral"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["Flame","Light","Dark","Hydro","Gale","Storm","Terra","Neutral"]},{"key":"AE-BOSSRUSH-TYPE-PRIORITY","sourceId":"bossrush-type-priority","type":"priority-list","title":"Boss Rush Card Type Priority","description":"Applied after element priority. ElementDamage / Resistance / Damage / SPA / Range / Crit are native card ID suffixes.","currentValue":null,"options":["ElementDamage","Resistance","Damage","SPA","Range","Crit"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["ElementDamage","Resistance","Damage","SPA","Range","Crit"]},{"key":"AE-BOSSRUSH-STATUS","sourceId":"bossrush-status","type":"label","title":"Boss Rush cards / gates: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Monster Clash / Rift Joiner","path":["Monster Clash / Rift Joiner"],"controls":[{"key":"AE-MONSTER-AUTO-JOIN","type":"toggle","title":"Auto Join Monster Clash (Rift Farm)","default":false,"description":"Joins native Monster Clash / Fractured District from the lobby. Uses Auto Join Priority and Disable Auto Joiners; does not start an unconfigured Macro.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-AUTO-HELICOPTER","type":"toggle","title":"Auto Enter Landed Rift Helicopter","default":false,"description":"After a Monster Clash victory, wait for the landed, active helicopter and enter as host. Suppresses automated Replay / Next / Lobby during the bounded wait; never joins a different game portal.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-HELICOPTER-WAIT","type":"slider","title":"Post-Win Helicopter Appearance Wait","default":30,"description":"Seconds to wait for a helicopter to appear before allowing normal auto-replay. This is a configurable safety grace, not a claimed game spawn timer.","options":[],"multi":false,"sensitive":false,"min":15,"max":120,"rounding":0},{"key":"AE-MONSTER-AUTOMATION-STATUS","type":"label","title":"Monster Clash Joiner: OFF\nHelicopter: OFF","default":null,"description":"","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-JOIN-INFO","type":"label","title":"Farm Macro: Macro > Select Monster Clash Macro > Fractured District.\nRift Macro is separate. Fake detection is in Game > Monster Clash. All three features pause during Macro recording.","default":null,"description":"","options":[],"multi":false,"sensitive":false}]},{"name":"Rift Fake Hometown Joiner","path":["Rift Fake Hometown Joiner"],"controls":[{"key":"AE-RIFT-FAKE-HOMETOWN-AUTO-JOIN","type":"toggle","title":"Auto Join Rift Fake Hometown","description":"Joins an open Fake Hometown Rift portal from the lobby. Portals open during the first 15 minutes of each hour; up to two clears per hour.","default":false},{"key":"AE-RIFT-FAKE-HOMETOWN-STATUS","type":"label","title":"Fake Hometown: disabled","description":"Waits for an open portal and confirms your membership before another join request."},{"key":"AE-RIFT-FAKE-HOMETOWN-RETURN-AFTER-RUN","type":"toggle","title":"Return to Lobby After Current Run","description":"While this run is active, arm a return when native time is within the first 15 minutes and fewer than two hourly Rift clears are used. Finish this same run before returning; the pending decision remains if the window closes or a second clear arrives. Turning this off cancels it. Independent of Auto Join.","default":false},{"key":"AE-RIFT-FAKE-HOMETOWN-RETURN-STATUS","type":"label","title":"Return after run: disabled","description":"Shows waiting, pending, and the one-shot Lobby request outcome. Never exits an active match."}]},{"name":"Infernal Cult Joiner","path":["Infernal Cult Joiner"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-AUTO-JOIN","sourceId":"infernal-auto-join","type":"toggle","title":"Auto Join Infernal Cult","description":"Joins the current native Infernal Cult rotation from the lobby. Requires Lost Photo quest and the marked Story map completion. Stops joining at 16 Torn Photos. Does not start combat or place units.","default":false,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-JOIN-ONCE","sourceId":"infernal-join-once","type":"button","title":"Join Infernal Cult Once (Record Macro)","description":"Joins once without enabling Auto Join, changing your team, starting combat or playing a Macro. Wait for the native entry confirmation.","default":null,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-STATUS","sourceId":"infernal-status","type":"label","title":"Infernal Cult: reading native rotation...","description":"","default":null,"currentValue":null},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-INFERNAL-INFO","sourceId":"infernal-info","type":"label","title":"Lost Photo: accept from Devil in Flaming Monastery.\nInfernal Cult follows the marked Story map (changes every 30 minutes), Hard / Act 1.\nRecord your placements after joining; this joiner does not start combat or operate your Macro.","description":"","default":null,"currentValue":null}]},{"name":"Auto Join Setting","path":["Auto Join Setting"],"controls":[{"key":"NUI-0069","sourceId":"input-checkbox-Disable Auto Joiners","type":"toggle","title":"Disable Auto Joiners","description":"Pauses every auto join feature until this setting is disabled","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0070","sourceId":"slider-input-Joiner Cooldown","type":"slider","title":"Joiner Cooldown","description":"Wait in Lobby the set amount of seconds before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":60,"rounding":1},{"key":"NUI-0071","sourceId":"trello-input-Auto Join Priority","type":"priority-list","title":"Auto Join Priority","description":"Drag to set which joiner runs first (highest number = highest priority)","currentValue":null,"options":["<b>5</b>. Expedition Joiner","<b>9</b>. Boss Bounty Joiner","<b>2</b>. Raid Joiner","<b>1</b>. Story Joiner","<b>0</b>. Trial Joiner","<b>8</b>. Weekly Challenge Joiner","<b>6</b>. Portal Joiner","<b>6</b>. Regular Challenge Joiner","<b>7</b>. Daily Challenge Joiner","<b>5.5</b>. Tower Joiner","Tidal Siege Joiner","Boss Rush Joiner","Infernal Cult Joiner","Monster Clash Joiner","Rift Fake Hometown Joiner"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>5</b>. Expedition Joiner","<b>9</b>. Boss Bounty Joiner","<b>2</b>. Raid Joiner","<b>1</b>. Story Joiner","<b>0</b>. Trial Joiner","<b>8</b>. Weekly Challenge Joiner","<b>6</b>. Portal Joiner","<b>6</b>. Regular Challenge Joiner","<b>7</b>. Daily Challenge Joiner","<b>5.5</b>. Tower Joiner","Tidal Siege Joiner","Boss Rush Joiner","Infernal Cult Joiner","Monster Clash Joiner","Rift Fake Hometown Joiner"]}]},{"name":"Auto Join Setting › Team Equipper","path":["Auto Join Setting","Team Equipper"],"controls":[{"key":"NUI-0072","sourceId":"input-checkbox-Team Equipper","type":"toggle","title":"Team Equipper","description":"Load the selected team slot before joining each mode","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0073","sourceId":"slider-input-Boss Bounty Joiner Team Slot","type":"slider","title":"Boss Bounty Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0074","sourceId":"slider-input-Daily Challenge Joiner Team Slot","type":"slider","title":"Daily Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0075","sourceId":"slider-input-Expedition Joiner Team Slot","type":"slider","title":"Expedition Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0076","sourceId":"slider-input-Portal Joiner Team Slot","type":"slider","title":"Portal Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0077","sourceId":"slider-input-Raid Joiner Team Slot","type":"slider","title":"Raid Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0078","sourceId":"slider-input-Regular Challenge Joiner Team Slot","type":"slider","title":"Regular Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0079","sourceId":"slider-input-Story Joiner Team Slot","type":"slider","title":"Story Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0080","sourceId":"slider-input-Tower Joiner Team Slot","type":"slider","title":"Tower Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0081","sourceId":"slider-input-Trial Joiner Team Slot","type":"slider","title":"Trial Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0},{"key":"NUI-0082","sourceId":"slider-input-Weekly Challenge Joiner Team Slot","type":"slider","title":"Weekly Challenge Joiner Team Slot","description":"0 = disabled, 1-8 = load Team Number before joining","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":6,"rounding":0}]},{"name":"Daily Challenge Joiner","path":["Daily Challenge Joiner"],"controls":[{"key":"NUI-0083","sourceId":"input-checkbox-Auto Join Daily Challenge","type":"toggle","title":"Auto Join Daily Challenge","description":"Single rotating slot","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0084","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0085","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0086","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner","path":["Expedition Joiner"],"controls":[{"key":"NUI-0087","sourceId":"input-checkbox-Auto Collect Orb","type":"toggle","title":"Auto Collect Orb","description":"Automatically collect any dropped or existing Expedition orbs","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0088","sourceId":"input-checkbox-Auto Continue Checkpoint","type":"toggle","title":"Auto Continue Checkpoint","description":"Expedition only. When a checkpoint's Continue button appears, automatically continue to the next node","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0089","sourceId":"input-checkbox-Auto Join Expedition","type":"toggle","title":"Auto Join Expedition","description":"Automatically joins the selected Expedition map when in the Lobby (requires level 20+)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0090","sourceId":"input-checkbox-Auto Skip Encounter","type":"toggle","title":"Auto Skip Encounter","description":"Expedition only. Talk to Encounter NPCs, choose Speak, and continue to the next node","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0091","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking with random players instead of starting a private Expedition.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0092","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Expedition map to auto-join","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","East Town","1","2","3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"East Town"},{"key":"NUI-0093","sourceId":"select-input-Select Difficulty Level","type":"dropdown","title":"Select Difficulty Level","description":"Tier 1-3 (number of skulls)","currentValue":null,"options":["1","2","3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"3"}]},{"name":"Expedition Joiner › Auto Expedition Map Route","path":["Expedition Joiner","Auto Expedition Map Route"],"controls":[{"key":"NUI-0094","sourceId":"input-checkbox-Auto Expedition Map Route","type":"toggle","title":"Auto Expedition Map Route","description":"Automatically pre-selects the best valid Expedition route through node 10 using your reward priority.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0095","sourceId":"trello-input-Expedition Reward Priority","type":"priority-list","title":"Expedition Reward Priority","description":"Drag to set route reward priority (highest number = selected first). Defaults put the rarest rewards first.","currentValue":null,"options":["<b>6</b>. Expedition Coin","<b>2</b>. Cursed Timber","<b>7</b>. Aqua Shard","<b>11</b>. Fuel Cell","<b>10</b>. Equipment Reroll","<b>9</b>. Equipment Lock","<b>8</b>. Mechanical Scrap","<b>3</b>. Lush Dirt","<b>4</b>. Yen","<b>1</b>. Tome","<b>5</b>. Equipment Scrap"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>6</b>. Expedition Coin","<b>2</b>. Cursed Timber","<b>7</b>. Aqua Shard","<b>11</b>. Fuel Cell","<b>10</b>. Equipment Reroll","<b>9</b>. Equipment Lock","<b>8</b>. Mechanical Scrap","<b>3</b>. Lush Dirt","<b>4</b>. Yen","<b>1</b>. Tome","<b>5</b>. Equipment Scrap"]}]},{"name":"Expedition Joiner › Auto Extract","path":["Expedition Joiner","Auto Extract"],"controls":[{"key":"NUI-0096","sourceId":"input-checkbox-Auto Extract","type":"toggle","title":"Auto Extract","description":"Expedition only. After passing the selected node, extract at the next Checkpoint instead of continuing","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0097","sourceId":"slider-input-Extract after Node","type":"slider","title":"Extract after Node","description":"Extract at the first Checkpoint reached after this node has been completed","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":10,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Join Requirement","path":["Expedition Joiner","Auto Join Requirement"],"controls":[{"key":"NUI-0098","sourceId":"input-checkbox-Only Join if below Expedition Fuel","type":"toggle","title":"Only Join if below Expedition Fuel","description":"Only auto-join the selected Expedition when your Expedition Fuel is below the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0099","sourceId":"input-checkbox-Return Lobby if above Expedition Fuel","type":"toggle","title":"Return Lobby if above Expedition Fuel","description":"While playing Expedition, instantly return to the Lobby when your Expedition Fuel reaches or exceeds the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0100","sourceId":"slider-input-Above Expedition Fuel","type":"slider","title":"Above Expedition Fuel","description":"Return to the Lobby when Expedition Fuel is greater than or equal to this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0},{"key":"NUI-0101","sourceId":"slider-input-Under Expedition Fuel","type":"slider","title":"Under Expedition Fuel","description":"The Expedition Fuel amount must be strictly below this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0}]},{"name":"Expedition Joiner › Auto Restart","path":["Expedition Joiner","Auto Restart"],"controls":[{"key":"NUI-0102","sourceId":"input-checkbox-Auto Restart","type":"toggle","title":"Auto Restart","description":"Expedition only. Restart the match after the current node reaches the set number (node-based, like wave-based Auto Restart but for Expedition nodes)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0103","sourceId":"slider-input-Restart at Node","type":"slider","title":"Restart at Node","description":"Restart the Expedition when this node is reached","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":11,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Restart Reward","path":["Expedition Joiner","Auto Restart Reward"],"controls":[{"key":"NUI-0104","sourceId":"input-checkbox-Auto Restart for Reward","type":"toggle","title":"Auto Restart for Reward","description":"Selects the complete first 10-node route, then restarts the Expedition until that route meets every selected reward amount. Works with one or two rewards and without Expedition Auto Play.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0105","sourceId":"select-input-Select Reward","type":"dropdown","title":"Select Reward","description":"The Expedition route reward whose total amount must meet your requirement.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Equipment Scrap","Fuel Cell","Aqua Shard","Expedition Coin","Mechanical Scrap","Yen","Lush Dirt","Cursed Timber","Tome"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Fuel Cell"},{"key":"NUI-0106","sourceId":"select-input-Select Reward 2","type":"dropdown","title":"Select Reward 2","description":"Optional second Expedition route reward. Select None to use only the first reward.","currentValue":null,"options":["None","Equipment Lock","Equipment Reroll","Equipment Scrap","Fuel Cell","Aqua Shard","Expedition Coin","Mechanical Scrap","Yen","Lush Dirt","Cursed Timber","Tome"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"None"},{"key":"NUI-0107","sourceId":"slider-input-Required Amount","type":"slider","title":"Required Amount","description":"Restart when the selected reward totals less than this amount across the first 10 routed nodes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":41,"min":0,"max":100,"rounding":0},{"key":"NUI-0108","sourceId":"slider-input-Required Amount 2","type":"slider","title":"Required Amount 2","description":"Required total for the optional second reward across the first 10 routed nodes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Select Anvil Stat","path":["Expedition Joiner","Auto Select Anvil Stat"],"controls":[{"key":"NUI-0109","sourceId":"input-checkbox-Auto Select Anvil Stat","type":"toggle","title":"Auto Select Anvil Stat","description":"Auto-select the highest-priority Stat Anvil when the anvil prompt appears\nWill also auto use Anvil if you got it in hotbar","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0110","sourceId":"trello-input-Auto Select Anvil Stat Priority","type":"priority-list","title":"Auto Select Anvil Stat Priority","description":"Drag to set priority (highest number = selected first)","currentValue":null,"options":["<b>9</b>. EXP Multiplier","<b>14</b>. Bonus Match Rewards","<b>4</b>. SPA","<b>3</b>. Summon Damage","<b>10</b>. DoT DMG Dealt","<b>5</b>. Range","<b>13</b>. Critical Chance","<b>8</b>. Element Damage","<b>15</b>. Archetype Damage","<b>1</b>. Yen Generation","<b>2</b>. Summon Health","<b>12</b>. Critical Damage","<b>6</b>. Payload Health","<b>7</b>. Follow-Up Damage","<b>11</b>. Damage"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>9</b>. EXP Multiplier","<b>14</b>. Bonus Match Rewards","<b>4</b>. SPA","<b>3</b>. Summon Damage","<b>10</b>. DoT DMG Dealt","<b>5</b>. Range","<b>13</b>. Critical Chance","<b>8</b>. Element Damage","<b>15</b>. Archetype Damage","<b>1</b>. Yen Generation","<b>2</b>. Summon Health","<b>12</b>. Critical Damage","<b>6</b>. Payload Health","<b>7</b>. Follow-Up Damage","<b>11</b>. Damage"]}]},{"name":"Expedition Joiner › Auto Select Anvil Stat › Anvil Stat Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Anvil Stat","Anvil Stat Cap-Amount (Select the card by how many time)"],"controls":[{"key":"NUI-0111","sourceId":"slider-input-Archetype Damage","type":"slider","title":"Archetype Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0112","sourceId":"slider-input-Bonus Match Rewards","type":"slider","title":"Bonus Match Rewards","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0113","sourceId":"slider-input-Critical Chance","type":"slider","title":"Critical Chance","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0114","sourceId":"slider-input-Critical Damage","type":"slider","title":"Critical Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0115","sourceId":"slider-input-Damage","type":"slider","title":"Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0116","sourceId":"slider-input-DoT DMG Dealt","type":"slider","title":"DoT DMG Dealt","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0117","sourceId":"slider-input-EXP Multiplier","type":"slider","title":"EXP Multiplier","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0118","sourceId":"slider-input-Element Damage","type":"slider","title":"Element Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0119","sourceId":"slider-input-Follow-Up Damage","type":"slider","title":"Follow-Up Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0120","sourceId":"slider-input-Payload Health","type":"slider","title":"Payload Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0121","sourceId":"slider-input-Range","type":"slider","title":"Range","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0122","sourceId":"slider-input-SPA","type":"slider","title":"SPA","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0123","sourceId":"slider-input-Summon Damage","type":"slider","title":"Summon Damage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0124","sourceId":"slider-input-Summon Health","type":"slider","title":"Summon Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0125","sourceId":"slider-input-Yen Generation","type":"slider","title":"Yen Generation","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Auto Select Upgrade","path":["Expedition Joiner","Auto Select Upgrade"],"controls":[{"key":"NUI-0126","sourceId":"input-checkbox-Auto Select Upgrade","type":"toggle","title":"Auto Select Upgrade","description":"Auto-select the highest-priority upgrade when an Expedition level-up prompt appears","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0127","sourceId":"input-checkbox-Upgrade Reroll","type":"toggle","title":"Upgrade Reroll","description":"Use the rerolls unlocked by the Research Lab while Auto Select Upgrade is in Advanced mode.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0128","sourceId":"label-Advanced reroll mechanic:\n- Bracket 1 uses Sets priority until every configured Sets upgrade h","type":"label","title":"Advanced reroll mechanic:\n- Bracket 1 uses Sets priority until every configured Sets upgrade has been selected once.\n- Bracket 2 then uses General priority and Cap Amount for the rest of the Expedition.\n- The highest-priority offered card is protected. Unlocked rerolls are used only on lower-priority cards.\n- All cards are reevaluated after each reroll. If it does not create a better card, remaining rerolls are saved.\n- Research Lab reroll level 0/1/2 provides 0/1/2 rerolls; the real amount is read from the prompt.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0129","sourceId":"select-input-Select Upgrade Type","type":"dropdown","title":"Select Upgrade Type","description":"Simple = one priority list. Advanced = complete every Sets upgrade once, then switch to the capped General bracket.","currentValue":null,"options":["Simple","Advanced"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Simple"},{"key":"NUI-0130","sourceId":"trello-input-Auto Select Upgrade Priority","type":"priority-list","title":"Auto Select Upgrade Priority","description":"Drag to set priority (highest number = selected first)","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]},{"key":"NUI-0131","sourceId":"trello-input-Upgrade Priority - General","type":"priority-list","title":"Upgrade Priority - General","description":"Bracket 2 priority. Activates only after Bracket 1 is fully completed, then respects Cap Amount for the rest of the Expedition.","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]},{"key":"NUI-0132","sourceId":"trello-input-Upgrade Priority - Sets","type":"priority-list","title":"Upgrade Priority - Sets","description":"Bracket 1 priority. Completed upgrades are ignored until every configured Sets upgrade has been selected once.","currentValue":null,"options":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. [Epic] Terra Penetration","<b>13</b>. [Rare] Dark Mastery","<b>15</b>. [Epic] Vital Strikes","<b>39</b>. [Mythic] Feral Cruelty","<b>8</b>. [Rare] Iron Flesh","<b>10</b>. [Rare] Gale Mastery","<b>27</b>. [Epic] Dark Penetration","<b>38</b>. [Mythic] Infectious","<b>34</b>. [Legendary] Bat Cavalry","<b>30</b>. [Legendary] Martyr's Blast","<b>31</b>. [Legendary] Hemorrhage","<b>2</b>. [Rare] Venomous Edge","<b>21</b>. [Epic] Lingering Rot","<b>33</b>. [Legendary] Bounty Hunter","<b>18</b>. [Epic] Quickened Blade","<b>35</b>. [Mythic] Whetstone Cache","<b>9</b>. [Rare] Hydro Mastery","<b>11</b>. [Rare] Fortified Cargo","<b>17</b>. [Epic] Storm Penetration","<b>40</b>. [Mythic] EXP Collector","<b>24</b>. [Epic] Gale Penetration","<b>4</b>. [Rare] Storm Mastery","<b>25</b>. [Epic] Flame Penetration","<b>36</b>. [Mythic] Momentum","<b>1</b>. [Rare] Yen Hunger","<b>23</b>. [Epic] Hydro Penetration","<b>32</b>. [Legendary] EXP Condenser","<b>3</b>. [Rare] Terra Mastery","<b>5</b>. [Rare] Relentless Pursuit","<b>6</b>. [Rare] Neutral Mastery","<b>28</b>. [Epic] Blood Money","<b>14</b>. [Rare] Amplifier","<b>26</b>. [Epic] Extended Reach","<b>19</b>. [Epic] Overclocked Engine","<b>12</b>. [Rare] Flame Mastery","<b>37</b>. [Mythic] Missile Protocol","<b>22</b>. [Epic] Light Penetration","<b>20</b>. [Epic] Neutral Penetration","<b>29</b>. [Legendary] Razor Focus","<b>7</b>. [Rare] Light Mastery"]}]},{"name":"Expedition Joiner › Auto Select Upgrade › Upgrade Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Upgrade","Upgrade Cap-Amount (Select the card by how many time)"],"controls":[{"key":"NUI-0133","sourceId":"slider-input-[Epic] Blood Money","type":"slider","title":"[Epic] Blood Money","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0134","sourceId":"slider-input-[Epic] Dark Penetration","type":"slider","title":"[Epic] Dark Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0135","sourceId":"slider-input-[Epic] Extended Reach","type":"slider","title":"[Epic] Extended Reach","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0136","sourceId":"slider-input-[Epic] Flame Penetration","type":"slider","title":"[Epic] Flame Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0137","sourceId":"slider-input-[Epic] Gale Penetration","type":"slider","title":"[Epic] Gale Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0138","sourceId":"slider-input-[Epic] Hydro Penetration","type":"slider","title":"[Epic] Hydro Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0139","sourceId":"slider-input-[Epic] Light Penetration","type":"slider","title":"[Epic] Light Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0140","sourceId":"slider-input-[Epic] Lingering Rot","type":"slider","title":"[Epic] Lingering Rot","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0141","sourceId":"slider-input-[Epic] Neutral Penetration","type":"slider","title":"[Epic] Neutral Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0142","sourceId":"slider-input-[Epic] Overclocked Engine","type":"slider","title":"[Epic] Overclocked Engine","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0143","sourceId":"slider-input-[Epic] Quickened Blade","type":"slider","title":"[Epic] Quickened Blade","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0144","sourceId":"slider-input-[Epic] Storm Penetration","type":"slider","title":"[Epic] Storm Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0145","sourceId":"slider-input-[Epic] Terra Penetration","type":"slider","title":"[Epic] Terra Penetration","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0146","sourceId":"slider-input-[Epic] Vital Strikes","type":"slider","title":"[Epic] Vital Strikes","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0147","sourceId":"slider-input-[Legendary] Bat Cavalry","type":"slider","title":"[Legendary] Bat Cavalry","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0148","sourceId":"slider-input-[Legendary] Bounty Hunter","type":"slider","title":"[Legendary] Bounty Hunter","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0149","sourceId":"slider-input-[Legendary] EXP Condenser","type":"slider","title":"[Legendary] EXP Condenser","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0150","sourceId":"slider-input-[Legendary] Hemorrhage","type":"slider","title":"[Legendary] Hemorrhage","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0151","sourceId":"slider-input-[Legendary] Martyr's Blast","type":"slider","title":"[Legendary] Martyr's Blast","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0152","sourceId":"slider-input-[Legendary] Razor Focus","type":"slider","title":"[Legendary] Razor Focus","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0153","sourceId":"slider-input-[Mythic] EXP Collector","type":"slider","title":"[Mythic] EXP Collector","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0154","sourceId":"slider-input-[Mythic] Feral Cruelty","type":"slider","title":"[Mythic] Feral Cruelty","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0155","sourceId":"slider-input-[Mythic] Infectious","type":"slider","title":"[Mythic] Infectious","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0156","sourceId":"slider-input-[Mythic] Missile Protocol","type":"slider","title":"[Mythic] Missile Protocol","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0157","sourceId":"slider-input-[Mythic] Momentum","type":"slider","title":"[Mythic] Momentum","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0158","sourceId":"slider-input-[Mythic] Whetstone Cache","type":"slider","title":"[Mythic] Whetstone Cache","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0159","sourceId":"slider-input-[Rare] Amplifier","type":"slider","title":"[Rare] Amplifier","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0160","sourceId":"slider-input-[Rare] Dark Mastery","type":"slider","title":"[Rare] Dark Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0161","sourceId":"slider-input-[Rare] Flame Mastery","type":"slider","title":"[Rare] Flame Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0162","sourceId":"slider-input-[Rare] Fortified Cargo","type":"slider","title":"[Rare] Fortified Cargo","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0163","sourceId":"slider-input-[Rare] Gale Mastery","type":"slider","title":"[Rare] Gale Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0164","sourceId":"slider-input-[Rare] Hydro Mastery","type":"slider","title":"[Rare] Hydro Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0165","sourceId":"slider-input-[Rare] Iron Flesh","type":"slider","title":"[Rare] Iron Flesh","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0166","sourceId":"slider-input-[Rare] Light Mastery","type":"slider","title":"[Rare] Light Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0167","sourceId":"slider-input-[Rare] Neutral Mastery","type":"slider","title":"[Rare] Neutral Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0168","sourceId":"slider-input-[Rare] Relentless Pursuit","type":"slider","title":"[Rare] Relentless Pursuit","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0169","sourceId":"slider-input-[Rare] Storm Mastery","type":"slider","title":"[Rare] Storm Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0170","sourceId":"slider-input-[Rare] Terra Mastery","type":"slider","title":"[Rare] Terra Mastery","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0171","sourceId":"slider-input-[Rare] Venomous Edge","type":"slider","title":"[Rare] Venomous Edge","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0172","sourceId":"slider-input-[Rare] Yen Hunger","type":"slider","title":"[Rare] Yen Hunger","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Expedition Auto Play","path":["Expedition Joiner","Expedition Auto Play"],"controls":[{"key":"NUI-0173","sourceId":"input-checkbox-Expedition Auto Play","type":"toggle","title":"Expedition Auto Play","description":"Expedition-only Auto Play. Automatically places, upgrades, and advances through each Expedition node. Payload positions are saved per map, while Lane positions are saved per map and detected road layout. Position setup is optional because each type has its own auto-detection.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop"],"controls":[{"key":"NUI-0174","sourceId":"input-checkbox-Auto Checkpoint Shop","type":"toggle","title":"Auto Checkpoint Shop","description":"After the starter checkpoint, buy selected available items with Yen at later Checkpoints before Auto Play continues. Highest-cost selected offers are bought first.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0175","sourceId":"select-input-Select Item","type":"dropdown","title":"Select Item","description":"Select Checkpoint Shop items to buy. Item names match the names displayed by the game.","currentValue":null,"options":["Anvil","Aqua Shard","Bolt Tome","Cursed Timber","Destruction Potion","Draconic Tome","Enlightenment Tome","Epic Geode","Expedition Coin","Forsaken Tome","Fuel Cell","Giant Hammer","Hellfire Potion","Investor Tome","Limit Breaker Tome","Lucky Potion","Lush Dirt","Mechanical Scrap","Optics Tome","Payload EXP","Precision 1 Tome","Precision 2 Tome","Primordial Tome","Range 1 Tome","Range 2 Tome","Rare Geode","Reconstruction","Repair Hammer","Speed 1 Tome","Speed 2 Tome","Stat Anvil","Storm Potion","Strength 1 Tome","Strength 2 Tome","Time Stop Potion","Tome","Trait Tome","Unbound Tome","Wealth Potion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop › Auto Repair","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Repair"],"controls":[{"key":"NUI-0176","sourceId":"input-checkbox-Auto Use Repair Hammer","type":"toggle","title":"Auto Use Repair Hammer","description":"Uses a Repair Hammer from the hotbar whenever Payload health falls to or below the selected percentage. Works during every Expedition round type.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0177","sourceId":"slider-input-Use at Percent Health","type":"slider","title":"Use at Percent Health","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":50,"min":0,"max":100,"rounding":0}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Checkpoint Shop › Auto Use Tome","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Use Tome"],"controls":[{"key":"NUI-0178","sourceId":"input-checkbox-Auto Use Tome","type":"toggle","title":"Auto Use Tome","description":"Uses any tome in the hotbar. Normal tomes improve the highest-DPS eligible unit; Investment tomes target the highest-income farm without Investment.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0179","sourceId":"trello-input-Tome Trait Priority","type":"priority-list","title":"Tome Trait Priority","description":"For non-farm units after every unit has a trait. A tome replaces only a lower-priority trait; highest number wins. Defaults rank rarer roll chances higher.","currentValue":null,"options":["<b>16</b>. Primordial","<b>5</b>. Strength 2","<b>3</b>. Range 1","<b>15</b>. Forsaken","<b>9</b>. Limit Breaker","<b>7</b>. Range 2","<b>14</b>. Draconic","<b>11</b>. Bolt","<b>12</b>. Optics","<b>2</b>. Speed 1","<b>8</b>. Precision 1","<b>4</b>. Enlightenment","<b>6</b>. Speed 2","<b>13</b>. Investor","<b>17</b>. Unbound","<b>1</b>. Strength 1","<b>10</b>. Precision 2"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":["<b>16</b>. Primordial","<b>5</b>. Strength 2","<b>3</b>. Range 1","<b>15</b>. Forsaken","<b>9</b>. Limit Breaker","<b>7</b>. Range 2","<b>14</b>. Draconic","<b>11</b>. Bolt","<b>12</b>. Optics","<b>2</b>. Speed 1","<b>8</b>. Precision 1","<b>4</b>. Enlightenment","<b>6</b>. Speed 2","<b>13</b>. Investor","<b>17</b>. Unbound","<b>1</b>. Strength 1","<b>10</b>. Precision 2"]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Hire Unit","path":["Expedition Joiner","Expedition Auto Play","Auto Hire Unit"],"controls":[{"key":"NUI-0180","sourceId":"input-checkbox-Auto Hire Unit","type":"toggle","title":"Auto Hire Unit","description":"After the starter checkpoint, hire selected offered units at later Checkpoints when there is enough Yen. Hiring is completed before Auto Play continues.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0181","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Select which units may be hired from the three Checkpoint offers.","currentValue":null,"options":["5th God Hand","8th Sword (Berserk)","Bioinsect (Final Form)","Carrot (Unleashed)","Crimson (Brother)","Crow (Black Fire)","Cubert","Cursed Immortal (Black Sun)","Cursed Student (True Love)","Dark Mage (Sovereign)","Eclipse Hunter (Savior)","Elf Mage (Unleashed)","Flame Emperor (Reincarnate)","Forbidden Teacher","Head Captain (Char)","Hollow (Blaze)","Ice Queen","Iron Wolf (Struggler)","Jester","Kitsune","Lady Giant (Envy)","Lightning God (Overcharged)","Prodigy (Rage)","Puppet (Telekinetic)","Rainman (Forecast)","Ramen Guy","Razorjaw (Hunter)","Reaper (Released)","Salmon Sorcerer (Grade 1)","Sand (Alligator)","Shadow (Divine)","Sharkfang (Abyssal)","Silver Falcon","Sovereign (Djinn)","String Demon (Awakened)","The Drink (Juicebox)","The Hero","Toy Maker","True Saint (Holy)","Vegetable (Prince)","Water Mage (Scholar)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config"],"controls":[{"key":"NUI-0182","sourceId":"input-checkbox-Focus on Upgrade Farm","type":"toggle","title":"Focus on Upgrade Farm","description":"When upgrading, prioritize farm units first (lowest-level farm first) before other units. Off = upgrade the lowest-level unit overall (default).","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0183","sourceId":"input-checkbox-Only Place on Payload","type":"toggle","title":"Only Place on Payload","description":"Only place new units when the current round type is Payload. Lane rounds place no units. Relocation still follows the current node type.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config › Lane","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Lane"],"controls":[{"key":"NUI-0184","sourceId":"button-input-Set Position","type":"button","title":"Set Position","description":"Choose which Lane position to set at your current location","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0185","sourceId":"label-Current Map: (not in game)\nCurrent Lane Layout: (waiting for active Lane)\nDPS Position: (not s","type":"label","title":"Current Map: (not in game)\nCurrent Lane Layout: (waiting for active Lane)\nDPS Position: (not set)\nSupport Position: (not set)\nFarm Position: (not set)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0186","sourceId":"select-input-Select DPS Unit","type":"dropdown","title":"Select DPS Unit","description":"Units selected here are placed at the DPS position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0187","sourceId":"select-input-Select Farm Unit","type":"dropdown","title":"Select Farm Unit","description":"Units selected here are placed at the Farm position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0188","sourceId":"select-input-Select Support Unit","type":"dropdown","title":"Select Support Unit","description":"Units selected here are placed at the Support position on Lane rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0189","sourceId":"select-input-Select Unit Priority","type":"dropdown","title":"Select Unit Priority","description":"Set every compatible placed unit to this targeting priority during Defense and Elite combat","currentValue":null,"options":["First","Last","Closest","Strongest","Boss","Weakest","Shielded","Fastest","None"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"First"}]},{"name":"Expedition Joiner › Expedition Auto Play › Auto Play Config › Payload","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Payload"],"controls":[{"key":"NUI-0190","sourceId":"button-input-Set Position","type":"button","title":"Set Position","description":"Choose which Payload position to set at your current location","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0191","sourceId":"label-Current Map: (not in game)\nFront Position: (not set)\nMiddle Position: (not set)\nBack Position:","type":"label","title":"Current Map: (not in game)\nFront Position: (not set)\nMiddle Position: (not set)\nBack Position: (not set)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0192","sourceId":"select-input-Select Back Unit","type":"dropdown","title":"Select Back Unit","description":"Units selected here are placed at the Back position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0193","sourceId":"select-input-Select Front Unit","type":"dropdown","title":"Select Front Unit","description":"Units selected here are placed at the Front position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0194","sourceId":"select-input-Select Middle Unit","type":"dropdown","title":"Select Middle Unit","description":"Units selected here are placed at the Middle position on Payload rounds. Units not in any list are auto-assigned to the role with the fewest units.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0195","sourceId":"select-input-Select Unit Priority","type":"dropdown","title":"Select Unit Priority","description":"Set every compatible placed unit to this targeting priority during Assault combat","currentValue":null,"options":["First","Last","Closest","Strongest","Boss","Weakest","Shielded","Fastest","None"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Closest"}]},{"name":"Expedition Joiner › Expedition Failsafe","path":["Expedition Joiner","Expedition Failsafe"],"controls":[{"key":"NUI-0196","sourceId":"input-checkbox-Restart if stuck Node","type":"toggle","title":"Restart if stuck Node","description":"Restarts the current Expedition when TotalNodes has not changed for the selected number of minutes.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0197","sourceId":"slider-input-Restart Minute","type":"slider","title":"Restart Minute","description":"How many minutes TotalNodes may remain unchanged before the Expedition is treated as stuck and restarted.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":60,"rounding":0}]},{"name":"Expedition Joiner › Toy Capsule Farm (The Drink)","path":["Expedition Joiner","Toy Capsule Farm (The Drink)"],"controls":[{"key":"NUI-0198","sourceId":"input-checkbox-Auto Toy Capsule","type":"toggle","title":"Auto Toy Capsule","description":"East Town Expedition only. Rerolls until the first node is The Drink, accepts his offer, collects the Toy Capsule, and repeats.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0199","sourceId":"input-checkbox-Join Toy Capsule Expedition if available","type":"toggle","title":"Join Toy Capsule Expedition if available","description":"Requires Auto Join Expedition. When a Toy Capsule is available, joins The Drink's Trial instead of the configured Expedition.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0200","sourceId":"label-Toy Capsules Obtained: 0","type":"label","title":"Toy Capsules Obtained: 0","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Portal Joiner","path":["Portal Joiner"],"controls":[{"key":"NUI-0201","sourceId":"input-checkbox-Auto Join Portal","type":"toggle","title":"Auto Join Portal","description":"Automatically joins a matching portal when you are in the Lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0202","sourceId":"input-checkbox-Auto Pick Portal Reward","type":"toggle","title":"Auto Pick Portal Reward","description":"Selects the highest-tier offered portal that matches the same filters","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0203","sourceId":"select-input-Ignore Modifier","type":"dropdown","title":"Ignore Modifier","description":"Reject portals containing any selected modifier","currentValue":null,"options":["BossWaves","Mirror","NoFarms","Resistance","Shielded","ShortRange","Speedy","Traitless","UpgradeCap"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0204","sourceId":"select-input-Select Portal Types","type":"dropdown","title":"Select Portal Types","description":"Select the portal types that the Portal Joiner will accept","currentValue":null,"options":["Lightning God's Portal","Sky Ruins Portal","Sovereign's Portal","Summer Portal","Ancient Temple"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0205","sourceId":"slider-input-Portal Tier Cap","type":"slider","title":"Portal Tier Cap","description":"Only joins or selects portals at or below this tier","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":6,"min":1,"max":10,"rounding":0}]},{"name":"Raid Joiner","path":["Raid Joiner"],"controls":[{"key":"NUI-0206","sourceId":"input-checkbox-Auto Join Raid","type":"toggle","title":"Auto Join Raid","description":"Automatically joins the selected Raid map when in the Lobby (requires level 25+)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0207","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0208","sourceId":"input-checkbox-Only Join if below Raid Token","type":"toggle","title":"Only Join if below Raid Token","description":"Only auto-join the selected Raid when your Raid Tokens are below the configured amount.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0209","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Raid map to auto-join","currentValue":null,"options":["Spirit City","Snowy Castle","Act 1","Act 2","Act 3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Snowy Castle"},{"key":"NUI-0210","sourceId":"select-input-Select Act","type":"dropdown","title":"Select Act","description":"","currentValue":null,"options":["Act 1","Act 2","Act 3"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Act 2"},{"key":"NUI-0211","sourceId":"slider-input-Under Raid Token","type":"slider","title":"Under Raid Token","description":"Your Raid Token amount must be strictly below this value.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":100,"min":0,"max":1000,"rounding":0}]},{"name":"Regular Challenge Joiner","path":["Regular Challenge Joiner"],"controls":[{"key":"NUI-0212","sourceId":"input-checkbox-Auto Join Regular Challenge","type":"toggle","title":"Auto Join Regular Challenge","description":"Checks all 3 rotating slots for a valid challenge (no ignored effects/maps, daily limit not reached)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0213","sourceId":"input-checkbox-Change Gamemode If new Challenge","type":"toggle","title":"Change Gamemode If new Challenge","description":"Allow a new eligible Regular Challenge to become the next run after the current run ends. Other Joiners use Auto Run Joiner Features and your priority order.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0214","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0215","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0216","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0217","sourceId":"select-input-Select Reward","type":"dropdown","title":"Select Reward","description":"Only join Regular Challenge slots that drop one of the selected rewards. Sprite rewards are skipped when every Sprite color in that slot is already at its inventory cap.","currentValue":null,"options":["Equipment Lock","Equipment Reroll","Sprite","Stat Lock","Stat Reroll","Trait Crystal"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"Story Joiner","path":["Story Joiner"],"controls":[{"key":"NUI-0218","sourceId":"input-checkbox-Auto Join Story","type":"toggle","title":"Auto Join Story","description":"Automatically joins the selected Story map when in the Lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0219","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0220","sourceId":"select-input-Select Difficulty","type":"dropdown","title":"Select Difficulty","description":"","currentValue":null,"options":["Normal","Hard"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Normal"},{"key":"NUI-0221","sourceId":"select-input-Select Map","type":"dropdown","title":"Select Map","description":"The Story map to auto-join","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore","Act 1","Act 2","Act 3","Act 4","Act 5","Infinite","Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"School Grounds"},{"key":"NUI-0222","sourceId":"select-input-Select Act","type":"dropdown","title":"Select Act","description":"","currentValue":null,"options":["Act 1","Act 2","Act 3","Act 4","Act 5","Infinite","Mastery"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Act 1"}]},{"name":"Tower Joiner","path":["Tower Joiner"],"controls":[{"key":"NUI-0223","sourceId":"input-checkbox-Auto Join Tower","type":"toggle","title":"Auto Join Tower","description":"Automatically joins the next uncleared Tower floor. Tower is solo-only and does not support matchmaking.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0224","sourceId":"select-input-Tower Mode","type":"dropdown","title":"Tower Mode","description":"Normal and Traitless have separate seasons and floor progress.","currentValue":null,"options":["Normal","Traitless"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Normal"}]},{"name":"Trial Joiner","path":["Trial Joiner"],"controls":[{"key":"NUI-0225","sourceId":"input-checkbox-Auto Join Trial","type":"toggle","title":"Auto Join Trial","description":"Automatically joins the selected Unit Trial as a solo stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0226","sourceId":"select-input-Select Trial","type":"dropdown","title":"Select Trial","description":"Select a Trial by the trial unit's in-game display name.","currentValue":null,"options":["'s Trial","8th Sword's Trial","Bioinsect's Trial","Carrot's Trial","Crimson's Trial","Cursed Student's Trial","Eclipse Hunter's Trial","Elf Mage's Trial","Flame Emperor's Trial","Hollow's Trial","Lady Giant's Trial","Mechanical Wings's Trial","Prodigy's Trial","Puppet's Trial","Reaper's Trial","Salmon Sorcerer's Trial","String Demon's Trial","True Saint's Trial","Vegetable's Trial"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Weekly Challenge Joiner","path":["Weekly Challenge Joiner"],"controls":[{"key":"NUI-0227","sourceId":"input-checkbox-Auto Join Weekly Challenge","type":"toggle","title":"Auto Join Weekly Challenge","description":"Single rotating slot","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0228","sourceId":"input-checkbox-Match Making","type":"toggle","title":"Match Making","description":"Join via Matchmaking (with random players) instead of solo","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0229","sourceId":"select-input-Ignore Effect","type":"dropdown","title":"Ignore Effect","description":"Don't join if the challenge has one of these effects/modifiers","currentValue":null,"options":["Resistance","Speedy","Mirror","Traitless","BossWaves","UpgradeCap","ShortRange","Shielded","NoFarms","School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0230","sourceId":"select-input-Ignore Map","type":"dropdown","title":"Ignore Map","description":"Don't join if the challenge uses one of these maps","currentValue":null,"options":["School Grounds","Flower Forest","Rose Kingdom","Fairy King Forest","King's Tomb","East Town","Crimson Shore"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]}]},{"name":"[EVENT] Boss Bounty Joiner","path":["[EVENT] Boss Bounty Joiner"],"controls":[{"key":"NUI-0231","sourceId":"input-checkbox-Auto Join Boss Bounty","type":"toggle","title":"Auto Join Boss Bounty","description":"Rolls the daily Boss Bounty, keeps only the selected rarities, then joins its Spawn Location. Up to 5 bounties can be completed each day.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0232","sourceId":"select-input-Ignore Archetype Debuff","type":"dropdown","title":"Ignore Archetype Debuff","description":"Reroll when the boss resists any selected archetype. Archetype weaknesses are allowed.","currentValue":null,"options":["Magical","Physical","Psychic"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0233","sourceId":"select-input-Ignore Element Debuff","type":"dropdown","title":"Ignore Element Debuff","description":"Reroll when the boss resists any selected element. Element weaknesses are allowed.","currentValue":null,"options":["Dark","Flame","Gale","Hydro","Light","Neutral","Storm","Terra"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0234","sourceId":"select-input-Ignore Modifier","type":"dropdown","title":"Ignore Modifier","description":"Reroll when the Boss Bounty contains any selected enemy modifier.","currentValue":null,"options":["Stunner","Commander","Reinforced","Armored","Tank","Sprinter"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":[]},{"key":"NUI-0235","sourceId":"select-input-Keep Rarities","type":"dropdown","title":"Keep Rarities","description":"Keep and join selected rarities. Every unselected bounty is rerolled using the event's current Gold cost.","currentValue":null,"options":["Rare","Legendary","Secret"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Rare","Legendary","Secret"]},{"key":"NUI-0236","sourceId":"slider-input-Reroll After Losses","type":"slider","title":"Reroll After Losses","description":"Reroll a Boss Bounty after losing to the same boss this many times. Set to 0 to disable loss-based rerolls.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Tidal Siege Joiner","path":["Tidal Siege Joiner"],"controls":[{"key":"AE-TIDAL-AUTO-JOIN","sourceId":"tidal-auto-join","type":"toggle","title":"Auto Join Tidal Siege","description":"Join Coral Kingdom through the native Hard / Event Infinite flow. Respects Disable Auto Joiners, joiner cooldown and your existing priority order.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-TIDAL-SHINY-FARM","sourceId":"tidal-shiny-farm","type":"toggle","title":"Shiny Harribel Farm","description":"Run the configured event macro and fish. Deletes only temporary event hotbar items and confirmed fished MockUnits, except Sharktooth Conch; never your original team or permanent inventory. Uses a conch once, restarts only after a new Harribel reward, and stops on shiny.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-TIDAL-STATUS","sourceId":"tidal-status","type":"label","title":"Tidal Siege: disabled\nShiny Harribel Farm: disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Auto Join Setting","path":["Auto Join Setting"],"sectionIndex":4,"children":[{"name":"Team Equipper","path":["Auto Join Setting","Team Equipper"],"sectionIndex":5,"children":[]}],"defaultExpanded":true},{"name":"Monster Clash / Rift Joiner","path":["Monster Clash / Rift Joiner"],"children":[],"sectionIndex":2},{"name":"Boss Rush Cards and Gates","path":["Boss Rush Cards and Gates"],"sectionIndex":1,"children":[]},{"name":"Infernal Cult Joiner","path":["Infernal Cult Joiner"],"sectionIndex":3,"children":[]},{"name":"Daily Challenge Joiner","path":["Daily Challenge Joiner"],"sectionIndex":6,"children":[]},{"name":"Expedition Joiner","path":["Expedition Joiner"],"sectionIndex":7,"children":[{"name":"Auto Expedition Map Route","path":["Expedition Joiner","Auto Expedition Map Route"],"sectionIndex":8,"children":[]},{"name":"Auto Extract","path":["Expedition Joiner","Auto Extract"],"sectionIndex":9,"children":[]},{"name":"Auto Join Requirement","path":["Expedition Joiner","Auto Join Requirement"],"sectionIndex":10,"children":[]},{"name":"Auto Restart","path":["Expedition Joiner","Auto Restart"],"sectionIndex":11,"children":[]},{"name":"Auto Restart Reward","path":["Expedition Joiner","Auto Restart Reward"],"sectionIndex":12,"children":[]},{"name":"Auto Select Anvil Stat","path":["Expedition Joiner","Auto Select Anvil Stat"],"sectionIndex":13,"children":[{"name":"Anvil Stat Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Anvil Stat","Anvil Stat Cap-Amount (Select the card by how many time)"],"sectionIndex":14,"children":[]}]},{"name":"Auto Select Upgrade","path":["Expedition Joiner","Auto Select Upgrade"],"sectionIndex":15,"children":[{"name":"Upgrade Cap-Amount (Select the card by how many time)","path":["Expedition Joiner","Auto Select Upgrade","Upgrade Cap-Amount (Select the card by how many time)"],"sectionIndex":16,"children":[]}]},{"name":"Expedition Auto Play","path":["Expedition Joiner","Expedition Auto Play"],"sectionIndex":17,"children":[{"name":"Auto Checkpoint Shop","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop"],"sectionIndex":18,"children":[{"name":"Auto Repair","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Repair"],"sectionIndex":19,"children":[]},{"name":"Auto Use Tome","path":["Expedition Joiner","Expedition Auto Play","Auto Checkpoint Shop","Auto Use Tome"],"sectionIndex":20,"children":[]}]},{"name":"Auto Hire Unit","path":["Expedition Joiner","Expedition Auto Play","Auto Hire Unit"],"sectionIndex":21,"children":[]},{"name":"Auto Play Config","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config"],"sectionIndex":22,"children":[{"name":"Lane","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Lane"],"sectionIndex":23,"children":[]},{"name":"Payload","path":["Expedition Joiner","Expedition Auto Play","Auto Play Config","Payload"],"sectionIndex":24,"children":[]}]}]},{"name":"Expedition Failsafe","path":["Expedition Joiner","Expedition Failsafe"],"sectionIndex":25,"children":[]},{"name":"Toy Capsule Farm (The Drink)","path":["Expedition Joiner","Toy Capsule Farm (The Drink)"],"sectionIndex":26,"children":[]}]},{"name":"Portal Joiner","path":["Portal Joiner"],"sectionIndex":27,"children":[]},{"name":"Raid Joiner","path":["Raid Joiner"],"sectionIndex":28,"children":[]},{"name":"Regular Challenge Joiner","path":["Regular Challenge Joiner"],"sectionIndex":29,"children":[]},{"name":"Story Joiner","path":["Story Joiner"],"sectionIndex":30,"children":[]},{"name":"Tower Joiner","path":["Tower Joiner"],"sectionIndex":31,"children":[]},{"name":"Trial Joiner","path":["Trial Joiner"],"sectionIndex":32,"children":[]},{"name":"Weekly Challenge Joiner","path":["Weekly Challenge Joiner"],"sectionIndex":33,"children":[]},{"name":"[EVENT] Boss Bounty Joiner","path":["[EVENT] Boss Bounty Joiner"],"sectionIndex":34,"children":[]},{"name":"Tidal Siege Joiner","path":["Tidal Siege Joiner"],"sectionIndex":35,"children":[]}]},{"name":"Game","title":"Game","sections":[{"name":"Starrk Rift Auto Play","path":["Starrk Rift Auto Play"],"controls":[{"key":"AE-STARRK-AUTOPLAY","type":"toggle","title":"Auto Play Starrk Rift","description":"Automatically equips and verifies all six required units before Start Game. Places the farm opening, Black Heart, Gate fighters and main-path support. Uses maximum-upgrade range and waits for native confirmations.","default":false},{"key":"AE-STARRK-AUTOPLAY-STATUS","type":"label","title":"Starrk Rift AutoPlay: disabled","description":"Shows the current step and any placement or Gate movement restriction."}]},{"name":"Auto Put Out","path":["Auto Put Out"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-AUTO-PUT-OUT","sourceId":"auto-put-out","type":"toggle","title":"Auto Put Out","description":"Automatically teleports beside a current Infernal Put Out prompt, then uses its native interaction within 12 studs. Pauses during Macro recording or active actions; skips unsafe landing spots. Does not place units.","currentValue":null,"default":false},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"key":"AE-PUT-OUT-STATUS","sourceId":"auto-put-out-status","type":"label","title":"Auto Put Out: ready — auto teleport","description":"Automatically teleports into native Put Out range. Displays teleport and request counts; waits for valid targets and safe grounded landing spots.","currentValue":null,"default":null}]},{"name":"Auto Restart","path":["Auto Restart"],"controls":[{"key":"NUI-0237","sourceId":"input-checkbox-Auto Restart","type":"toggle","title":"Auto Restart","description":"Automatically restart the game when the specified wave is reached (fires Restart on the GameState replica)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0238","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0239","sourceId":"slider-input-Restart at Wave","type":"slider","title":"Restart at Wave","description":"Restart the game when this wave is reached","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Auto Sell","path":["Auto Sell"],"controls":[]},{"name":"Auto Sell › Auto Sell Farm","path":["Auto Sell","Auto Sell Farm"],"controls":[{"key":"NUI-0240","sourceId":"input-checkbox-Auto Sell Farm","type":"toggle","title":"Auto Sell Farm","description":"Automatically sell all farm (money-generating) units on the selected wave\nNot recorded by Record Macro","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0241","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0242","sourceId":"slider-input-Sell at Wave","type":"slider","title":"Sell at Wave","description":"Sell all farms on this wave.\nSet to 0 to auto-sell at the stage's last wave - stages with no final wave are skipped.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Auto Sell › Auto Sell Unit","path":["Auto Sell","Auto Sell Unit"],"controls":[{"key":"NUI-0243","sourceId":"input-checkbox-Auto Sell Unit","type":"toggle","title":"Auto Sell Unit","description":"Automatically sell all units on the selected wave\nNot recorded by Record Macro","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0244","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types the feature works in","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0245","sourceId":"slider-input-Sell at Wave","type":"slider","title":"Sell at Wave","description":"Sell all units on this wave.\nSet to 0 to auto-sell at the stage's last wave - stages with no final wave are skipped.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Auto Skip Wave","path":["Auto Skip Wave"],"controls":[{"key":"NUI-0246","sourceId":"input-checkbox-Auto Skip Wave","type":"toggle","title":"Auto Skip Wave","description":"Automatically enable the game's Auto Skip Wave setting (votes to skip waves)","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0247","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Auto Skip is always ON in every mode. The 'Stop Skip at Wave' above only applies to the stage types selected here - unselected modes keep skipping forever","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0248","sourceId":"slider-input-Stop Skip at Wave","type":"slider","title":"Stop Skip at Wave","description":"Turn off Auto Skip after reaching the specified wave\nSet to 0 to never stop\nOnly applies to the stage types selected below - all other modes always skip","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0}]},{"name":"Game Failsafe","path":["Game Failsafe"],"controls":[{"key":"NUI-0249","sourceId":"input-checkbox-Return Lobby Failsafe","type":"toggle","title":"Return Lobby Failsafe","description":"If the result screen is stuck for over 120s, force-teleport to the lobby","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0250","sourceId":"input-checkbox-Return Lobby if Loose Stage","type":"toggle","title":"Return Lobby if Loose Stage","description":"Returns to the lobby after the selected number of Defeat result screens.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0251","sourceId":"select-input-Select Stage Type","type":"dropdown","title":"Select Stage Type","description":"Select which stage types count toward the loss failsafe.","currentValue":null,"options":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"],"multi":true,"dynamicOptions":false,"sensitive":false,"default":["Challenge","Eclipsed Infinite","Event","Expedition","Golden Hour","Infinite","Mastery","Portal","Raid","Sandbox","Story","Tournament","Tower","Unit Trial","Villain Invasion"]},{"key":"NUI-0252","sourceId":"slider-input-Loose Stage Amount","type":"slider","title":"Loose Stage Amount","description":"Return to the lobby after losing this many selected stages.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Game Finished","path":["Game Finished"],"controls":[{"key":"NUI-0253","sourceId":"input-checkbox-Auto Next","type":"toggle","title":"Auto Next","description":"Presses 'Next Stage' on the result screen","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0254","sourceId":"input-checkbox-Auto Replay","type":"toggle","title":"Auto Replay","description":"Presses 'Repeat Stage' on the result screen","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0255","sourceId":"input-checkbox-Auto Return Lobby","type":"toggle","title":"Auto Return Lobby","description":"Returns to the lobby after the match ends","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0256","sourceId":"input-checkbox-Auto Run Joiner Features","type":"toggle","title":"Auto Run Joiner Features","description":"After a run ends, choose the highest-priority currently eligible Joiner. Enter directly when its native route is available; use Lobby only when its entry context requires it.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Gameplay","path":["Gameplay"],"controls":[{"key":"NUI-0257","sourceId":"input-checkbox-Auto Vote Start","type":"toggle","title":"Auto Vote Start","description":"When enabled, forces the game's Auto Vote Start setting ON. When disabled, forces it OFF.\nNote: Play Macro and Auto Play already have built-in Auto Start - enabling this is not recommended.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Leaderboard Helper","path":["Leaderboard Helper"],"controls":[{"key":"NUI-0258","sourceId":"button-input-Open Tournament UI","type":"button","title":"Open Tournament UI","description":"Opens the Tournament UI so you can view top players and scores.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Leaderboard Helper › Hit Replace","path":["Leaderboard Helper","Hit Replace"],"controls":[{"key":"NUI-0259","sourceId":"button-input-Set Placement Position","type":"button","title":"Set Placement Position","description":"Stand where the selected unit should be placed. The position is saved separately for the current stage.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0260","sourceId":"input-checkbox-Auto Hit Replace","type":"toggle","title":"Auto Hit Replace","description":"After the selected wave, place and fully auto-upgrade the selected unit, wait using the selected detection method, sell it, and repeat. Before selling, it pauses and keeps the current unit placed until you can afford the next unit's placement and every upgrade.\nFor the fastest VFX / Damage Based detection, enable <b>Show Own Unit VFX</b> in the game's settings. This lets Hit Replace detect attacks directly from their VFX and avoids the client-server delay that can occur when reading total damage.\n<b>While Hit Replace is enabled, it controls the game's Auto-Upgrade Placed Units setting. When Hit Replace is disabled, that game setting is left unchanged.</b>","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0261","sourceId":"label-Selected Unit: None\nStatus: Disabled","type":"label","title":"Selected Unit: None\nStatus: Disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0262","sourceId":"select-input-Auto Upgrade while Inactive","type":"dropdown","title":"Auto Upgrade while Inactive","description":"Choose the Auto-Upgrade Placed Units setting used while Hit Replace is enabled but waiting for its wave or placement conditions.","currentValue":null,"options":["Enabled","Disabled"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Disabled"},{"key":"NUI-0263","sourceId":"select-input-Detection Method","type":"dropdown","title":"Detection Method","description":"VFX / Damage Based sells after the unit's complete attack is detected. Timing Based starts a precise countdown once the unit reaches maximum upgrade, then sells it.","currentValue":null,"options":["VFX / Damage Based","Timing Based"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"VFX / Damage Based"},{"key":"NUI-0264","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Select the unit to place, hit, sell, and replace. The unit must be equipped in the current hotbar.","currentValue":null,"options":["5th God Hand","8th Sword","8th Sword (Berserk)","Bat Spirit","Bioinsect","Bioinsect (Final Form)","Bounty Hunter","Broken Falcon","Carrot","Carrot (Unleashed)","Corps Captain","Crimson","Crimson (Brother)","Crow","Crow (Black Fire)","Cube","Cubert","Curly Brow","Cursed Immortal","Cursed Immortal (Black Sun)","Cursed Student","Cursed Student (True Love)","Damu","Dark Mage","Dark Mage (Sovereign)","Demon Cyborg","Eclipse Hunter","Eclipse Hunter (Savior)","Elf Mage","Elf Mage (Unleashed)","Flame Emperor","Flame Emperor (Reincarnate)","Forbidden Teacher","Goose","Greed","Head Captain","Head Captain (Char)","Hollow","Hollow (Blaze)","Ice Mage","Ice Queen","Iron Wolf","Iron Wolf (Struggler)","Jace","Jester","Kid Assassin","Kitsune","Lady Giant","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Little Carrot","Mini Bioinsect","Nen Hunter","Prodigy","Prodigy (Rage)","Puppet","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Ramen Guy","Razorjaw","Razorjaw (Hunter)","Reaper","Reaper (Released)","Reishi Archer","Rubber Boy","Salmon Sorcerer","Salmon Sorcerer (Grade 1)","Sand","Sand (Alligator)","Scissor","Shadow","Shadow (Divine)","Sharkfang","Sharkfang (Abyssal)","Silver Falcon","Sovereign","Sovereign (Djinn)","Spirit General (Divine)","Spirit Wolf (Divine)","Stone Alchemist","String Demon","String Demon (Awakened)","Template","The Drink","The Drink (Juicebox)","The Hero","Thunder Shinobi","Toy Maker","True Saint","True Saint (Holy)","Turret","Vegetable","Vegetable (Prince)","Water Mage","Water Mage (Scholar)","Water Princess","Winged Spirit (Divine)"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0265","sourceId":"slider-input-Sell Delay after Max Upgrade","type":"slider","title":"Sell Delay after Max Upgrade","description":"In Timing Based mode, sell the unit this many seconds after it reaches maximum upgrade.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":60,"rounding":1},{"key":"NUI-0266","sourceId":"slider-input-Start after Wave","type":"slider","title":"Start after Wave","description":"Begin the hit-replace loop when this wave is reached.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Leaderboard Helper › Rewind Loop","path":["Leaderboard Helper","Rewind Loop"],"controls":[{"key":"NUI-0267","sourceId":"input-checkbox-Auto Rewind Loop","type":"toggle","title":"Auto Rewind Loop","description":"Starts as soon as any placed Puppet (Telekinetic) has Complete Control unlocked and any placed Shadow (Divine) has Shadow Realm unlocked. It activates Shadow Realm when ready, otherwise Complete Control, then waits for the selected delay and repeats. Duplicate units are supported because these abilities share a global cooldown. This does not enable either unit's Auto Ability.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0268","sourceId":"label-Status: Disabled","type":"label","title":"Status: Disabled","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0269","sourceId":"slider-input-Delay between Activate","type":"slider","title":"Delay between Activate","description":"Seconds to wait after activating either ability before checking again.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":12,"min":0,"max":60,"rounding":1}]},{"name":"Performance","path":["Performance"],"controls":[{"key":"NUI-0273","sourceId":"input-checkbox-Black Screen","type":"toggle","title":"Black Screen","description":"Disable 3D rendering for better performance","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0274","sourceId":"input-checkbox-Boost FPS","type":"toggle","title":"Boost FPS","description":"Lower the graphics of meshes in the map, reduce effects, and remove lighting also disable animations","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0275","sourceId":"input-checkbox-Delete Enemies","type":"toggle","title":"Delete Enemies","description":"Delete enemies to improve performance\nOnly use if you are using Play Macro or Auto Play","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0276","sourceId":"input-checkbox-Delete Map","type":"toggle","title":"Delete Map","description":"Delete map decorations/environments to improve performance while keeping a lightweight directional path visible.\nOnly enable if you're using Play Macro; enabling it for Auto Play is not recommended.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Smart Auto Ability","path":["Smart Auto Ability"],"controls":[{"key":"NUI-0277","sourceId":"input-checkbox-Auto Ability","type":"toggle","title":"Auto Ability","description":"Enable Smart Auto Ability for the selected unit's chosen ability.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0278","sourceId":"input-checkbox-Only After Enemies Stop Spawning","type":"toggle","title":"Only After Enemies Stop Spawning","description":"Wait until the current wave has finished spawning enemies before firing.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0279","sourceId":"input-checkbox-Smart Auto Ability","type":"toggle","title":"Smart Auto Ability","description":"Master switch for the Smart Auto Ability system. Configure per-unit activation rules below.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0280","sourceId":"label-No unit selected yet - please choose a unit from the list above.","type":"label","title":"No unit selected yet - please choose a unit from the list above.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0281","sourceId":"label-Once <font color=\"#4DA3FF\" weight=\"500\">Activation Wave</font> is reached, the selected unit's","type":"label","title":"Once <font color=\"#4DA3FF\" weight=\"500\">Activation Wave</font> is reached, the selected unit's ability fires automatically whenever it is available (off cooldown).","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0282","sourceId":"label-Starting after <font color=\"#4DA3FF\" weight=\"500\">Start After Wave</font>, the ability fires e","type":"label","title":"Starting after <font color=\"#4DA3FF\" weight=\"500\">Start After Wave</font>, the ability fires every <font color=\"#4DA3FF\" weight=\"500\">Activate Every</font> waves when available, then waits for the next interval.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0283","sourceId":"label-When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> enters the unit's range (","type":"label","title":"When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> enters the unit's range (and only after wave <font color=\"#4DA3FF\" weight=\"500\">Only After Wave</font>), the ability fires if it is available.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0284","sourceId":"label-When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> is present anywhere on th","type":"label","title":"When the chosen <font color=\"#4DA3FF\" weight=\"500\">Enemy Type</font> is present anywhere on the map (after wave <font color=\"#4DA3FF\" weight=\"500\">Only After Wave</font>), the ability fires. Enable <font color=\"#4DA3FF\" weight=\"500\">Stop Spawning</font> to wait until enemies have finished spawning first.","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0285","sourceId":"select-input-Ability Activation Type","type":"dropdown","title":"Ability Activation Type","description":"Choose how the selected unit's ability should be triggered.","currentValue":null,"options":["Activate after Wave","Activate every Wave","Activate when Enemy in range","Activate when Enemy existed"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0286","sourceId":"select-input-Enemy Type","type":"dropdown","title":"Enemy Type","description":"Which enemy triggers the ability.","currentValue":null,"options":["Boss","Any Enemy"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":"Boss"},{"key":"NUI-0287","sourceId":"select-input-Select Ability","type":"dropdown","title":"Select Ability","description":"Pick which of this unit's abilities to configure.","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0288","sourceId":"select-input-Select Unit","type":"dropdown","title":"Select Unit","description":"Pick a unit to configure. Only units with an active ability are listed. Configured units appear first, with each enabled ability listed underneath.","currentValue":null,"options":["Bioinsect (Final Form)","Carrot (Unleashed)","Crimson (Brother)","Cubert","Flame Emperor (Reincarnate)","Head Captain (Char)","Kitsune","Lady Giant (Envy)","Lightning God","Lightning God (Overcharged)","Prodigy (Rage)","Puppet (Telekinetic)","Rainman","Rainman (Forecast)","Razorjaw (Hunter)","Reaper (Released)","Sand (Alligator)","Shadow (Divine)","Sharkfang (Abyssal)","The Drink (Juicebox)","True Saint (Holy)","Water Mage (Scholar)","Winged Spirit (Divine)"],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0289","sourceId":"slider-input-Activate Every","type":"slider","title":"Activate Every","description":"Re-fire the ability every N waves after the start wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0},{"key":"NUI-0290","sourceId":"slider-input-Activation Delay (seconds)","type":"slider","title":"Activation Delay (seconds)","description":"Delay in seconds before the ability fires once its condition is met.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":60,"rounding":1},{"key":"NUI-0291","sourceId":"slider-input-Activation Wave","type":"slider","title":"Activation Wave","description":"The wave at which the ability becomes eligible to fire.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0},{"key":"NUI-0292","sourceId":"slider-input-Only After Wave","type":"slider","title":"Only After Wave","description":"Ignore enemies before this wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":0,"min":0,"max":100,"rounding":0},{"key":"NUI-0293","sourceId":"slider-input-Start After Wave","type":"slider","title":"Start After Wave","description":"The ability begins firing after this wave.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":0,"max":100,"rounding":0}]},{"name":"Unit Mechanic","path":["Unit Mechanic"],"controls":[]},{"name":"Unit Mechanic › Dark Mage (Sovereign)","path":["Unit Mechanic","Dark Mage (Sovereign)"],"controls":[{"key":"NUI-0294","sourceId":"input-checkbox-Keep Lightning Magic Attack","type":"toggle","title":"Keep Lightning Magic Attack","description":"When Dark Mage (Sovereign)'s passive switches its current attack to the cone-shaped Lightning Magic attack, set its targeting priority to None to preserve that form.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0295","sourceId":"input-checkbox-Set to First on the Final Wave","type":"toggle","title":"Set to First on the Final Wave","description":"For stages with a finite final wave, restore Dark Mage (Sovereign)'s targeting priority to First when the final wave is reached.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Monster Clash","path":["Monster Clash"],"controls":[{"key":"AE-MONSTER-AUTO-FAKE","type":"toggle","title":"Auto Detect & Click Jealousy Fake","default":false,"description":"Uses the current game/map native EnvyMimic unit and Hidden encounter timer. Calls the same RevealEnvy action as clicking the fake. Pauses while recording; does not click ordinary units.","options":[],"multi":false,"sensitive":false},{"key":"AE-MONSTER-FAKE-STATUS","type":"label","title":"Auto Fake: OFF","default":null,"description":"","options":[],"multi":false,"sensitive":false}]}],"tree":[{"name":"Starrk Rift Auto Play","path":["Starrk Rift Auto Play"],"defaultExpanded":true,"children":[]},{"name":"Auto Put Out","path":["Auto Put Out"],"sectionIndex":1,"children":[]},{"name":"Auto Restart","path":["Auto Restart"],"sectionIndex":2,"children":[]},{"name":"Auto Sell","path":["Auto Sell"],"sectionIndex":3,"children":[{"name":"Auto Sell Farm","path":["Auto Sell","Auto Sell Farm"],"sectionIndex":4,"children":[]},{"name":"Auto Sell Unit","path":["Auto Sell","Auto Sell Unit"],"sectionIndex":5,"children":[]}]},{"name":"Auto Skip Wave","path":["Auto Skip Wave"],"sectionIndex":6,"children":[]},{"name":"Game Failsafe","path":["Game Failsafe"],"sectionIndex":7,"children":[]},{"name":"Game Finished","path":["Game Finished"],"sectionIndex":8,"children":[]},{"name":"Gameplay","path":["Gameplay"],"sectionIndex":9,"children":[]},{"name":"Leaderboard Helper","path":["Leaderboard Helper"],"sectionIndex":10,"children":[{"name":"Hit Replace","path":["Leaderboard Helper","Hit Replace"],"sectionIndex":11,"children":[]},{"name":"Rewind Loop","path":["Leaderboard Helper","Rewind Loop"],"sectionIndex":12,"children":[]}]},{"name":"Performance","path":["Performance"],"sectionIndex":13,"children":[]},{"name":"Smart Auto Ability","path":["Smart Auto Ability"],"sectionIndex":14,"children":[]},{"name":"Unit Mechanic","path":["Unit Mechanic"],"sectionIndex":15,"children":[{"name":"Dark Mage (Sovereign)","path":["Unit Mechanic","Dark Mage (Sovereign)"],"sectionIndex":16,"children":[]}]},{"name":"Monster Clash","path":["Monster Clash"],"children":[],"sectionIndex":17}]},{"name":"Macro","title":"Macro","sections":[{"name":"Importer/Exporter","path":["Importer/Exporter"],"controls":[{"key":"NUI-0501","sourceId":"box-input-Import Macro","type":"text-input","title":"Import Macro","description":"Input Discord Attachment/Raw URL or Macro JSON string","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0502","sourceId":"button-input-Copy Macro json to Clipboard","type":"button","title":"Copy Macro json to Clipboard","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0503","sourceId":"button-input-Send Macro json via Webhook","type":"button","title":"Send Macro .json File via Webhook","description":"Uploads the selected Macro as one downloadable .json attachment using the configured Webhook. Preserves the original file; does not split JSON into chat messages.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Information","path":["Information"],"controls":[{"key":"NUI-0504","sourceId":"label-Select a macro below for a specific game mode\nIf you enable Play Macro and Auto Play at the sa","type":"label","title":"Select a macro below for a specific game mode\nIf you enable Play Macro and Auto Play at the same time, and no macro below is selected, it will run Auto Play instead","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]},{"name":"Macro","path":["Macro"],"controls":[{"key":"NUI-0505","sourceId":"input-checkbox-Play Macro","type":"toggle","title":"Play Macro","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0506","sourceId":"input-checkbox-Record Macro","type":"toggle","title":"Record Macro","description":"Experiencing issues with the recorded macro? Try not to place units too close to each other\nThis will also records Unit's Special Move with timing","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false,"portable":false}]},{"name":"Manage","path":["Manage"],"controls":[{"key":"NUI-0507","sourceId":"box-input-Create Macro","type":"text-input","title":"Create Macro","description":"Input a macro name here","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":""},{"key":"NUI-0508","sourceId":"button-input-Delete Selected Macro","type":"button","title":"Delete Selected Macro","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0509","sourceId":"select-input-Select Macro","type":"dropdown","title":"Select Macro","description":"Must be selected with a Macro for Play Macro work","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Misc","path":["Misc"],"controls":[{"key":"NUI-0510","sourceId":"button-input-Check Macro's Unit","type":"button","title":"Check Macro's Unit","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0511","sourceId":"button-input-Equip Macro's Units","type":"button","title":"Equip Macro's Units","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0512","sourceId":"button-input-Copy Hotbar stats to Clipboard","type":"button","title":"Copy Hotbar stats to Clipboard","description":"Copies your hotbar units, traits, stat potentials, and equipment rolls in a Discord-ready format so you can easily share your macro loadout.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"NUI-0513","sourceId":"input-checkbox-Auto Equip Macro's Units","type":"toggle","title":"Auto Equip Macro's Units","description":"Automatically equips and verifies the macro's full team before voting to start or running the macro. The game will wait and retry if the hotbar has not updated yet.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true}]},{"name":"Play Macro Config","path":["Play Macro Config"],"controls":[{"key":"NUI-0514","sourceId":"input-checkbox-Ignore Timing","type":"toggle","title":"Ignore Timing","description":"Continue play Macro without rely on Time, should be good if your macro doesn't timing the Time to place the Units (This for faster macro/faster time?)\nRecommended/Must enable with Auto Skip\nTHIS DOESNT AFFECT THE TIMING OF THE UNIT'S ABILITY","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0515","sourceId":"input-checkbox-No Ignore Sell Timing","type":"toggle","title":"No Ignore Sell Timing","description":"If set to true, will not ignore the timing of Sell Actions","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0516","sourceId":"slider-input-Macro Retry Limit","type":"slider","title":"Macro Retry Limit","description":"Retries a failed action this many times, then skips only that action and continues the macro. Setting it to 0 retries forever.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":1,"min":0,"max":100,"rounding":0}]},{"name":"Select Infernal Cult Macro","path":["Select Infernal Cult Macro"],"controls":[{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":false,"key":"AE-INFERNAL-MACRO-PLAY","sourceId":"infernal-macro-play","type":"toggle","title":"Play Infernal Cult Macro","description":"Requires the main Play Macro switch. Selects only the Macro assigned to the actual Infernal Cult map; no Story/Event/managed-Macro fallback."},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-STATUS","sourceId":"infernal-macro-status","type":"label","title":"Infernal Cult Macro: off","description":""},{"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-INFO","sourceId":"infernal-macro-info","type":"label","title":"Assign one Macro per map below (Infernal Cult / Hard / Act 1).\nThe actual stage decides which Macro plays, even if the lobby rotation changes mid-match.\nEmpty or missing files pause playback. Main Play Macro + Play Infernal Cult Macro must both be on.\nRecording takes priority; no automatic team changes.","description":""},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-SchoolGrounds","sourceId":"infernal-macro-map-SchoolGrounds","infernalMapId":"SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FlowerForest","sourceId":"infernal-macro-map-FlowerForest","infernalMapId":"FlowerForest","type":"dropdown","title":"Flower Forest","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-Dressrosa","sourceId":"infernal-macro-map-Dressrosa","infernalMapId":"Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FairyKingForest","sourceId":"infernal-macro-map-FairyKingForest","infernalMapId":"FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-KingsTomb","sourceId":"infernal-macro-map-KingsTomb","infernalMapId":"KingsTomb","type":"dropdown","title":"King's Tomb","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-WestCity","sourceId":"infernal-macro-map-WestCity","infernalMapId":"WestCity","type":"dropdown","title":"East Town","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-RedLake","sourceId":"infernal-macro-map-RedLake","infernalMapId":"RedLake","type":"dropdown","title":"Crimson Shore","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."},{"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"currentValue":null,"default":null,"key":"AE-INFERNAL-MACRO-MAP-FlamingMonastery","sourceId":"infernal-macro-map-FlamingMonastery","infernalMapId":"FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Infernal Cult / Hard / Act 1. Only this map uses this Macro; leave empty to pause on this map."}]},{"name":"Select Challenge Macro","path":["Select Challenge Macro"],"controls":[{"key":"NUI-0517","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0518","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0519","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0520","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0521","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0522","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0523","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Challenge-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Challenge / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Challenge","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Expedition Macro","path":["Select Expedition Macro"],"controls":[{"key":"NUI-0524","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0525","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0526","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0527","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Infinite Macro","path":["Select Infinite Macro"],"controls":[{"key":"NUI-0528","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0529","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0530","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0531","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0532","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0533","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0534","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0535","sourceId":"select-input-Spirit City","type":"dropdown","title":"Spirit City","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Infinite-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Infinite / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Infinite","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Mastery Macro","path":["Select Mastery Macro"],"controls":[{"key":"NUI-0536","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0537","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0538","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0539","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0540","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0541","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0542","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Mastery-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Mastery / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Mastery","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Portal Macro","path":["Select Portal Macro"],"controls":[{"key":"NUI-0543","sourceId":"select-input-Ancient Temple","type":"dropdown","title":"Ancient Temple","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0544","sourceId":"select-input-Lightning God's Portal","type":"dropdown","title":"Lightning God's Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0545","sourceId":"select-input-Sky Ruins Portal","type":"dropdown","title":"Sky Ruins Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0546","sourceId":"select-input-Sovereign's Portal","type":"dropdown","title":"Sovereign's Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0547","sourceId":"select-input-Summer Portal","type":"dropdown","title":"Summer Portal","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Portal-FlamingMonastery-FireForcePortal","type":"dropdown","title":"Infernal Portal","description":"Assign a Macro recorded for Portal / FlamingMonastery / FireForcePortal. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Portal","MapName":"FlamingMonastery","PortalAsset":"FireForcePortal"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Raid Macro","path":["Select Raid Macro"],"controls":[{"key":"NUI-0548","sourceId":"select-input-Snowy Castle (Act 1)","type":"dropdown","title":"Snowy Castle (Act 1)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0549","sourceId":"select-input-Snowy Castle (Act 2)","type":"dropdown","title":"Snowy Castle (Act 2)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0550","sourceId":"select-input-Snowy Castle (Act 3)","type":"dropdown","title":"Snowy Castle (Act 3)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0551","sourceId":"select-input-Spirit City (Act 1)","type":"dropdown","title":"Spirit City (Act 1)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0552","sourceId":"select-input-Spirit City (Act 2)","type":"dropdown","title":"Spirit City (Act 2)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0553","sourceId":"select-input-Spirit City (Act 3)","type":"dropdown","title":"Spirit City (Act 3)","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Story Macro","path":["Select Story Macro"],"controls":[{"key":"NUI-0554","sourceId":"select-input-Crimson Shore","type":"dropdown","title":"Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0555","sourceId":"select-input-East Town","type":"dropdown","title":"East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0556","sourceId":"select-input-Fairy King Forest","type":"dropdown","title":"Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0557","sourceId":"select-input-Flower Forest","type":"dropdown","title":"Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0558","sourceId":"select-input-King's Tomb","type":"dropdown","title":"King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0559","sourceId":"select-input-Rose Kingdom","type":"dropdown","title":"Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0560","sourceId":"select-input-School Grounds","type":"dropdown","title":"School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Story-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Story / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Story","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Tower Macro","path":["Select Tower Macro"],"controls":[{"key":"NUI-0561","sourceId":"select-input-Tower - Crimson Shore","type":"dropdown","title":"Tower - Crimson Shore","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0562","sourceId":"select-input-Tower - East Town","type":"dropdown","title":"Tower - East Town","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0563","sourceId":"select-input-Tower - Fairy King Forest","type":"dropdown","title":"Tower - Fairy King Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0564","sourceId":"select-input-Tower - Flower Forest","type":"dropdown","title":"Tower - Flower Forest","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0565","sourceId":"select-input-Tower - King's Tomb","type":"dropdown","title":"Tower - King's Tomb","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0566","sourceId":"select-input-Tower - Rose Kingdom","type":"dropdown","title":"Tower - Rose Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0567","sourceId":"select-input-Tower - School Grounds","type":"dropdown","title":"Tower - School Grounds","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-TowerOfGod-FlamingMonastery","type":"dropdown","title":"Tower - Flaming Monastery","description":"Assign a Macro recorded for TowerOfGod / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"TowerOfGod","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Unit Trial Macro","path":["Select Unit Trial Macro"],"controls":[{"key":"NUI-0568","sourceId":"select-input-'s Trial","type":"dropdown","title":"'s Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0569","sourceId":"select-input-8th Sword's Trial","type":"dropdown","title":"8th Sword's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0570","sourceId":"select-input-Bioinsect's Trial","type":"dropdown","title":"Bioinsect's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0571","sourceId":"select-input-Carrot's Trial","type":"dropdown","title":"Carrot's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0572","sourceId":"select-input-Crimson's Trial","type":"dropdown","title":"Crimson's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0573","sourceId":"select-input-Cursed Student's Trial","type":"dropdown","title":"Cursed Student's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0574","sourceId":"select-input-Eclipse Hunter's Trial","type":"dropdown","title":"Eclipse Hunter's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0575","sourceId":"select-input-Elf Mage's Trial","type":"dropdown","title":"Elf Mage's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0576","sourceId":"select-input-Flame Emperor's Trial","type":"dropdown","title":"Flame Emperor's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0577","sourceId":"select-input-Hollow's Trial","type":"dropdown","title":"Hollow's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0578","sourceId":"select-input-Lady Giant's Trial","type":"dropdown","title":"Lady Giant's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0579","sourceId":"select-input-Mechanical Wings's Trial","type":"dropdown","title":"Mechanical Wings's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0580","sourceId":"select-input-Prodigy's Trial","type":"dropdown","title":"Prodigy's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0581","sourceId":"select-input-Puppet's Trial","type":"dropdown","title":"Puppet's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0582","sourceId":"select-input-Reaper's Trial","type":"dropdown","title":"Reaper's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0583","sourceId":"select-input-Salmon Sorcerer's Trial","type":"dropdown","title":"Salmon Sorcerer's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0584","sourceId":"select-input-String Demon's Trial","type":"dropdown","title":"String Demon's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0585","sourceId":"select-input-True Saint's Trial","type":"dropdown","title":"True Saint's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0586","sourceId":"select-input-Vegetable's Trial","type":"dropdown","title":"Vegetable's Trial","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Burns","type":"dropdown","title":"Ignition Commander's Trial","description":"Assign a Macro recorded for Trial / Burns. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Burns"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Joker","type":"dropdown","title":"Wild Card's Trial","description":"Assign a Macro recorded for Trial / Joker. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Joker"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Shinra","type":"dropdown","title":"Devil's Trial","description":"Assign a Macro recorded for Trial / Shinra. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Shinra"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Trial-Sho","type":"dropdown","title":"Fallen Angel's Trial","description":"Assign a Macro recorded for Trial / Sho. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Trial","TrialUnit":"Sho"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"[EVENT] Select Event Macro","path":["[EVENT] Select Event Macro"],"controls":[{"key":"NUI-0587","sourceId":"select-input-Coral Kingdom","type":"dropdown","title":"Coral Kingdom","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"NUI-0588","sourceId":"select-input-CreatorSpotlight","type":"dropdown","title":"CreatorSpotlight","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Boss Rush Macro","path":["Select Boss Rush Macro"],"controls":[{"key":"AE-MACRO-MAP-BossRush-BeniBossRush","type":"dropdown","title":"District 7 — Gates (retain units)","description":"Runs once through the Gate phase, retaining units and progress between Gates. It never restarts placement for every Gate.","macroContext":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Gates"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-BossRush-BeniBossRush-Boss","type":"dropdown","title":"District 7 — Boss (fresh units)","description":"Use a separately recorded Boss phase Macro. Gate files are not reused; missing or mismatched Boss files pause playback.","macroContext":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Boss"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null,"currentValue":null}]},{"name":"Select Ancient One Macro","path":["Select Ancient One Macro"],"controls":[{"key":"AE-MACRO-MAP-CthulhuEvent-CthulhuEvent","type":"dropdown","title":"Invaded Lobby","description":"Assign a Macro recorded for CthulhuEvent / CthulhuEvent. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"CthulhuEvent","MapName":"CthulhuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Eclipse Macro","path":["Select Eclipse Macro"],"controls":[{"key":"AE-MACRO-MAP-EclipseEvent-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for EclipseEvent / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for EclipseEvent / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for EclipseEvent / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for EclipseEvent / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for EclipseEvent / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for EclipseEvent / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-EclipseEvent-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for EclipseEvent / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"EclipseEvent","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Golden Hour Macro","path":["Select Golden Hour Macro"],"controls":[{"key":"AE-MACRO-MAP-GoldenHourEvent-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for GoldenHourEvent / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for GoldenHourEvent / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for GoldenHourEvent / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for GoldenHourEvent / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for GoldenHourEvent / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for GoldenHourEvent / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for GoldenHourEvent / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-GoldenHourEvent-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for GoldenHourEvent / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"GoldenHourEvent","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Tournament Macro","path":["Select Tournament Macro"],"controls":[{"key":"AE-MACRO-MAP-Tournament-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for Tournament / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for Tournament / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for Tournament / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for Tournament / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for Tournament / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for Tournament / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for Tournament / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Tournament / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Tournament-SpiritCity","type":"dropdown","title":"Spirit City","description":"Assign a Macro recorded for Tournament / SpiritCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Tournament","MapName":"SpiritCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Sandbox Macro","path":["Select Sandbox Macro"],"controls":[{"key":"AE-MACRO-MAP-Sandbox-KingsTomb","type":"dropdown","title":"King's Tomb","description":"Assign a Macro recorded for Sandbox / KingsTomb. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"KingsTomb"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-HillOfSwords","type":"dropdown","title":"Snowy Castle","description":"Assign a Macro recorded for Sandbox / HillOfSwords. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"HillOfSwords"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-Summer2026Event","type":"dropdown","title":"Coral Kingdom","description":"Assign a Macro recorded for Sandbox / Summer2026Event. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"Summer2026Event"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-BeniBossRush","type":"dropdown","title":"District 7","description":"Assign a Macro recorded for Sandbox / BeniBossRush. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"BeniBossRush"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-VillainInvasion","type":"dropdown","title":"Crow Hideout","description":"Assign a Macro recorded for Sandbox / VillainInvasion. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"VillainInvasion"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-KaijuEvent","type":"dropdown","title":"Fractured District","description":"Assign a Macro recorded for Sandbox / KaijuEvent. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"KaijuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-SchoolGrounds","type":"dropdown","title":"School Grounds","description":"Assign a Macro recorded for Sandbox / SchoolGrounds. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"SchoolGrounds"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FlamingMonastery","type":"dropdown","title":"Flaming Monastery","description":"Assign a Macro recorded for Sandbox / FlamingMonastery. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FlamingMonastery"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-WestCity","type":"dropdown","title":"East Town","description":"Assign a Macro recorded for Sandbox / WestCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"WestCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FlowerForest","type":"dropdown","title":"Flower Forest","description":"Assign a Macro recorded for Sandbox / FlowerForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FlowerForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-SpiritCity","type":"dropdown","title":"Spirit City","description":"Assign a Macro recorded for Sandbox / SpiritCity. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"SpiritCity"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-Dressrosa","type":"dropdown","title":"Rose Kingdom","description":"Assign a Macro recorded for Sandbox / Dressrosa. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"Dressrosa"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-FairyKingForest","type":"dropdown","title":"Fairy King Forest","description":"Assign a Macro recorded for Sandbox / FairyKingForest. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"FairyKingForest"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Sandbox-RedLake","type":"dropdown","title":"Crimson Shore","description":"Assign a Macro recorded for Sandbox / RedLake. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"Sandbox","MapName":"RedLake"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Villain Invasion Macro","path":["Select Villain Invasion Macro"],"controls":[{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_1","type":"dropdown","title":"Crow Hideout (Act 1)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 1. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 1"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_2","type":"dropdown","title":"Crow Hideout (Act 2)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 2. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 2"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_3","type":"dropdown","title":"Crow Hideout (Act 3)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Act 3. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 3"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Crow","type":"dropdown","title":"Crow Hideout (Crow)","description":"Assign a Macro recorded for VillainInvasion / VillainInvasion / Crow. Empty or missing files wait; never use another map or mode as fallback.","macroContext":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Crow"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null}]},{"name":"Select Rift Macro","path":["Select Rift Macro"],"controls":[{"key":"AE-MACRO-MAP-KaijuEvent-KaijuEvent","type":"dropdown","title":"① Monster Clash — Normal Stage","description":"Ordinary Monster Clash / Fractured District farming before the helicopter arrives. This configuration is independent of the Monster Rift stage below.","macroContext":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-MAP-Rift-KaijuEventRift","type":"dropdown","title":"② Monster Rift — Helicopter Stage","description":"Used only after entering Monster Rift by helicopter. Select a separate Macro recorded inside KaijuEventRift; the normal-stage file is never substituted automatically.","macroContext":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent","ActName":"Act 1","Difficulty":"Hard","RiftName":"KaijuEventRift"},"options":[],"multi":false,"dynamicOptions":true,"sensitive":false,"default":null},{"key":"AE-MACRO-RIFT-INFO","type":"label","title":"Two independent configs: ① normal Monster Clash farming; ② Monster Rift after entering the helicopter.\nUse a separate Rift recording for ②. Changing one selection does not change the other.","description":""}]}],"tree":[{"name":"Importer/Exporter","path":["Importer/Exporter"],"sectionIndex":1,"children":[]},{"name":"Information","path":["Information"],"sectionIndex":2,"children":[]},{"name":"Macro","path":["Macro"],"sectionIndex":3,"children":[]},{"name":"Manage","path":["Manage"],"sectionIndex":4,"children":[]},{"name":"Misc","path":["Misc"],"sectionIndex":5,"children":[]},{"name":"Play Macro Config","path":["Play Macro Config"],"sectionIndex":6,"children":[]},{"name":"Select Infernal Cult Macro","path":["Select Infernal Cult Macro"],"sectionIndex":7,"children":[]},{"name":"Select Challenge Macro","path":["Select Challenge Macro"],"sectionIndex":8,"children":[]},{"name":"Select Expedition Macro","path":["Select Expedition Macro"],"sectionIndex":9,"children":[]},{"name":"Select Infinite Macro","path":["Select Infinite Macro"],"sectionIndex":10,"children":[]},{"name":"Select Mastery Macro","path":["Select Mastery Macro"],"sectionIndex":11,"children":[]},{"name":"Select Portal Macro","path":["Select Portal Macro"],"sectionIndex":12,"children":[]},{"name":"Select Raid Macro","path":["Select Raid Macro"],"sectionIndex":13,"children":[]},{"name":"Select Story Macro","path":["Select Story Macro"],"sectionIndex":14,"children":[]},{"name":"Select Tower Macro","path":["Select Tower Macro"],"sectionIndex":15,"children":[]},{"name":"Select Unit Trial Macro","path":["Select Unit Trial Macro"],"sectionIndex":16,"children":[]},{"name":"[EVENT] Select Event Macro","path":["[EVENT] Select Event Macro"],"sectionIndex":17,"children":[]},{"name":"Select Boss Rush Macro","path":["Select Boss Rush Macro"],"sectionIndex":18,"children":[]},{"name":"Select Ancient One Macro","path":["Select Ancient One Macro"],"sectionIndex":19,"children":[]},{"name":"Select Eclipse Macro","path":["Select Eclipse Macro"],"sectionIndex":20,"children":[]},{"name":"Select Golden Hour Macro","path":["Select Golden Hour Macro"],"sectionIndex":21,"children":[]},{"name":"Select Tournament Macro","path":["Select Tournament Macro"],"sectionIndex":22,"children":[]},{"name":"Select Sandbox Macro","path":["Select Sandbox Macro"],"sectionIndex":23,"children":[]},{"name":"Select Villain Invasion Macro","path":["Select Villain Invasion Macro"],"sectionIndex":24,"children":[]},{"name":"Select Rift Macro","path":["Select Rift Macro"],"sectionIndex":25,"children":[],"defaultExpanded":true}]},{"name":"Webhook","title":"Webhook","sections":[{"name":"Notification","path":["Notification"],"controls":[{"key":"NUI-0589","sourceId":"input-checkbox-Only Mention if Shiny","type":"toggle","title":"Stage Summary: Only Mention Shiny","description":"Applies only to stage-summary mentions when Unit Obtained is off. Unit Obtained always pings for every new owned character.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0590","sourceId":"input-checkbox-Show Session Data","type":"toggle","title":"Show Session Data","description":"Add matches played, session time and the session win/loss ratio to Stage Finished webhooks","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":true},{"key":"NUI-0591","sourceId":"input-checkbox-Stage Finished","type":"toggle","title":"Stage Finished / Restart","description":"Send stage results and confirmed restarts. Restart-only messages never ping. Rewards show +gained [owned]; EXP shows gained amounts only.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"NUI-0592","sourceId":"input-checkbox-Unit Summoned","type":"toggle","title":"Unit Obtained (All Modes)","description":"Notify and ping for every newly owned character in any gamemode or lobby, regardless of rarity or summon targets; existing inventory is not replayed.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false}]},{"name":"Setting","path":["Setting"],"controls":[{"key":"NUI-0593","sourceId":"box-input-Mention ID","type":"text-input","title":"Mention ID","description":"Discord User ID to ping for new characters. Leave blank to ping @everyone. Invalid nonempty IDs do not ping.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0594","sourceId":"box-input-Webhook URL","type":"text-input","title":"Webhook URL","description":"Paste the url of your Discord Webhook here","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":true,"default":null},{"key":"NUI-0595","sourceId":"button-input-Test Webhook","type":"button","title":"Test Webhook","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null}]}],"tree":[{"name":"Notification","path":["Notification"],"sectionIndex":1,"children":[]},{"name":"Setting","path":["Setting"],"sectionIndex":2,"children":[]}]},{"name":"Settings","title":"Settings","sections":[{"name":"Auto Execute","path":["Auto Execute"],"controls":[{"key":"AE-SETTINGS-AUTO-EXECUTE","type":"toggle","title":"Auto Execute on Teleport","description":"Opt-in. Caches this exact GUI and library privately, then queues them on teleport. Requires executor queue/file APIs. Turning OFF revokes queued cached loads.","default":false,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-STATUS","type":"label","title":"Settings: checking supported features...","description":"Missing executor or network APIs are reported here; no fake capability is shown.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Failsafe","path":["Failsafe"],"controls":[{"key":"AE-AUTO-REJOIN","sourceId":"auto-rejoin","type":"toggle","title":"Auto Rejoin","description":"Opt-in: after a 267/277 disconnect, send one normal rejoin request. One attempt per session; turning off or unloading cancels the countdown. Does not bypass server access restrictions.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":false},{"key":"AE-REJOIN-DELAY","sourceId":"rejoin-delay","type":"slider","title":"Rejoin Delay (seconds)","description":"Delay before the single rejoin request; default 5 seconds.","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":5,"min":1,"max":30,"rounding":0},{"key":"AE-AUTO-REJOIN-STATUS","sourceId":"auto-rejoin-status","type":"label","title":"Rejoin: disabled • 0/1 this session","description":"","currentValue":null,"options":[],"multi":false,"dynamicOptions":false,"sensitive":false,"default":null},{"key":"AE-SETTINGS-PING-FREEZE","type":"toggle","title":"Rejoin on Network Freeze (120 seconds)","description":"After verified network activity, rejoin only if receive traffic and progress remain frozen for 120 seconds. Shares one attempt per session with Auto Rejoin; constant ping alone is not a freeze.","default":false,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config","path":["Script Config"],"controls":[{"key":"AE-SETTINGS-CONFIG-INFO","type":"label","title":"Config format: JSON only. Secrets, account-specific selections and Macro file contents are excluded.\nImport/reset requires Preview then Confirm; it does not force a kick or rejoin.","description":"","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-RESET","type":"button","title":"Preview Reset Script Config","description":"Previews default settings. Nothing is changed until Confirm Apply; preserves Macro files and Webhook secrets.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-STATUS","type":"label","title":"Settings ready. Preview required before applying.","description":"","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config / Export","path":["Script Config","Export"],"controls":[{"key":"AE-SETTINGS-CONFIG-MINIFY","type":"toggle","title":"Minify Config","description":"OFF exports readable indented JSON; ON exports compact JSON.","default":false,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-COPY","type":"button","title":"Copy Config JSON to Clipboard","description":"Exports portable settings only. Webhook URL, keys and private account fields are omitted.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-SEND","type":"button","title":"Send Config .json File via Webhook","description":"Sends zen_hub_settings.json through the Webhook tab URL. The URL itself is never included in the file.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Script Config / Import","path":["Script Config","Import"],"controls":[{"key":"AE-SETTINGS-CONFIG-INPUT","type":"text-input","title":"Paste Config JSON","description":"Paste exported JSON, not code or a URL. The pasted text is temporary and is not saved.","default":"","options":[],"multi":false,"sensitive":false,"transient":true,"configExport":false},{"key":"AE-SETTINGS-CONFIG-PREVIEW","type":"button","title":"Preview Import Config","description":"Validates all keys, types and ranges. Shows changed settings and toggles that would be enabled; sends no game actions.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-APPLY","type":"button","title":"Confirm Apply Preview","description":"Applies only the validated preview. This may enable the listed automation toggles. Blocked while Macro recording is active.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-CONFIG-CANCEL","type":"button","title":"Cancel Preview","description":"Discards the pending import/reset without applying it.","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"UI Control","path":["UI Control"],"controls":[{"key":"AE-SETTINGS-TOGGLE-KEY","type":"dropdown","title":"Toggle UI Key","description":"Changes the native UI hide/show key.","default":"RightControl","options":["RightControl","LeftControl","RightShift","LeftShift","RightAlt","LeftAlt","Insert","Home","F1","F2","F3","F4","Q"],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-MOBILE","type":"toggle","title":"Display Toggle UI Button (Mobile)","description":"Shows a draggable Zen Hub toggle button near the lower-left corner.","default":true,"options":[],"multi":false,"sensitive":false}]},{"name":"Custom UI Colors","path":["Custom UI Colors"],"controls":[{"key":"AE-SETTINGS-THEME","type":"dropdown","title":"Color Preset","description":"Default preserves the current theme. Custom uses the hex colors below.","default":"Default","options":["Default","Custom"],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-APPLY-COLORS","type":"button","title":"Apply Custom UI Colors","description":"Choose Custom and enter six-digit RGB hex values, then apply.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-RESET-COLORS","type":"button","title":"Restore Default UI Colors","description":"Restores the current Zen Hub default palette without resetting game settings.","default":null,"options":[],"multi":false,"sensitive":false},{"key":"AE-SETTINGS-COLOR-Canvas","type":"text-input","title":"Canvas (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"171719","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Surface","type":"text-input","title":"Surface (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"232326","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Inset","type":"text-input","title":"Inset (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"2e2e33","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Text","type":"text-input","title":"Text (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"f5f5f7","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Muted","type":"text-input","title":"Muted (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"b2b2ba","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Line","type":"text-input","title":"Line (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"3a3a41","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Accent","type":"text-input","title":"Accent (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"0a70db","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-OnAccent","type":"text-input","title":"OnAccent (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"ffffff","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-Tint","type":"text-input","title":"Tint (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"243d5c","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlFill","type":"text-input","title":"ControlFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"34343b","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlBorder","type":"text-input","title":"ControlBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"8f8f99","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlHoverBorder","type":"text-input","title":"ControlHoverBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"b7b7c2","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-ControlFocusBorder","type":"text-input","title":"ControlFocusBorder (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"6fb5ff","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-HeaderFill","type":"text-input","title":"HeaderFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"303037","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-PopupFill","type":"text-input","title":"PopupFill (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"1c1c21","options":[],"multi":false,"sensitive":false,"configExport":true},{"key":"AE-SETTINGS-COLOR-PopupSelection","type":"text-input","title":"PopupSelection (#RRGGBB)","description":"Six hexadecimal digits; for example 0a70db.","default":"496994","options":[],"multi":false,"sensitive":false,"configExport":true}]},{"name":"Script Information","path":["Script Information"],"controls":[{"key":"AE-SETTINGS-INFO","type":"label","title":"Settings adapted from the captured Nousigi UI Setting / Custom UI reference.\nThis GUI does not use Nousigi Whitelist keys, so license deletion and remaining-key-time actions do not apply.","description":"","default":null,"options":[],"multi":false,"sensitive":false}]},{"name":"Compatibility","path":["Compatibility"],"controls":[{"key":"AE-PORTABLE-COMPATIBILITY","type":"label","title":"Portable build: checking optional executor APIs...","description":"Feature support depends on executor APIs, not only the operating system."},{"key":"AE-PORTABLE-STORAGE","type":"label","title":"Settings storage: checking...","description":"Verified saves are device-local. Missing or failing file APIs are never treated as a successful save."}]}],"tree":[{"name":"Auto Execute","path":["Auto Execute"],"children":[],"sectionIndex":1},{"name":"Failsafe","path":["Failsafe"],"children":[],"sectionIndex":2},{"name":"Script Config","path":["Script Config"],"children":[{"name":"Export","path":["Script Config","Export"],"children":[],"sectionIndex":4},{"name":"Import","path":["Script Config","Import"],"children":[],"sectionIndex":5}],"sectionIndex":3},{"name":"UI Control","path":["UI Control"],"children":[],"sectionIndex":6},{"name":"Custom UI Colors","path":["Custom UI Colors"],"children":[],"sectionIndex":7},{"name":"Script Information","path":["Script Information"],"children":[],"sectionIndex":8},{"name":"Compatibility","path":["Compatibility"],"children":[],"sectionIndex":9}]}],"macroCatalogBindings":[{"Key":"NUI-0560","Context":{"Gamemode":"Story","MapName":"SchoolGrounds"}},{"Key":"NUI-0557","Context":{"Gamemode":"Story","MapName":"FlowerForest"}},{"Key":"NUI-0559","Context":{"Gamemode":"Story","MapName":"Dressrosa"}},{"Key":"NUI-0556","Context":{"Gamemode":"Story","MapName":"FairyKingForest"}},{"Key":"NUI-0558","Context":{"Gamemode":"Story","MapName":"KingsTomb"}},{"Key":"NUI-0555","Context":{"Gamemode":"Story","MapName":"WestCity"}},{"Key":"NUI-0554","Context":{"Gamemode":"Story","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Story-FlamingMonastery","Context":{"Gamemode":"Story","MapName":"FlamingMonastery"}},{"Key":"NUI-0534","Context":{"Gamemode":"Infinite","MapName":"SchoolGrounds"}},{"Key":"NUI-0531","Context":{"Gamemode":"Infinite","MapName":"FlowerForest"}},{"Key":"NUI-0533","Context":{"Gamemode":"Infinite","MapName":"Dressrosa"}},{"Key":"NUI-0530","Context":{"Gamemode":"Infinite","MapName":"FairyKingForest"}},{"Key":"NUI-0532","Context":{"Gamemode":"Infinite","MapName":"KingsTomb"}},{"Key":"NUI-0529","Context":{"Gamemode":"Infinite","MapName":"WestCity"}},{"Key":"NUI-0528","Context":{"Gamemode":"Infinite","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Infinite-FlamingMonastery","Context":{"Gamemode":"Infinite","MapName":"FlamingMonastery"}},{"Key":"NUI-0535","Context":{"Gamemode":"Infinite","MapName":"SpiritCity"}},{"Key":"NUI-0542","Context":{"Gamemode":"Mastery","MapName":"SchoolGrounds"}},{"Key":"NUI-0539","Context":{"Gamemode":"Mastery","MapName":"FlowerForest"}},{"Key":"NUI-0541","Context":{"Gamemode":"Mastery","MapName":"Dressrosa"}},{"Key":"NUI-0538","Context":{"Gamemode":"Mastery","MapName":"FairyKingForest"}},{"Key":"NUI-0540","Context":{"Gamemode":"Mastery","MapName":"KingsTomb"}},{"Key":"NUI-0537","Context":{"Gamemode":"Mastery","MapName":"WestCity"}},{"Key":"NUI-0536","Context":{"Gamemode":"Mastery","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Mastery-FlamingMonastery","Context":{"Gamemode":"Mastery","MapName":"FlamingMonastery"}},{"Key":"NUI-0527","Context":{"Gamemode":"Expedition","MapName":"SchoolGroundsExpedition"}},{"Key":"NUI-0525","Context":{"Gamemode":"Expedition","MapName":"FlowerForestExpedition"}},{"Key":"NUI-0526","Context":{"Gamemode":"Expedition","MapName":"DressrosaExpedition"}},{"Key":"NUI-0524","Context":{"Gamemode":"Expedition","MapName":"WestCityExpedition"}},{"Key":"NUI-0523","Context":{"Gamemode":"Challenge","MapName":"SchoolGrounds"}},{"Key":"NUI-0520","Context":{"Gamemode":"Challenge","MapName":"FlowerForest"}},{"Key":"NUI-0522","Context":{"Gamemode":"Challenge","MapName":"Dressrosa"}},{"Key":"NUI-0519","Context":{"Gamemode":"Challenge","MapName":"FairyKingForest"}},{"Key":"NUI-0521","Context":{"Gamemode":"Challenge","MapName":"KingsTomb"}},{"Key":"NUI-0518","Context":{"Gamemode":"Challenge","MapName":"WestCity"}},{"Key":"NUI-0517","Context":{"Gamemode":"Challenge","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Challenge-FlamingMonastery","Context":{"Gamemode":"Challenge","MapName":"FlamingMonastery"}},{"Key":"NUI-0567","Context":{"Gamemode":"TowerOfGod","MapName":"SchoolGrounds"}},{"Key":"NUI-0564","Context":{"Gamemode":"TowerOfGod","MapName":"FlowerForest"}},{"Key":"NUI-0566","Context":{"Gamemode":"TowerOfGod","MapName":"Dressrosa"}},{"Key":"NUI-0563","Context":{"Gamemode":"TowerOfGod","MapName":"FairyKingForest"}},{"Key":"NUI-0565","Context":{"Gamemode":"TowerOfGod","MapName":"KingsTomb"}},{"Key":"NUI-0562","Context":{"Gamemode":"TowerOfGod","MapName":"WestCity"}},{"Key":"NUI-0561","Context":{"Gamemode":"TowerOfGod","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-TowerOfGod-FlamingMonastery","Context":{"Gamemode":"TowerOfGod","MapName":"FlamingMonastery"}},{"Key":"NUI-0551","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 1"}},{"Key":"NUI-0552","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 2"}},{"Key":"NUI-0553","Context":{"Gamemode":"Raid","MapName":"SpiritCity","ActName":"Act 3"}},{"Key":"NUI-0548","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 1"}},{"Key":"NUI-0549","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 2"}},{"Key":"NUI-0550","Context":{"Gamemode":"Raid","MapName":"HillOfSwords","ActName":"Act 3"}},{"Key":"NUI-0588","Context":{"Gamemode":"Event","MapName":"CreatorSpotlight"}},{"Key":"NUI-0587","Context":{"Gamemode":"Event","MapName":"Summer2026Event"}},{"Key":"NUI-0568","Context":{"Gamemode":"Trial","TrialUnit":"Ballin"}},{"Key":"AE-MACRO-MAP-Trial-Burns","Context":{"Gamemode":"Trial","TrialUnit":"Burns"}},{"Key":"NUI-0570","Context":{"Gamemode":"Trial","TrialUnit":"Cell"}},{"Key":"NUI-0579","Context":{"Gamemode":"Trial","TrialUnit":"CellEquipment"}},{"Key":"NUI-0578","Context":{"Gamemode":"Trial","TrialUnit":"Diane"}},{"Key":"NUI-0584","Context":{"Gamemode":"Trial","TrialUnit":"Doflamingo"}},{"Key":"NUI-0575","Context":{"Gamemode":"Trial","TrialUnit":"Frieren"}},{"Key":"NUI-0577","Context":{"Gamemode":"Trial","TrialUnit":"Gabimaru"}},{"Key":"NUI-0580","Context":{"Gamemode":"Trial","TrialUnit":"Gohan"}},{"Key":"NUI-0571","Context":{"Gamemode":"Trial","TrialUnit":"GokuSS1"}},{"Key":"NUI-0581","Context":{"Gamemode":"Trial","TrialUnit":"Gowther"}},{"Key":"NUI-0582","Context":{"Gamemode":"Trial","TrialUnit":"Ichigo"}},{"Key":"NUI-0583","Context":{"Gamemode":"Trial","TrialUnit":"Inumaki"}},{"Key":"AE-MACRO-MAP-Trial-Joker","Context":{"Gamemode":"Trial","TrialUnit":"Joker"}},{"Key":"NUI-0576","Context":{"Gamemode":"Trial","TrialUnit":"Sabo"}},{"Key":"AE-MACRO-MAP-Trial-Shinra","Context":{"Gamemode":"Trial","TrialUnit":"Shinra"}},{"Key":"AE-MACRO-MAP-Trial-Sho","Context":{"Gamemode":"Trial","TrialUnit":"Sho"}},{"Key":"NUI-0574","Context":{"Gamemode":"Trial","TrialUnit":"SkullKnight"}},{"Key":"NUI-0586","Context":{"Gamemode":"Trial","TrialUnit":"Vegeta"}},{"Key":"NUI-0573","Context":{"Gamemode":"Trial","TrialUnit":"Yuta"}},{"Key":"NUI-0545","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap","PortalAsset":"SkypieaPortal"}},{"Key":"NUI-0547","Context":{"Gamemode":"Portal","MapName":"Summer2026Event","PortalAsset":"SummerPortal"}},{"Key":"NUI-0546","Context":{"Gamemode":"Portal","MapName":"Summer2026Event","PortalAsset":"SinbadPortal"}},{"Key":"NUI-0544","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap","PortalAsset":"EnelPortal"}},{"Key":"AE-MACRO-MAP-Portal-FlamingMonastery-FireForcePortal","Context":{"Gamemode":"Portal","MapName":"FlamingMonastery","PortalAsset":"FireForcePortal"}},{"Key":"NUI-0543","Context":{"Gamemode":"Portal","MapName":"EnelPortalMap"}},{"Key":"AE-MACRO-MAP-BossRush-BeniBossRush","Context":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Gates"}},{"Key":"AE-MACRO-MAP-KaijuEvent-KaijuEvent","Context":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent"}},{"Key":"AE-MACRO-MAP-CthulhuEvent-CthulhuEvent","Context":{"Gamemode":"CthulhuEvent","MapName":"CthulhuEvent"}},{"Key":"AE-MACRO-MAP-EclipseEvent-SchoolGrounds","Context":{"Gamemode":"EclipseEvent","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FlowerForest","Context":{"Gamemode":"EclipseEvent","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-EclipseEvent-Dressrosa","Context":{"Gamemode":"EclipseEvent","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FairyKingForest","Context":{"Gamemode":"EclipseEvent","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-EclipseEvent-KingsTomb","Context":{"Gamemode":"EclipseEvent","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-EclipseEvent-WestCity","Context":{"Gamemode":"EclipseEvent","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-EclipseEvent-FlamingMonastery","Context":{"Gamemode":"EclipseEvent","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-SchoolGrounds","Context":{"Gamemode":"GoldenHourEvent","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FlowerForest","Context":{"Gamemode":"GoldenHourEvent","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-Dressrosa","Context":{"Gamemode":"GoldenHourEvent","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FairyKingForest","Context":{"Gamemode":"GoldenHourEvent","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-KingsTomb","Context":{"Gamemode":"GoldenHourEvent","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-WestCity","Context":{"Gamemode":"GoldenHourEvent","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-RedLake","Context":{"Gamemode":"GoldenHourEvent","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-GoldenHourEvent-FlamingMonastery","Context":{"Gamemode":"GoldenHourEvent","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Tournament-SchoolGrounds","Context":{"Gamemode":"Tournament","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-Tournament-FlowerForest","Context":{"Gamemode":"Tournament","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-Tournament-Dressrosa","Context":{"Gamemode":"Tournament","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-Tournament-FairyKingForest","Context":{"Gamemode":"Tournament","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-Tournament-KingsTomb","Context":{"Gamemode":"Tournament","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-Tournament-WestCity","Context":{"Gamemode":"Tournament","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-Tournament-RedLake","Context":{"Gamemode":"Tournament","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-Tournament-FlamingMonastery","Context":{"Gamemode":"Tournament","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Tournament-SpiritCity","Context":{"Gamemode":"Tournament","MapName":"SpiritCity"}},{"Key":"AE-MACRO-MAP-Sandbox-KingsTomb","Context":{"Gamemode":"Sandbox","MapName":"KingsTomb"}},{"Key":"AE-MACRO-MAP-Sandbox-HillOfSwords","Context":{"Gamemode":"Sandbox","MapName":"HillOfSwords"}},{"Key":"AE-MACRO-MAP-Sandbox-Summer2026Event","Context":{"Gamemode":"Sandbox","MapName":"Summer2026Event"}},{"Key":"AE-MACRO-MAP-Sandbox-BeniBossRush","Context":{"Gamemode":"Sandbox","MapName":"BeniBossRush"}},{"Key":"AE-MACRO-MAP-Sandbox-VillainInvasion","Context":{"Gamemode":"Sandbox","MapName":"VillainInvasion"}},{"Key":"AE-MACRO-MAP-Sandbox-KaijuEvent","Context":{"Gamemode":"Sandbox","MapName":"KaijuEvent"}},{"Key":"AE-MACRO-MAP-Sandbox-SchoolGrounds","Context":{"Gamemode":"Sandbox","MapName":"SchoolGrounds"}},{"Key":"AE-MACRO-MAP-Sandbox-FlamingMonastery","Context":{"Gamemode":"Sandbox","MapName":"FlamingMonastery"}},{"Key":"AE-MACRO-MAP-Sandbox-WestCity","Context":{"Gamemode":"Sandbox","MapName":"WestCity"}},{"Key":"AE-MACRO-MAP-Sandbox-FlowerForest","Context":{"Gamemode":"Sandbox","MapName":"FlowerForest"}},{"Key":"AE-MACRO-MAP-Sandbox-SpiritCity","Context":{"Gamemode":"Sandbox","MapName":"SpiritCity"}},{"Key":"AE-MACRO-MAP-Sandbox-Dressrosa","Context":{"Gamemode":"Sandbox","MapName":"Dressrosa"}},{"Key":"AE-MACRO-MAP-Sandbox-FairyKingForest","Context":{"Gamemode":"Sandbox","MapName":"FairyKingForest"}},{"Key":"AE-MACRO-MAP-Sandbox-RedLake","Context":{"Gamemode":"Sandbox","MapName":"RedLake"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_1","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 1"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_2","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 2"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Act_3","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Act 3"}},{"Key":"AE-MACRO-MAP-VillainInvasion-VillainInvasion-Crow","Context":{"Gamemode":"VillainInvasion","MapName":"VillainInvasion","ActName":"Crow"}},{"Key":"AE-MACRO-MAP-Rift-KaijuEventRift","Context":{"Gamemode":"KaijuEvent","MapName":"KaijuEvent","ActName":"Act 1","Difficulty":"Hard","RiftName":"KaijuEventRift"}},{"Key":"AE-MACRO-MAP-BossRush-BeniBossRush-Boss","Context":{"Gamemode":"BossRush","MapName":"BeniBossRush","BossRushPhase":"Boss"}}]}]==])
+-- ZENHUB_STORAGE_MIGRATION_BEGIN
+local ZENHUB_STORAGE_SOURCE = [====================[-- Copy account storage once; keep legacy bytes as a recoverable backup.
+return function(ctx)
+    local root, legacy, uid = ctx.Root, ctx.LegacyRoot, ctx.UserId
+    local report = {Status="failed",Root=root,LegacyRoot=legacy,UserId=uid,Copied={},Existing={},Errors={}}
+    local function fail(path, code)
+        report.Errors[#report.Errors+1]={Path=path,Code=code}
+        return false
+    end
+    if root~="ZenHub" or legacy~="AnimeExpeditionsClone" or type(uid)~="string" or not uid:match("^%d+$") then
+        fail("storage","invalid-context") return report
+    end
+    local function owns()
+        if type(ctx.AccountOwns)~="function" then return false end
+        local ok, result=pcall(ctx.AccountOwns)
+        return ok and result==true
+    end
+    if not owns() then fail(root,"account-changed") return report end
+    if type(ctx.IsFolder)~="function" then report.Status="unavailable" return report end
+    local folderOK, legacyExists=pcall(ctx.IsFolder,legacy)
+    if not folderOK then fail(legacy,"folder-query-failed") return report end
+    if legacyExists~=true then report.Status="no-legacy" return report end
+    for _,name in ipairs({"ReadFile","WriteFile","IsFile","ListFiles","MakeFolder","DecodeJSON","EncodeJSON"}) do
+        if type(ctx[name])~="function" then fail(root,"missing-"..name) end
+    end
+    if #report.Errors>0 then return report end
+    local function exists(path)
+        local ok,result=pcall(ctx.IsFile,path)
+        if not ok then fail(path,"file-query-failed") return nil end
+        return result==true
+    end
+    local function decode(bytes)
+        local ok,result=pcall(ctx.DecodeJSON,bytes)
+        return ok and type(result)=="table" and result or nil
+    end
+    local function sameAccount(value)
+        if type(value)=="string" then return value==uid end
+        return type(value)=="number" and value==value and value%1==0 and string.format("%.0f",value)==uid
+    end
+    local marker=root.."/storage_migration_"..uid..".json"
+    local markerExists=exists(marker)
+    if markerExists==nil then return report end
+    local function validMarker(record)
+        return record and record.Version==1 and record.UserId==uid
+            and (record.Completed==true or record.Completed==false and type(record.Pending)=="string")
+    end
+    local pending
+    if markerExists then
+        local ok,bytes=pcall(ctx.ReadFile,marker)
+        local record=ok and type(bytes)=="string" and decode(bytes)
+        if not validMarker(record) then
+            for _,suffix in ipairs({".tmp",".bak"}) do
+                local present=exists(marker..suffix)
+                if present then
+                    local recovered,raw=pcall(ctx.ReadFile,marker..suffix)
+                    local candidate=recovered and type(raw)=="string" and decode(raw)
+                    if validMarker(candidate) then record=candidate break end
+                end
+            end
+        end
+        if record and record.Version==1 and record.UserId==uid and record.Completed==true then
+            report.Status="already-migrated" return report
+        end
+        if record and record.Version==1 and record.UserId==uid and record.Completed==false and type(record.Pending)=="string" then
+            pending=record.Pending
+        else fail(marker,"invalid-marker") return report end
+    end
+    local function ensure(path)
+        if not owns() then return fail(path,"account-changed") end
+        local ok,yes=pcall(ctx.IsFolder,path)
+        if not ok then return fail(path,"folder-query-failed") end
+        if yes then return true end
+        if not pcall(ctx.MakeFolder,path) then return fail(path,"folder-create-failed") end
+        local checked,created=pcall(ctx.IsFolder,path)
+        if not checked or created~=true then return fail(path,"folder-create-unconfirmed") end
+        return true
+    end
+    if not ensure(root) then return report end
+    local function writeMarker(record)
+        if not owns() then return fail(marker,"account-changed") end
+        local encodedOK,bytes=pcall(ctx.EncodeJSON,record)
+        if not encodedOK or type(bytes)~="string" then return fail(marker,"marker-encode-failed") end
+        if not pcall(ctx.WriteFile,marker..".tmp",bytes) then return fail(marker,"marker-stage-failed") end
+        if not owns() then return fail(marker,"account-changed") end
+        local stageOK,stageBytes=pcall(ctx.ReadFile,marker..".tmp")
+        if not stageOK or stageBytes~=bytes then return fail(marker,"marker-stage-unconfirmed") end
+        local oldOK,oldBytes=pcall(ctx.ReadFile,marker)
+        if oldOK and type(oldBytes)=="string" and validMarker(decode(oldBytes)) then
+            if not pcall(ctx.WriteFile,marker..".bak",oldBytes) then return fail(marker,"marker-backup-failed") end
+            local backupOK,backupBytes=pcall(ctx.ReadFile,marker..".bak")
+            if not backupOK or backupBytes~=oldBytes then return fail(marker,"marker-backup-unconfirmed") end
+        end
+        if not owns() then return fail(marker,"account-changed") end
+        if not pcall(ctx.WriteFile,marker,bytes) then return fail(marker,"marker-write-failed") end
+        if not owns() then return fail(marker,"account-changed") end
+        local verified,actual=pcall(ctx.ReadFile,marker)
+        if not verified or actual~=bytes then return fail(marker,"marker-read-back-mismatch") end
+        return true
+    end
+    local total, count=0,0
+    local function validRecord(record,kind)
+        if not record then return false end
+        if kind=="macro" then return record.UserId==uid end
+        if kind=="journal" and record.UserId==nil then return true end
+        return sameAccount(record.UserId)
+    end
+    local function hasRecovery(path,relative,kind)
+        if kind~="record" then return false end
+        -- Preserve native primary/.bak recovery; never promote a backup to primary.
+        local alternate
+        if relative:sub(-4)==".bak" then alternate=path:sub(1,-5)
+        else alternate=path..".bak" end
+        local ok,found=pcall(ctx.IsFile,alternate)
+        if not ok or found~=true then return false end
+        local readable,bytes=pcall(ctx.ReadFile,alternate)
+        if not readable or type(bytes)~="string" or not validRecord(decode(bytes),kind) then return false end
+        report.Recovered=report.Recovered or {}
+        report.Recovered[#report.Recovered+1]=alternate
+        return true
+    end
+    local function acceptExisting(path,relative,kind)
+        local readable,bytes=pcall(ctx.ReadFile,path)
+        if not readable or type(bytes)~="string" then return fail(path,"existing-unreadable") end
+        local record=decode(bytes)
+        if not validRecord(record,kind) then
+            if hasRecovery(path,relative,kind) then return true end
+            return fail(path,"existing-invalid-account-record")
+        end
+        report.Existing[#report.Existing+1]=path return true
+    end
+    local function copy(relative, kind)
+        local from,to=legacy.."/"..relative,root.."/"..relative
+        if not owns() then return fail(to,"account-changed") end
+        local present=exists(to)
+        if present==nil then return false end
+        local resuming=pending==relative
+        if present and not resuming then
+            return acceptExisting(to,relative,kind)
+        end
+        local available=exists(from)
+        if available==nil then return false end
+        if not available then
+            if resuming then return fail(from,"pending-source-missing") end
+            return true
+        end
+        local readOK,bytes=pcall(ctx.ReadFile,from)
+        if not readOK or type(bytes)~="string" then return fail(from,"read-failed") end
+        total+=#bytes count+=1
+        if #bytes>16*1024*1024 or total>64*1024*1024 or count>1024 then return fail(from,"migration-limit") end
+        local record=decode(bytes)
+        if not validRecord(record,kind) then
+            if not resuming and hasRecovery(from,relative,kind) then return true end
+            return fail(from,record and "account-mismatch" or "invalid-json")
+        end
+        if present and resuming then
+            local readBackOK,actual=pcall(ctx.ReadFile,to)
+            if not readBackOK or actual~=bytes then return fail(to,"incomplete-copy-conflict") end
+            report.Existing[#report.Existing+1]=to
+            return true
+        end
+        if not owns() then return fail(to,"account-changed") end
+        -- Recheck just before the write; preserve new-root data on retry/conflict.
+        local changed=exists(to)
+        if changed==nil then return false end
+        if changed then return acceptExisting(to,relative,kind) end
+        if not writeMarker({Version=1,UserId=uid,Completed=false,Pending=relative}) then return false end
+        if not owns() then return fail(to,"account-changed") end
+        -- The intent is durable before touching a previously absent destination.
+        local claimed=exists(to)
+        if claimed==nil then return false end
+        if claimed then return fail(to,"destination-appeared") end
+        if not pcall(ctx.WriteFile,to,bytes) then return fail(to,"write-failed") end
+        if not owns() then return fail(to,"account-changed") end
+        local verifyOK,actual=pcall(ctx.ReadFile,to)
+        if not verifyOK or actual~=bytes then return fail(to,"read-back-mismatch") end
+        report.Copied[#report.Copied+1]=to
+        return true
+    end
+    local fixed={"lobby_joiner_"..uid..".json","lobby_joiner_"..uid..".json.bak",
+        "webhook_"..uid..".json","webhook_"..uid..".json.bak","tidal_shiny_farm_"..uid..".json"}
+    local function kindOf(relative)
+        for _,name in ipairs(fixed) do
+            if relative==name then return name:sub(1,6)=="tidal_" and "journal" or "record" end
+        end
+        local prefix="macros_"..uid.."/"
+        if relative:sub(1,#prefix)==prefix then
+            local name=relative:sub(#prefix+1)
+            if not name:find("[/\\:%z\1-\31]") and name:sub(1,2)~=".." and name:lower():sub(-5)==".json" then return "macro" end
+        end
+        return nil
+    end
+    if pending then
+        local kind=kindOf(pending)
+        if not kind then fail(marker,"invalid-pending-path") return report end
+        if not copy(pending,kind) then return report end
+        pending=nil
+    end
+    for _,name in ipairs(fixed) do
+        if not copy(name,kindOf(name)) then return report end
+    end
+    local macroDir="macros_"..uid
+    local oldMacros=legacy.."/"..macroDir
+    local macroOK,hasMacros=pcall(ctx.IsFolder,oldMacros)
+    if not macroOK then fail(oldMacros,"folder-query-failed") return report end
+    if hasMacros then
+        local listed,paths=pcall(ctx.ListFiles,oldMacros)
+        if not listed or type(paths)~="table" then fail(oldMacros,"list-failed") return report end
+        if #paths>1024 then fail(oldMacros,"migration-limit") return report end
+        if not ensure(root.."/"..macroDir) then return report end
+        local names={}
+        for _,path in ipairs(paths) do
+            if type(path)~="string" then fail(oldMacros,"invalid-list-entry")
+            else
+                local normalized=path:gsub("\\","/")
+                local prefix=oldMacros.."/"
+                local name=normalized:sub(1,#prefix)==prefix and normalized:sub(#prefix+1) or normalized
+                if name:find("[/\\:%z\1-\31]") or name=="." or name==".." or name:sub(1,2)==".." then
+                    fail(oldMacros,"unsafe-list-path")
+                elseif name:lower():sub(-5)==".json" then names[name]=true end
+            end
+        end
+        local ordered={} for name in pairs(names) do ordered[#ordered+1]=name end table.sort(ordered)
+        if #report.Errors>0 then return report end
+        for _,name in ipairs(ordered) do
+            if not copy(macroDir.."/"..name,"macro") then return report end
+        end
+    end
+    if #report.Errors>0 or not owns() then
+        if not owns() then fail(root,"account-changed") end
+        return report
+    end
+    if not writeMarker({Version=1,UserId=uid,Completed=true}) then return report end
+    report.Status="migrated"
+    return report
+end
+]====================]
+do
+    if not PREVIEW_ONLY and CONFIG_USER_ID then
+        local migrate=assert(loadstring(ZENHUB_STORAGE_SOURCE))()
+        local report=migrate({Root=CONFIG_FOLDER,LegacyRoot="AnimeExpeditionsClone",UserId=CONFIG_USER_ID,
+            ReadFile=readfile,WriteFile=writefile,IsFile=isfile,ListFiles=listfiles,MakeFolder=makefolder,IsFolder=isfolder,
+            DecodeJSON=function(bytes)return HttpService:JSONDecode(bytes)end,
+            EncodeJSON=function(record)return HttpService:JSONEncode(record)end,
+            AccountOwns=function()return currentConfigAccount()==CONFIG_USER_ID end})
+        Environment.__ZenHubStorageMigration=report
+        assert(report.Status~="failed","ZenHub storage migration incomplete; original data preserved. Retry after checking storage access")
+    end
+end
+-- ZENHUB_STORAGE_MIGRATION_END
+
 local BUNDLED_OBSIDIAN_SOURCE = [=========================================================[--[========[Portable Obsidian UI dependency
 Based on the locally patched Obsidian library.
 MIT License
@@ -15162,7 +15412,7 @@ local function macroAccountId()
     return string.format("%.0f", value)
 end
 local MACRO_USER_ID = macroAccountId()
-local OWN_MACRO_FOLDER = MACRO_USER_ID and ("AnimeExpeditionsClone/macros_" .. MACRO_USER_ID) or nil
+local OWN_MACRO_FOLDER = MACRO_USER_ID and ("ZenHub/macros_" .. MACRO_USER_ID) or nil
 local function ownsMacroAccount() return MACRO_USER_ID ~= nil and macroAccountId() == MACRO_USER_ID end
 local FusionPackage = ReplicatedStorage:WaitForChild("FusionPackage")
 local Actions = require(FusionPackage:WaitForChild("Actions"))
@@ -15389,12 +15639,12 @@ local function sortedMacroActions(decoded)
     return actions
 end
 
-local function readMacroFile(path)
+local function readMacroFile(path, rawOverride)
     if not ownsMacroAccount() then return nil, "macro account is no longer active" end
     if type(isfile) ~= "function" or type(readfile) ~= "function" or not isfile(path) then
         return nil, "macro file not found"
     end
-    local ok, decoded = pcall(function() return HttpService:JSONDecode(readfile(path)) end)
+    local ok, decoded = pcall(function() return HttpService:JSONDecode(rawOverride or readfile(path)) end)
     if not ok or type(decoded) ~= "table" then return nil, "invalid macro JSON: " .. tostring(decoded) end
     if decoded.UserId ~= MACRO_USER_ID then return nil, "macro account mismatch" end
     local actions = sortedMacroActions(decoded)
@@ -15450,7 +15700,7 @@ local function writeOwnMacro(name, data)
     assert(type(writefile) == "function", "writefile is unavailable")
     name = safeMacroName(name)
     assert(name ~= "", "macro name is empty")
-    ensureFolder("AnimeExpeditionsClone")
+    ensureFolder("ZenHub")
     ensureFolder(OWN_MACRO_FOLDER)
     local path = macroPath(OWN_MACRO_FOLDER, name)
     data.UserId = MACRO_USER_ID
@@ -15489,7 +15739,85 @@ function Controller:IsGameReady()
     return currentState == "InProgress" and Fusion.peek(Shared.IsInGame) == true
 end
 
+function Controller:IsUnitManagementAllowed()
+    -- Native Hotbar permission, not Active/InProgress, distinguishes pre-start preparation.
+    return statePath(Dependencies.HotbarState, "UnitManagement") == true
+end
+
+function Controller:IsNativeAutoStartDisabled()
+    local enabled = statePath(Dependencies.PlayerData, "Settings", "AutoVoteStart")
+    if enabled == nil then enabled = statePath(Information, "Settings", "Default", "AutoVoteStart") end
+    return enabled == false
+end
+
+local function starrkPendingReservation()
+    local player=game:GetService("Players").LocalPlayer
+    if not player then return false end
+    local key=tostring(player.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local ledgers=Environment.__AnimeExpeditionsStarrkAutoPlayLedgers
+    local engine=type(ledgers)=="table" and ledgers[key]
+    if type(engine)~="table" then return false end
+    local prep=type(engine.TeamPreparation)=="table" and engine.TeamPreparation or {}
+    local pending=type(prep.Pending)=="table" and prep.Pending
+    local start=type(prep.StartBarrier)=="table" and prep.StartBarrier
+    if not start and type(engine.Pending)=="table" and engine.Pending.Kind=="Start" then start=engine.Pending end
+    if not pending and not start then return false end
+    local id=statePath(Dependencies.GamePlayerState,"GameID")
+    local inc=statePath(Dependencies.GameState,"GameIncrement")
+    local validId=type(id)=="string" and id~="" or type(id)=="number" and id==id and id>=0 and id%1==0
+    local current=validId and type(inc)=="number" and inc==inc and inc>=0 and inc%1==0 and (tostring(id)..":"..tostring(inc)) or nil
+    local function sameRound(record)
+        local expected=record.RoundKey or prep.RoundKey or engine.RoundKey
+        return not current or not expected or current==expected
+    end
+    if pending and sameRound(pending) then
+        if not current then return true end
+        local slots=statePath(Dependencies.HotbarState,"Slots")
+        local slot=statePath(slots,tostring(pending.Slot)) or statePath(slots,pending.Slot)
+        local actual=statePath(slot,"ID")
+        local inventory=statePath(Dependencies.PlayerData,"UnitData")
+        local dependent=stateValue(Dependencies.UnitData)
+        local other
+        if type(inventory)=="table" then
+            if type(dependent)=="table" and dependent~=inventory then other=dependent end
+        else inventory=dependent end
+        local function assetIn(map)
+            if type(map)~="table" or actual==nil then return nil end
+            return statePath(statePath(map,actual) or statePath(map,tostring(actual)),"Asset")
+        end
+        local acknowledged=actual~=nil and tostring(actual)==tostring(pending.UnitID)
+            and assetIn(inventory)==pending.Asset and (not other or assetIn(other)==pending.Asset)
+        if not acknowledged then return true end
+    end
+    if start and sameRound(start) then
+        if not current or statePath(Dependencies.GameState,"Active")~=true
+            or statePath(Dependencies.HotbarState,"UnitManagement")~=false then return true end
+    end
+    return false
+end
+local function starrkOwnsPlayback()
+    -- An exact native Starrk opt-in reserves Start even if its runtime failed/stopped.
+    if Fusion.peek(Shared.IsInGame)==true then
+        local p=statePath(currentGameState(),"Parameters")
+        if statePath(p,"Gamemode")=="Rift" and statePath(p,"MapName")=="StarrkRift"
+            and statePath(p,"ActName")=="Act 1" and statePath(p,"Difficulty")=="Hard"
+            and (value("AE-STARRK-AUTOPLAY",false)==true or starrkPendingReservation()) then return true end
+    end
+    local runtime=Environment.__AnimeExpeditionsStarrkAutoPlay
+    return type(runtime)=="table" and type(runtime.Holds)=="function" and runtime:Holds()==true
+end
 function Controller:TryAutoStart()
+    if starrkOwnsPlayback() then return false,"Starrk Auto Play owns this stage" end
+    if self:ShouldHoldAutoStart() then return false, "waiting for verified Macro units" end
+    local startSelected, startContext = self:ResolveSelectedMacro()
+    local startStamp = self:PreparationStamp(startSelected, startContext)
+    local function startAllowed()
+        local selected, context = self:ResolveSelectedMacro()
+        return not starrkOwnsPlayback() and Environment[STATE_KEY] == self and self.Running and self.Playing and not self.Recording
+            and selected == startSelected and self:PreparationStamp(selected, context) == startStamp
+            and not self:ShouldHoldAutoStart()
+    end
+    if not startAllowed() then return false, "Macro start was cancelled or its context changed" end
     if self:ResolveContext().BossRushPhase or statePath(currentGameState(), "Parameters", "Gamemode")=="BossRush" then return false,"Boss Rush start is owned by its explicit Auto Start toggle"end
     local catalogStartOperation=self.CatalogExpected
     if not self:CheckCatalogAction(catalogStartOperation)then return false,"Macro context changed"end
@@ -15508,7 +15836,7 @@ function Controller:TryAutoStart()
             if button then
                 local fired = false
                 withGameIdentity(function()
-                    if not self:CheckInfernalAction(infernalStartOperation)or not self:CheckCatalogAction(catalogStartOperation)then return end
+                    if not startAllowed()or not self:CheckInfernalAction(infernalStartOperation)or not self:CheckCatalogAction(catalogStartOperation)then return end
                     local fireSignal = firesignal or fire_signal
                     if type(fireSignal) == "function" then
                         fireSignal(button.Activated)
@@ -15518,8 +15846,8 @@ function Controller:TryAutoStart()
                             if connection.Enabled ~= false and type(connection.Function) == "function" then
                                 if infernalStartOperation or catalogStartOperation then
                                     local callback=connection.Function
-                                    task.spawn(function()if self:CheckInfernalAction(infernalStartOperation)and self:CheckCatalogAction(catalogStartOperation)then callback()end end)
-                                else task.spawn(connection.Function)end
+                                    task.spawn(function()if startAllowed()and self:CheckInfernalAction(infernalStartOperation)and self:CheckCatalogAction(catalogStartOperation)then callback()end end)
+                                else local callback=connection.Function task.spawn(function()if startAllowed()then callback()end end)end
                                 fired = true
                             end
                         end
@@ -15646,6 +15974,36 @@ local function hotbarEntries()
         }
     end
     return result
+end
+
+function Controller:PreparationStamp(selected, context)
+    return table.concat({tostring(selected), tostring(context.GameId), tostring(context.RoundSerial),
+        tostring(context.NativeRound), tostring(context.Gamemode), tostring(context.MapName),
+        tostring(context.ActName), tostring(context.Difficulty), tostring(context.TrialUnit),
+        tostring(context.PortalAsset), tostring(context.RiftName), tostring(context.BossRushPhase),
+        tostring(context.BossRushRunId), tostring(context.BossRushGateIndex), tostring(context.BossRushGateId),
+        tostring(context.BossRushPlacementReady)}, "|")
+end
+
+function Controller:HotbarStamp()
+    local ids = {}
+    for slot, entry in ipairs(hotbarEntries()) do
+        ids[slot] = table.concat({tostring(entry.UnitId or ""), tostring(entry.Asset or ""), tostring(entry.DisplayName or "")}, ":")
+    end
+    return table.concat(ids, "|")
+end
+
+function Controller:ShouldHoldAutoStart()
+    -- A yielded equipment transaction must finish/restore even if the UI toggles change.
+    if self.EquippingMacroUnits then return true end
+    if not self.Playing or self.Recording or not value(FEATURE.AutoEquip, true)
+        or not self:IsUnitManagementAllowed() then return false end
+    local selected, context = self:ResolveSelectedMacro()
+    if context.Gamemode == "InfernalCult" or type(selected) ~= "string" or selected == "" then return false end
+    return self.LoadedMacro == nil or self.PreparedMacro ~= self.LoadedMacro
+        or self.PreparedMacroName ~= selected
+        or self.PreparedContextStamp ~= self:PreparationStamp(selected, context)
+        or self.PreparedHotbarStamp ~= self:HotbarStamp()
 end
 
 local function slotForDisplayName(displayName)
@@ -15783,11 +16141,28 @@ end
 
 local function requiredUnits(actions)
     local result, seen = {}, {}
-    for _, action in ipairs(actions or {}) do
-        if action.Type == "PlaceUnit" and type(action.Unit) == "string" and not seen[action.Unit] then
-            seen[action.Unit] = true
-            table.insert(result, action.Unit)
+    local function add(unitName)
+        if type(unitName) == "string" and not seen[unitName] then
+            seen[unitName] = true
+            table.insert(result, unitName)
         end
+    end
+    -- Native companion spawns do not produce a second recorded PlaceUnit action.
+    -- Expand the loadout only; playback leaves the companion spawn to the game.
+    local function nativeName(asset, fallback)
+        local name = displayNameForAsset(asset)
+        return type(name) == "string" and name ~= asset and name or fallback
+    end
+    local dependencies = {
+        { Unit = nativeName("UlquiorraEVO", "Black Heart"), LegacyUnit = "Black Heart",
+          Companion = nativeName("AizenEVO", "Traitor") },
+    }
+    local assetNames = { UlquiorraEVO = dependencies[1].Unit, AizenEVO = dependencies[1].Companion }
+    for _, action in ipairs(actions or {}) do
+        if action.Type == "PlaceUnit" then add(assetNames[action.Unit] or action.Unit) end
+    end
+    for _, dependency in ipairs(dependencies) do
+        if seen[dependency.Unit] or seen[dependency.LegacyUnit] then add(dependency.Companion) end
     end
     return result
 end
@@ -15857,6 +16232,47 @@ function Controller:CatalogSelectorInfo(context)
     end end end
     return nil,covered
 end
+-- Explicit same-map Story recordings may be assigned to the native Mastery selector.
+-- Adapt only an in-memory copy; the recording and strict runtime action guards stay intact.
+function Controller:NormalizeCatalogFile(macro,context,selected)
+    local recorded=type(macro)=="table"and macro.Context
+    if type(recorded)~="table"or macro.InvalidContext or type(context)~="table"then return macro end
+    if recorded.Gamemode~="Story"or context.Gamemode~="Mastery"
+        or type(recorded.MapName)~="string"or recorded.MapName==""or recorded.MapName~=context.MapName
+        or context.ActName~="Act 1"or context.Difficulty~="Hard"
+        or type(recorded.ActName)~="string"or not recorded.ActName:match("^Act [1-5]$")
+        or(recorded.Difficulty~="Normal"and recorded.Difficulty~="Hard")
+        or type(selected)~="string"or selected==""or macro.Name~=selected then return macro end
+    local protected={"RiftName","TrialUnit","PortalAsset","BossRushPhase","BossRushRunId","BossRushGateIndex","BossRushGateId","BossRushPlacementReady"}
+    for _,field in ipairs(protected)do if recorded[field]~=nil or context[field]~=nil then return macro end end
+    local control=self:CatalogSelectorInfo(context)
+    local key=control and control.key
+    if not key or self:ResolveSelectorKey(context)~=key or value(key,nil)~=selected then return macro end
+    local spec=catalogControls()
+    local count=0
+    for _,binding in ipairs(spec.macroCatalogBindings or{})do if binding.Key==key then
+        local c=binding.Context
+        if type(c)~="table"or c.Gamemode~="Mastery"or c.MapName~=context.MapName
+            or c.ActName~=nil or c.Difficulty~=nil then return macro end
+        for _,field in ipairs(protected)do if c[field]~=nil then return macro end end
+        count+=1
+    end end
+    if count~=1 then return macro end
+    local function copy(v,seen)
+        if type(v)~="table"then return v end
+        seen=seen or{} if seen[v]then return seen[v]end
+        local result={} seen[v]=result
+        for k,item in pairs(v)do result[copy(k,seen)]=copy(item,seen)end
+        return result
+    end
+    local normalized=copy(macro)
+    normalized.RuntimeContextRecovery={Kind="explicit-story-to-mastery",SelectorKey=key,OriginalContext=copy(recorded)}
+    normalized.Context.Gamemode=context.Gamemode
+    normalized.Context.ActName=context.ActName
+    normalized.Context.Difficulty=context.Difficulty
+    return normalized
+end
+
 function Controller:CheckCatalogFile(macro,context)
     if type(macro)~="table" or macro.InvalidContext then return false,"Malformed Macro context"end
     local recorded=macro.Context
@@ -15869,9 +16285,10 @@ function Controller:CheckCatalogFile(macro,context)
             if type(recorded[field])~="string"or recorded[field]==""then return false,"Record the full Rift stage context before playback"end
         end
     end
-    -- Story selectors are per map, not per Act. Keep other scene identities strict.
-    local shareStoryAct=false
-    if catalogMode(context.Gamemode)=="Story" and catalogMode(recorded.Gamemode)=="Story"
+    -- Story and Challenge selectors are per map; share only normal Acts within that same mode.
+    local shareMapAct=false
+    local mode=catalogMode(context.Gamemode)
+    if (mode=="Story" or mode=="Challenge") and catalogMode(recorded.Gamemode)==mode
         and type(context.MapName)=="string" and recorded.MapName==context.MapName
         and not context.RiftName and not recorded.RiftName
         and type(context.ActName)=="string" and context.ActName:match("^Act [1-5]$")
@@ -15880,16 +16297,16 @@ function Controller:CheckCatalogFile(macro,context)
         local spec=catalogControls()
         for _,binding in ipairs(spec.macroCatalogBindings or{})do
             local c=binding.Context
-            if binding.Key==key and type(c)=="table" and c.Gamemode=="Story"
+            if binding.Key==key and type(c)=="table" and catalogMode(c.Gamemode)==mode
                 and c.MapName==context.MapName and c.ActName==nil and c.RiftName==nil then
-                shareStoryAct=true break
+                shareMapAct=true break
             end
         end
     end
     for _,field in ipairs({"Gamemode","MapName","ActName","Difficulty","TrialUnit","PortalAsset","RiftName"})do
         local a,b=recorded[field],context[field]
         if field=="Gamemode"then a,b=catalogMode(a),catalogMode(b)end
-        if a~=nil and a~=b and not(field=="ActName" and shareStoryAct)then return false,"Recorded "..field.." does not match this stage"end
+        if a~=nil and a~=b and not(field=="ActName" and shareMapAct)then return false,"Recorded "..field.." does not match this stage"end
     end
     if context.RiftName and context.RiftName~="" and recorded.RiftName~=context.RiftName then return false,"Rift context is not recorded"end
     return true
@@ -16038,6 +16455,26 @@ function Controller:CheckBossRushAction(expected)
 end
 -- BOSSRUSH_MACRO_PHASES_END
 
+-- Recover omitted native Raid difficulty only from a single authoritative map choice.
+-- Do not use the generic mode Config default, rewrite recordings, or weaken file/action guards.
+local function resolveNativeDifficulty(parameters, gamemode, mapName)
+    local explicit = statePath(parameters, "Difficulty")
+    if explicit ~= nil then return explicit end
+    if gamemode ~= "Raid" or type(mapName) ~= "string" or mapName == "" then return nil end
+    local maps = Information and Information.Maps
+    if type(maps) ~= "table" or type(maps.GetMapData) ~= "function" then return nil end
+    local ok, map = pcall(maps.GetMapData, maps, gamemode, mapName)
+    if not ok or type(map) ~= "table" or map.MapType ~= "Raid" or type(map.Difficulties) ~= "table" then return nil end
+    local difficulty, count
+    count = 0
+    for key, candidate in pairs(map.Difficulties) do
+        if key ~= 1 or type(candidate) ~= "string" or candidate == "" then return nil end
+        difficulty, count = candidate, count + 1
+    end
+    if count == 1 then return difficulty end
+    return nil
+end
+
 function Controller:ResolveContext()
     local parameters = statePath(currentGameState(), "Parameters") or {}
     local gamemode = statePath(parameters, "Gamemode")
@@ -16061,7 +16498,7 @@ function Controller:ResolveContext()
         MapName = mapName,
         DisplayName = displayName,
         ActName = actName,
-        Difficulty = statePath(parameters, "Difficulty"),
+        Difficulty = resolveNativeDifficulty(parameters, gamemode, mapName),
         TrialUnit = statePath(parameters, "TrialUnit"),
         PortalAsset = statePath(parameters, "PortalData", "Asset"),
         RiftName = statePath(parameters, "RiftName"),
@@ -16381,6 +16818,275 @@ function Controller:SendSelectedToWebhook()
     return sent, detail
 end
 
+-- BOSSRUSH_TEAM_PREPARATION_BEGIN
+local function bossTeamRound()
+    local id = statePath(Dependencies.GamePlayerState, "GameID")
+    local increment = statePath(currentGameState(), "GameIncrement")
+    local validId = type(id) == "string" and id ~= "" or type(id) == "number" and id == id and id >= 0 and id % 1 == 0
+    if not validId or type(increment) ~= "number" or increment ~= increment or increment < 0 or increment % 1 ~= 0 then return nil end
+    return tostring(id) .. ":" .. tostring(increment)
+end
+local function bossTeamLedger()
+    local key = tostring(LocalPlayer.UserId) .. ":" .. tostring(game.PlaceId) .. ":" .. tostring(game.JobId)
+    local ledgers = Environment.__AnimeExpeditionsBossRushTeamLedgers
+    if type(ledgers) ~= "table" then ledgers = {} Environment.__AnimeExpeditionsBossRushTeamLedgers = ledgers end
+    local ledger = ledgers[key]
+    if type(ledger) ~= "table" then ledger = {} ledgers[key] = ledger end
+    local round = bossTeamRound()
+    if round and ledger.RoundKey ~= round then
+        ledger.RoundKey, ledger.Pending, ledger.Proof, ledger.Started = round, nil, nil, nil
+    end
+    return ledger, round
+end
+local function bossTeamNativeContext()
+    return Fusion.peek(Shared.IsInGame) == true
+        and statePath(currentGameState(), "Parameters", "Gamemode") == "BossRush"
+        and statePath(currentGameState(), "Parameters", "MapName") == "BeniBossRush"
+end
+local function bossTeamInventory()
+    local primary = statePath(Dependencies.PlayerData, "UnitData")
+    local secondary = stateValue(Dependencies.UnitData)
+    if type(primary) ~= "table" then primary = secondary secondary = nil end
+    return primary, secondary
+end
+local function bossTeamAsset(id)
+    local primary, secondary = bossTeamInventory()
+    local function asset(map)
+        return type(map) == "table" and statePath(map[id] or map[tostring(id)], "Asset") or nil
+    end
+    local actual = asset(primary)
+    if type(actual) ~= "string" or type(secondary) == "table" and secondary ~= primary and asset(secondary) ~= actual then return nil end
+    return actual
+end
+local function bossTeamSlots()
+    local source = statePath(Dependencies.HotbarState, "Slots")
+    if type(source) ~= "table" then return nil end
+    local result = {}
+    for index = 1, 6 do
+        local slot = stateValue(source[tostring(index)] or source[index])
+        if slot == nil then slot = {} end
+        if type(slot) ~= "table" then return nil end
+        local id = statePath(slot, "ID")
+        local asset = id ~= nil and bossTeamAsset(id) or nil
+        if id ~= nil and asset == nil then return nil end
+        result[index] = { Id = id, Asset = asset, Name = asset and displayNameForAsset(asset) }
+    end
+    return result
+end
+local function bossTeamAcknowledge(ledger, round)
+    if not ledger.Pending then return true end
+    if not round then return false end
+    local slots = bossTeamSlots()
+    local pending = ledger.Pending
+    local slot = slots and slots[pending.Slot]
+    if not slot then return false end
+    local acknowledged = pending.Kind == "Unequip" and slot.Id == nil
+        or pending.Kind == "Equip" and slot.Id ~= nil and tostring(slot.Id) == pending.Id and slot.Asset == pending.Asset
+    if not acknowledged then return false end
+    ledger.Pending = nil
+    return true
+end
+function Controller:BuildBossRushTeam()
+    if not bossTeamNativeContext() then return nil, "Not in native District 7 Boss Rush" end
+    local round = bossTeamRound()
+    if not round then return nil, "Waiting for native Boss Rush round identity" end
+    local gateKey, bossKey = "AE-MACRO-MAP-BossRush-BeniBossRush", "AE-MACRO-MAP-BossRush-BeniBossRush-Boss"
+    local gateName, bossName = value(gateKey), value(bossKey)
+    if type(gateName) ~= "string" or gateName == "" or type(bossName) ~= "string" or bossName == "" then
+        return nil, "Assign both Gates and Boss Macros before automatic equipment"
+    end
+    if gateName == bossName then return nil, "Assign separate Gates and Boss Macros" end
+    local nativeAct = statePath(currentGameState(), "Parameters", "ActName")
+    local nativeDifficulty = statePath(currentGameState(), "Parameters", "Difficulty")
+    local nativeConfig = statePath(Information, "Gamemodes", "BossRush", "Config")
+    if type(nativeConfig) == "table" and statePath(nativeConfig, "MapName") == "BeniBossRush" then
+        if nativeAct == nil then nativeAct = statePath(nativeConfig, "ActName") end
+        if nativeDifficulty == nil then nativeDifficulty = statePath(nativeConfig, "Difficulty") end
+    end
+    local plan = { RoundKey = round, GateName = gateName, BossName = bossName, Required = {}, Sources = {} }
+    local seen = {}
+    for index, name in ipairs({ gateName, bossName }) do
+        local path = findMacroPath(name)
+        if not path or type(readfile) ~= "function" then return nil, "Boss Rush Macro file missing: " .. name end
+        local rawOk, raw = pcall(readfile, path)
+        if not rawOk or type(raw) ~= "string" then return nil, "Cannot read Boss Rush Macro: " .. name end
+        local cache = self.BossRushTeamFileCache
+        if type(cache) ~= "table" then cache = {} self.BossRushTeamFileCache = cache end
+        local cached = cache[index]
+        local ok, macro, failure
+        if type(cached) == "table" and cached.Path == path and cached.Raw == raw then
+            ok, macro = true, cached.Macro
+        else
+            ok, macro, failure = pcall(readMacroFile, path, raw)
+            if ok and type(macro) == "table" then cache[index] = { Path = path, Raw = raw, Macro = macro } end
+        end
+        if not ok or type(macro) ~= "table" or macro.InvalidContext then return nil, tostring(failure or "Invalid Boss Rush Macro: " .. name) end
+        local c = macro.Context
+        local phase = index == 1 and "Gates" or "Boss"
+        local legacyBoss = false
+        if index == 2 and type(c) == "table" and c.BossRushPhase == "Gates" and c.BossRushGateIndex == 6
+            and c.BossRushPlacementReady == false and c.BossRushGateId == nil and type(macro.Actions) == "table" and #macro.Actions > 0 then
+            local stamp, placements = nil, 0
+            legacyBoss = true
+            for _, action in ipairs(macro.Actions) do
+                if type(action) ~= "table" or action.BossRushGateIndex ~= 6 or type(action.Time) ~= "string"
+                    or stamp ~= nil and action.Time ~= stamp then legacyBoss = false break end
+                stamp = action.Time
+                if action.Type == "PlaceUnit" then placements += 1 end
+            end
+            local wave, time
+            if type(stamp) == "string" then wave, time = stamp:match("^%s*(%d+)%s+([%d%.]+)%s*$") end
+            -- Only team requirements are recovered here. Existing Boss playback
+            -- still validates every legacy position in the native Boss region.
+            if tonumber(wave) ~= 11 or not tonumber(time) or tonumber(time) <= 0 or tonumber(time) == math.huge or placements < 1 then legacyBoss = false end
+        end
+        if type(c) ~= "table" or c.Gamemode ~= "BossRush" or c.MapName ~= "BeniBossRush"
+            or c.ActName ~= nil and c.ActName ~= nativeAct
+            or c.Difficulty ~= nil and c.Difficulty ~= nativeDifficulty
+            or (index == 1 and c.BossRushPhase ~= nil and c.BossRushPhase ~= phase)
+            or (index == 2 and c.BossRushPhase ~= phase and not legacyBoss) then
+            return nil, "Record and assign a dedicated " .. phase .. " Macro for District 7"
+        end
+        if type(macro.Actions) ~= "table" or #macro.Actions == 0 then return nil, "Boss Rush Macro has no actions: " .. name end
+        -- Decode the exact read snapshot; unchanged files reuse parsed actions.
+        plan.Sources[index] = { Path = path, Raw = raw }
+        for _, unit in ipairs(requiredUnits(macro.Actions)) do
+            if not seen[unit] then seen[unit] = true table.insert(plan.Required, unit) end
+        end
+    end
+    if #plan.Required == 0 or #plan.Required > 6 then return nil, "Gate and Boss Macros require " .. #plan.Required .. " unique units; maximum is six" end
+    return plan
+end
+local function sameBossTeamPlan(a, b)
+    if not a or not b or a.RoundKey ~= b.RoundKey or a.GateName ~= b.GateName or a.BossName ~= b.BossName then return false end
+    for index = 1, 2 do
+        if a.Sources[index].Path ~= b.Sources[index].Path or a.Sources[index].Raw ~= b.Sources[index].Raw then return false end
+    end
+    return true
+end
+local function bossTeamProofValid(proof, plan, slots)
+    if not proof or not sameBossTeamPlan(proof.Plan, plan) or not slots then return false end
+    for index = 1, 6 do
+        local expected, actual = proof.Slots[index], slots[index]
+        if expected.Id ~= actual.Id or expected.Asset ~= actual.Asset then return false end
+    end
+    return true
+end
+function Controller:ShouldHoldBossRushStart()
+    local ledger, round = bossTeamLedger()
+    if not bossTeamAcknowledge(ledger, round) then return true, "Waiting for exact native Boss Rush equipment acknowledgement" end
+    if not bossTeamNativeContext() then return false end
+    if value(FEATURE.AutoEquip, true) ~= true then return false end
+    if not ownsMacroAccount() or Environment[STATE_KEY] ~= self or not self.Running then return true, "Boss Rush Macro equipment owner is unavailable" end
+    local ok, plan, reason = pcall(self.BuildBossRushTeam, self)
+    if not ok or not plan then return true, tostring(reason or plan or "Boss Rush team requirements unavailable") end
+    if not bossTeamProofValid(ledger.Proof, plan, bossTeamSlots()) then return true, "Waiting for verified Gates and Boss Macro team" end
+    return false
+end
+function Controller:ReserveBossRushStart()
+    local hold = self:ShouldHoldBossRushStart()
+    if hold then return false end
+    if self.Busy or (tonumber(self.ActiveOperations) or 0) > 0
+        or value("AE-BOSSRUSH-AUTO-START", false) ~= true then return false end
+    if value(FEATURE.AutoEquip, true) == true then
+        local ledger, round = bossTeamLedger()
+        if not round or not ownsMacroAccount() or Environment[STATE_KEY] ~= self or not self.Running
+            or not self.Playing or self.Recording or value(FEATURE.Record, false) == true
+            or value(FEATURE.Play, false) ~= true or value("AE-BOSSRUSH-MANUAL", false) == true then return false end
+        -- Freeze this combined roster for the run, including a delayed Start
+        -- response whose prompt ACK can precede the native management change.
+        ledger.Started = true
+    end
+    return true
+end
+function Controller:PrepareBossRushUnits(context)
+    local ledger, round = bossTeamLedger()
+    local function wait(reason)
+        self.Status, self.LastError = "waiting-bossrush-units", tostring(reason)
+        return false, self.LastError
+    end
+    if not bossTeamAcknowledge(ledger, round) then return wait("Waiting for exact native equipment acknowledgement; no repeat request") end
+    if not bossTeamNativeContext() then return true end
+    if value(FEATURE.AutoEquip, true) ~= true then return true end
+    if not ownsMacroAccount() or Environment[STATE_KEY] ~= self or not self.Running or not self.Playing
+        or self.Recording or value(FEATURE.Play, false) ~= true or value(FEATURE.Record, false) == true
+        or value("AE-BOSSRUSH-MANUAL", false) == true then return wait("Boss Rush equipment paused for playback/manual/recording") end
+    local ok, plan, reason = pcall(self.BuildBossRushTeam, self)
+    if not ok or not plan then return wait(reason or plan or "Boss Rush team plan unavailable") end
+    local slots = bossTeamSlots()
+    if not slots then return wait("Native hotbar IDs/assets are not fully replicated") end
+    if bossTeamProofValid(ledger.Proof, plan, slots) then return true end
+    local primary = bossTeamInventory()
+    if type(primary) ~= "table" then return wait("Native unit inventory is unavailable") end
+    local byName = {}
+    for id, unit in pairs(primary) do
+        local asset = bossTeamAsset(id)
+        local name = asset and displayNameForAsset(asset)
+        if name then
+            byName[name] = byName[name] or {}
+            table.insert(byName[name], { Id = tostring(id), Asset = asset, Level = tonumber(statePath(unit, "Level")) or 0 })
+        end
+    end
+    for _, entries in pairs(byName) do table.sort(entries, function(a, b) return a.Level > b.Level or a.Level == b.Level and a.Id < b.Id end) end
+    local wanted, retained, free, missing = {}, {}, {}, {}
+    for _, name in ipairs(plan.Required) do
+        wanted[name] = true
+        if not byName[name] or not byName[name][1] then return wait("Missing owned Boss Rush unit: " .. name) end
+    end
+    for index, slot in ipairs(slots) do
+        if wanted[slot.Name] and not retained[slot.Name] then retained[slot.Name] = index
+        else table.insert(free, index) end
+    end
+    for _, name in ipairs(plan.Required) do if not retained[name] then table.insert(missing, name) end end
+    if #missing == 0 then
+        ledger.Proof = { Plan = plan, Slots = slots }
+        self.BossRushTeamStatus, self.LastError = "verified", nil
+        return true
+    end
+    ledger.Proof = nil
+    if ledger.Started then return wait("Start was submitted for this run; equipment remains frozen until a new native round") end
+    if not self:IsUnitManagementAllowed() then return wait("Native unit management is closed; prepare the combined team before Start Game") end
+    if not self:IsNativeAutoStartDisabled() then return wait("Waiting for native AutoVoteStart to be disabled") end
+    local runtime = Environment.__AnimeExpeditionsBossRush
+    local status = type(runtime) == "table" and runtime.Core and runtime.Core:GetStatus()
+    if status and status.Pending then return wait("Boss Rush transition is pending; equipment paused") end
+    if self.Busy or (tonumber(self.ActiveOperations) or 0) > 0 then return wait("Macro operation is in progress") end
+    local index = free[1]
+    if not index then return wait("No replaceable Boss Rush hotbar slot") end
+    local chosen = byName[missing[1]][1]
+    local kind = slots[index].Id ~= nil and "Unequip" or "Equip"
+    local actor = rawget(Actions, kind == "Unequip" and "UnequipUnit" or "EquipUnit")
+    if type(actor) ~= "function" then return wait("Native Boss Rush equipment action unavailable") end
+    if Config.DryRun then return wait("Dry run: native Boss Rush equipment was not changed") end
+    local pending = { Kind = kind, Slot = index, Id = kind == "Unequip" and tostring(slots[index].Id) or chosen.Id,
+        Asset = kind == "Unequip" and slots[index].Asset or chosen.Asset, Invoked = false }
+    ledger.Pending = pending
+    local invokedOk, failure = pcall(function()
+        withGameIdentity(function()
+            local currentPlan = self:BuildBossRushTeam()
+            local currentSlots = bossTeamSlots()
+            if ledger.Pending ~= pending or ledger.RoundKey ~= plan.RoundKey
+                or self.Busy or (tonumber(self.ActiveOperations) or 0) > 0
+                or Environment[STATE_KEY] ~= self or not ownsMacroAccount() or not self.Running or not self.Playing
+                or self.Recording or value(FEATURE.Play, false) ~= true or value(FEATURE.Record, false) == true
+                or value(FEATURE.AutoEquip, true) ~= true or value("AE-BOSSRUSH-MANUAL", false) == true
+                or not self:IsUnitManagementAllowed() or not self:IsNativeAutoStartDisabled()
+                or not sameBossTeamPlan(plan, currentPlan) or not currentSlots
+                or currentSlots[index].Id ~= slots[index].Id or currentSlots[index].Asset ~= slots[index].Asset
+                or bossTeamAsset(chosen.Id) ~= chosen.Asset
+                or rawget(Actions, kind == "Unequip" and "UnequipUnit" or "EquipUnit") ~= actor then return end
+            local currentRuntime = Environment.__AnimeExpeditionsBossRush
+            if currentRuntime ~= runtime or currentRuntime and currentRuntime.Core and currentRuntime.Core:GetStatus().Pending then return end
+            pending.Invoked = true
+            if kind == "Unequip" then actor(pending.Id) else actor(pending.Id, tostring(index)) end
+        end)
+    end)
+    if not pending.Invoked and ledger.Pending == pending then ledger.Pending = nil end
+    if not invokedOk then pending.Error = tostring(failure) end
+    return wait(pending.Invoked and "Waiting for native " .. kind .. " acknowledgement" or "Boss Rush equipment cancelled before submission")
+end
+-- BOSSRUSH_TEAM_PREPARATION_END
+
 function Controller:CheckUnits(macro)
     macro = macro or self.LoadedMacro
     if not macro then
@@ -16431,6 +17137,8 @@ function Controller:EndOperation()
 end
 
 function Controller:_EquipUnits(macro)
+    if bossTeamNativeContext() then return false, "Boss Rush prepares the combined Gates/Boss team through Auto Equip Macro Units" end
+    if not self:IsUnitManagementAllowed() then return false, "unit management is unavailable after Start Game" end
     macro = macro or self.LoadedMacro
     if not macro then
         local name = value(FEATURE.Select, self.ManagedMacro)
@@ -16446,15 +17154,30 @@ function Controller:_EquipUnits(macro)
     if #missing > 0 then return false, "missing inventory units: " .. table.concat(missing, ", ") end
     if Config.DryRun then return true, { DryRun = true, Required = needed } end
     local originalHotbar = hotbarEntries()
+    local selected, context = self:ResolveSelectedMacro()
+    local stamp, loaded = self:PreparationStamp(selected, context), self.LoadedMacro
+    local function canMutate()
+        local current, currentContext = self:ResolveSelectedMacro()
+        return Environment[STATE_KEY] == self and self:IsUnitManagementAllowed()
+            and self:IsNativeAutoStartDisabled()
+            and current == selected and self.LoadedMacro == loaded
+            and self:PreparationStamp(current, currentContext) == stamp
+    end
+    local function requirePermission()
+        assert(canMutate(), "Macro preparation changed or native unit management/start permission is unavailable")
+    end
+    if not canMutate() then return false, "waiting for native AutoVoteStart to be disabled / stable preparation" end
     local function restoreOriginalHotbar()
-        withGameIdentity(function() Actions.UnequipAll(false) end)
+        if not canMutate() then return false, "preparation changed; unsafe cross-scene restore was not attempted" end
+        withGameIdentity(function() requirePermission() Actions.UnequipAll(false) end)
         task.wait(Config.ActionSettleSeconds)
         for slot, entry in ipairs(originalHotbar) do
             if entry.UnitId then
-                withGameIdentity(function() Actions.EquipUnit(entry.UnitId, tostring(slot)) end)
+                withGameIdentity(function() requirePermission() Actions.EquipUnit(entry.UnitId, tostring(slot)) end)
                 task.wait(Config.ActionSettleSeconds)
             end
         end
+        requirePermission()
         local restoredHotbar = hotbarEntries()
         for slot, entry in ipairs(originalHotbar) do
             if restoredHotbar[slot].UnitId ~= entry.UnitId then
@@ -16464,12 +17187,13 @@ function Controller:_EquipUnits(macro)
         return true, originalHotbar
     end
     local mutationOk, ready, result = xpcall(function()
-        withGameIdentity(function() Actions.UnequipAll(false) end)
+        withGameIdentity(function() requirePermission() Actions.UnequipAll(false) end)
         task.wait(Config.ActionSettleSeconds)
         for slot, unitName in ipairs(needed) do
-            withGameIdentity(function() Actions.EquipUnit(candidates[unitName][1].Id, tostring(slot)) end)
+            withGameIdentity(function() requirePermission() Actions.EquipUnit(candidates[unitName][1].Id, tostring(slot)) end)
             task.wait(Config.ActionSettleSeconds)
         end
+        requirePermission()
         return self:CheckUnits(macro)
     end, debug.traceback)
     if mutationOk and ready then return true, result end
@@ -16489,9 +17213,12 @@ function Controller:_EquipUnits(macro)
 end
 
 function Controller:EquipUnits(macro)
+    if self.EquippingMacroUnits then return false, "Macro equipment transaction is already active" end
+    self.EquippingMacroUnits = true
     self:BeginOperation()
     local packed = table.pack(xpcall(function() return self:_EquipUnits(macro) end, debug.traceback))
     self:EndOperation()
+    self.EquippingMacroUnits = false
     if not packed[1] then return false, packed[2] end
     return table.unpack(packed, 2, packed.n)
 end
@@ -16592,6 +17319,7 @@ local function waitForUnit(label, timeoutSeconds)
 end
 
 function Controller:ExecuteAction(action)
+    if starrkOwnsPlayback() then self.Status="starrk-autoplay" return false,"Starrk Auto Play owns this stage" end
     if not self:CheckBossRushAction()then return false,"Boss Rush is waiting for its active placement scene"end
     if not self:CheckCatalogAction()then return false,"Macro context changed before action"end
     if not self:CheckInfernalAction()then return false,"Infernal Macro context changed before action"end
@@ -16651,6 +17379,8 @@ function Controller:ExecuteAction(action)
 end
 
 function Controller:ResetPlayback(reason)
+    self.PreparedMacro, self.PreparedMacroName, self.PreparedContextStamp, self.PreparedHotbarStamp = nil, nil, nil, nil
+    self.PreparationBlockedMacro = nil
     self.LoadedMacro = nil
     self.LoadedMacroName = nil
     self.PlaybackIndex = 1
@@ -16678,6 +17408,7 @@ function Controller:StopPlayback(reason)
 end
 
 function Controller:RunOnce()
+    if starrkOwnsPlayback() then self.Status="starrk-autoplay" return false,"Starrk Auto Play owns this stage" end
     self:RefreshInfernalMacroStatus()
     if not self.Running then return false, "stopped" end
     if self.Recording then self.Status = "recording" return false, "recording" end
@@ -16694,6 +17425,10 @@ function Controller:RunOnce()
     self.CatalogExpected=nil
     self.BossExpected=nil
     local isBossRush=context.Gamemode=="BossRush"
+    if isBossRush then
+        local ready, reason = self:PrepareBossRushUnits(context)
+        if not ready then return false, reason end
+    end
     if isBossRush and not self:BossRushPlaybackAllowed(context)then self.Status="waiting-bossrush-playback" return false,"Boss Rush manual/recording mode or native phase is not ready"end
     if isBossRush and context.BossRushPlacementReady~=true then self.Status="waiting-bossrush-gate" return false,"Waiting for confirmed local Gate membership / active Boss scene"end
     local catalogControl=self:CatalogSelectorInfo(context)
@@ -16729,7 +17464,11 @@ function Controller:RunOnce()
             local matches,reason=self:CheckInfernalFile(macro,context)
             if not matches then self.Status="infernal-macro-context-mismatch" self.LastError=reason return false,reason end
         end
-        if guardedCatalog then local matches,reason=self:CheckCatalogFile(macro,context) if not matches then self.Status="catalog-context-mismatch" self.LastError=reason return false,reason end end
+        if guardedCatalog then
+            macro=self:NormalizeCatalogFile(macro,context,selected)
+            local matches,reason=self:CheckCatalogFile(macro,context)
+            if not matches then self.Status="catalog-context-mismatch" self.LastError=reason return false,reason end
+        end
         if isBossRush then local matches,reason=self:CheckBossRushFile(macro,context)if not matches then self.Status="bossrush-macro-context-mismatch"self.LastError=reason return false,reason end end
         self.LoadedMacro = macro
         self.LoadedMacroName = selected
@@ -16752,13 +17491,37 @@ function Controller:RunOnce()
         if not matches then self.Status="bossrush-macro-context-mismatch"return false,reason end
         self.BossExpected={Macro=selected,Context=context}
     end
+    if context.Gamemode ~= "InfernalCult" and not isBossRush and value(FEATURE.AutoEquip, true) then
+        if self:IsUnitManagementAllowed() then
+            local macro, stamp = self.LoadedMacro, self:PreparationStamp(selected, context)
+            if self:ShouldHoldAutoStart() then
+                self.PreparationBlockedMacro = macro
+                self.Status = "preparing-units"
+                local equipped, detail = self:CheckUnits(macro)
+                if not equipped then
+                    if not self:IsNativeAutoStartDisabled() then
+                        return false, "waiting for native AutoVoteStart to be disabled"
+                    end
+                    equipped, detail = self:EquipUnits(macro)
+                end
+                local current, currentContext = self:ResolveSelectedMacro()
+                if not equipped or not self:IsUnitManagementAllowed() or self.LoadedMacro ~= macro
+                    or current ~= selected or self:PreparationStamp(current, currentContext) ~= stamp then
+                    self.Status = "waiting-unit-preparation"
+                    self.LastError = equipped and "Macro preparation changed during equipment verification" or tostring(detail)
+                    return false, self.LastError
+                end
+                self.PreparedMacro, self.PreparedMacroName = macro, selected
+                self.PreparedContextStamp, self.PreparedHotbarStamp = stamp, self:HotbarStamp()
+                self.PreparationBlockedMacro, self.LastError = nil, nil
+            end
+        elseif self.PreparationBlockedMacro == self.LoadedMacro then
+            self.Status = "waiting-unit-preparation"
+            return false, "Start Game closed unit management before preparation completed; restart to retry"
+        end
+    end
     if not self:IsGameReady() then
         self.Status = "waiting-game"
-        if context.Gamemode~="InfernalCult"and value(FEATURE.AutoEquip, true) and self.PreparedMacroName ~= selected then
-            local equipped, detail = self:CheckUnits(self.LoadedMacro)
-            if not equipped then equipped, detail = self:EquipUnits(self.LoadedMacro) end
-            if equipped then self.PreparedMacroName = selected else self.LastError = tostring(detail) end
-        end
         return false, "game is not active"
     end
 
@@ -16769,6 +17532,7 @@ function Controller:RunOnce()
     end
     self:NotifyMacroStart(selected, context)
     self:TryAutoStart()
+    if self:IsUnitManagementAllowed() then self.Status = "waiting-start" return false, "waiting for Start Game" end
 
     if self.CompletedGameId == contextKey then self.Status = "completed" return false, "macro already completed" end
     local action = self.LoadedMacro.Actions[self.PlaybackIndex]
@@ -17061,7 +17825,9 @@ function Controller:BindGui()
     install(INFERNAL_PLAY,function()self:RefreshInfernalMacroStatus()end)
     install(FEATURE.Record, function(enabled)
         if enabled then
-            local started = invokeAndLog("start recording", function() return self:StartRecording(value(FEATURE.Create, "")) end)
+            local name = safeMacroName(value(FEATURE.Select, self.ManagedMacro))
+            if name == "" then name = value(FEATURE.Create, "") end
+            local started = invokeAndLog("start recording", function() return self:StartRecording(name) end)
             if not started then
                 local gui = Environment.__AnimeExpeditionsGuiController
                 if type(gui) == "table" then pcall(function() gui:SetValue(FEATURE.Record, false) end) end
@@ -17531,6 +18297,7 @@ local function currentContext()
         FinalWave = finalWave(),
         CurrentState = statePath(state, "CurrentGameState"),
         Active = statePath(state, "Active") == true,
+        NativeActive = statePath(state, "Active"),
         GameTime = tonumber(statePath(state, "GameTime")) or 0,
         GameIncrement = tonumber(statePath(state, "GameIncrement")),
         Gamemode = gamemode,
@@ -17567,6 +18334,131 @@ local function restartIntentSuppressesResult(intent)
     -- requested FROM an actual terminal result must keep that result and identity.
     return intent and os.clock() - intent.At <= 45 and not terminalGameState(intent.Context.CurrentState)
 end
+
+-- RIFT_AFTER_RUN_RETURN_BEGIN
+local RIFT_RETURN_KEY = "AE-RIFT-FAKE-HOMETOWN-RETURN-AFTER-RUN"
+local RIFT_RETURN_LABEL = "AE-RIFT-FAKE-HOMETOWN-RETURN-STATUS"
+local function riftReturnFinite(n)
+    return type(n)=="number" and n==n and n~=math.huge and n~=-math.huge
+end
+local function riftReturnScope(context)
+    if type(context)~="table" or context.InGame~=true or type(context.GameId)~="string" or context.GameId==""
+        or type(context.Gamemode)~="string" or context.Gamemode=="" or type(context.MapName)~="string" or context.MapName==""
+        or not riftReturnFinite(context.RoundSerial) or context.RoundSerial<0 or context.RoundSerial%1~=0
+        or type(game.JobId)~="string" or game.JobId=="" then return nil end
+    -- GameIncrement advances at defeat in native state: it is NOT a run identity.
+    return table.concat({tostring(GAME_USER_ID),tostring(game.PlaceId),game.JobId,context.GameId,tostring(context.RoundSerial),
+        context.Gamemode,context.MapName,tostring(context.ActName),tostring(context.Difficulty),tostring(context.RiftName)},"|")
+end
+local function riftReturnPendingValid(pending)
+    return type(pending)=="table" and pending.ObservedRunning==true and type(pending.Scope)=="string"
+        and riftReturnFinite(pending.DetectedAt) and pending.DetectedAt>=0
+        and riftReturnFinite(pending.Remaining) and pending.Remaining>0 and pending.Remaining<=2 and pending.Remaining%1==0
+end
+local function readRiftReturnAllowance()
+    local now=workspace:GetServerTimeNow()
+    if not riftReturnFinite(now) or now<0 then return nil,"Native server time is unavailable" end
+    local data=currentPlayerData()
+    local clears=statePath(data,"RiftClears")
+    local hourStart,count=statePath(clears,"HourStart"),statePath(clears,"Count")
+    if type(clears)~="table" or not riftReturnFinite(hourStart) or hourStart<0
+        or not riftReturnFinite(count) or count<0 or count%1~=0 then return nil,"Waiting for native Rift clear data" end
+    local shared=ReplicatedStorage:FindFirstChild("Shared")
+    local script=shared and shared:FindFirstChild("RiftRules")
+    if not script then return nil,"Native RiftRules is unavailable" end
+    local rules=require(script)
+    if type(rules)~="table" or type(rules.GetStatus)~="function" then return nil,"Native RiftRules is unavailable" end
+    -- GetStatus resets stale previous-hour counts. Raw RiftClears.Count is not current-hour authority.
+    local status=rules.GetStatus(now,hourStart,count,statePath(clears,"InProgress"))
+    local remaining=type(status)=="table" and status.Remaining
+    if not riftReturnFinite(remaining) or remaining<0 or remaining>2 or remaining%1~=0 then
+        return nil,"Native hourly Rift allowance is unknown"
+    end
+    return {Now=now,MinuteSeconds=now%3600,Remaining=remaining}
+end
+function Controller:RiftAfterRunReturnOwnerValid()
+    return Environment[STATE_KEY]==self and self.Running==true and not self.Stopping
+        and GAME_USER_ID~=nil and gameAccountId()==GAME_USER_ID
+end
+function Controller:SetRiftAfterRunReturnStatus(status,detail)
+    self.RiftReturnStatus,self.RiftReturnDetail=status,detail
+    if not self:RiftAfterRunReturnOwnerValid() then return end
+    local title="Return after run: "..status..(detail and "\n"..detail or "")
+    if self.RiftReturnLabelText==title then return end
+    local gui=Environment.__AnimeExpeditionsGuiController
+    local label=type(gui)=="table" and gui.Controls and gui.Controls[RIFT_RETURN_LABEL]
+    if type(label)=="table" and type(label.SetText)=="function" then
+        local ok=pcall(function()label:SetText(title)end)
+        if ok then self.RiftReturnLabelText=title end
+    end
+end
+function Controller:ObserveRiftAfterRunReturn(context)
+    if not self:RiftAfterRunReturnOwnerValid() then
+        self.RiftReturnPending=nil
+        self:SetRiftAfterRunReturnStatus("cancelled","Runtime owner or account changed")
+        return false
+    end
+    if value(RIFT_RETURN_KEY,false)~=true then
+        self.RiftReturnPending=nil
+        self:SetRiftAfterRunReturnStatus("disabled",nil)
+        return false
+    end
+    local scope=riftReturnScope(context)
+    if self.RiftReturnRestartScope and self.RiftReturnRestartScope~=scope then self.RiftReturnRestartScope=nil end
+    if scope and (self.RiftReturnRestartScope==scope or restartIntentSuppressesResult(self.RestartIntents[roundKey(context)])) then
+        self.RiftReturnPending=nil
+        self:SetRiftAfterRunReturnStatus("cancelled-restart","A restart is not this run's natural completion")
+        return false
+    end
+    local pending=self.RiftReturnPending
+    if pending and (not riftReturnPendingValid(pending) or pending.Scope~=scope) then self.RiftReturnPending=nil pending=nil end
+    if pending then
+        self:SetRiftAfterRunReturnStatus(pending.Submitted and (pending.SubmissionOK and "submitted" or "outcome-unknown") or "pending",
+            pending.Submitted and "Lobby requested once; waiting for native departure" or "Eligible window detected during this run; finish this run first")
+        return true
+    end
+    -- Never arm retrospectively from a terminal result or an inactive pre-start scene.
+    if not scope or context.Active~=true or context.NativeActive~=true or context.CurrentState~="InProgress" then
+        self:SetRiftAfterRunReturnStatus("waiting-run","Only a positively active current run can arm this feature")
+        return false
+    end
+    local ok,allowance,reason=pcall(readRiftReturnAllowance)
+    if not ok or type(allowance)~="table" then
+        self:SetRiftAfterRunReturnStatus("waiting-native",ok and reason or "Native Rift time/allowance read failed")
+        return false
+    end
+    if allowance.MinuteSeconds>=900 then
+        self:SetRiftAfterRunReturnStatus("waiting-window","Waiting for the first 15 minutes of a native hour")
+        return false
+    end
+    if allowance.Remaining<=0 then
+        self:SetRiftAfterRunReturnStatus("hourly-clears-used","Two native hourly Rift clears are already used")
+        return false
+    end
+    self.RiftReturnPending={Scope=scope,ObservedRunning=true,DetectedAt=allowance.Now,Remaining=allowance.Remaining}
+    self:SetRiftAfterRunReturnStatus("pending","Eligible window detected during this run; finish this run first")
+    return true
+end
+function Controller:RiftAfterRunReturnOwnsResult(context)
+    local pending=self.RiftReturnPending
+    return self:RiftAfterRunReturnOwnerValid() and value(RIFT_RETURN_KEY,false)==true
+        and riftReturnPendingValid(pending) and pending.Scope==riftReturnScope(context)
+        and not restartIntentSuppressesResult(self.RestartIntents[roundKey(context)])
+end
+function Controller:RiftAfterRunReturnReady(context)
+    if not self:RiftAfterRunReturnOwnsResult(context) or context.NativeActive~=false
+        or context.Active~=false or not terminalGameState(context.CurrentState) then return false end
+    -- Stage webhooks and transition guards may yield. Never dispatch from their stale result snapshot.
+    local fresh=currentContext()
+    return self:RiftAfterRunReturnOwnsResult(fresh) and fresh.NativeActive==false
+        and fresh.Active==false and terminalGameState(fresh.CurrentState)
+end
+-- Preserve a same-job pending decision across a normal runtime reload; fresh scope checks precede any dispatch.
+if type(reloadState)=="table" and reloadState.Version==2 and reloadState.UserId==GAME_USER_ID then
+    if riftReturnPendingValid(reloadState.RiftReturnPending) then Controller.RiftReturnPending=copyMap(reloadState.RiftReturnPending) end
+    if type(reloadState.RiftReturnRestartScope)=="string" then Controller.RiftReturnRestartScope=reloadState.RiftReturnRestartScope end
+end
+-- RIFT_AFTER_RUN_RETURN_END
 
 function Controller:ObserveRoundTransition()
     local context, prior = currentContext(), self.LastRoundContext
@@ -17612,10 +18504,7 @@ function Controller:ObserveRoundTransition()
         local timeReady = pending.TimeReset or (before.GameTime <= 3 and (pending.HasIntent or pending.SawInactive))
         if waveReady and timeReady and context.Active and context.CurrentState == "InProgress"
             and context.Wave <= 2 and context.GameTime <= 30 then
-            local key = "restart|" .. pending.Key
-            if value(FEATURE.StageFinishedWebhook, false) == true and not self.WebhookHandled[key] and not self.PendingRestartWebhooks[key] then
-                self.PendingRestartWebhooks[key] = { Context = copyMap(before), Reason = pending.Reason }
-            end
+            -- Round bookkeeping only; restarting no longer creates a separate webhook.
             self.RestartIntents[pending.Key] = nil
             self.RoundSerial += 1
             self.FallbackRestartBoundary = { Wave = context.Wave, GameTime = context.GameTime,
@@ -17755,6 +18644,7 @@ local function isFarmUnit(entry)
 end
 
 function Controller:ClaimTransition(context, action)
+    if action ~= "challenge-handoff" and type(self.ChallengeHandoffOwnsResult)=="function" and self:ChallengeHandoffOwnsResult(context) then return false, "Regular Challenge handoff owns this result" end
     -- MONSTER_TRANSITION_GUARD_BEGIN
     local monster=Environment.__AnimeExpeditionsMonsterClash
     -- The completed helicopter destination is not another helicopter farm stage.
@@ -17834,6 +18724,298 @@ local function resultWon(result)
     return text == "win" or text == "victory" or text == "cleared"
 end
 
+-- CHALLENGE_HANDOFF_GAME_BEGIN
+-- ALL_MODE_HANDOFF_GAME_BEGIN
+local function challengeHandoffLedger()
+    local key=tostring(GAME_USER_ID)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local ledgers=Environment.__AnimeExpeditionsChallengeHandoffLedgers
+    if type(ledgers)~="table"then ledgers={}Environment.__AnimeExpeditionsChallengeHandoffLedgers=ledgers end
+    Environment.__AnimeExpeditionsModeHandoffLedgers=ledgers
+    if type(ledgers[key])~="table"then ledgers[key]={}end
+    return ledgers[key]
+end
+local function challengeHandoffFingerprint(input,depth,seen)
+    input=stateValue(input)
+    if typeof(input)=="Instance"then return "Instance:"..input.ClassName..":"..input:GetFullName() end
+    if type(input)~="table"then return type(input)..":"..tostring(input)end
+    depth,seen=depth or 0,seen or{}
+    if depth>18 or seen[input]then return "<invalid-cycle>"end
+    seen[input]=true
+    local keys,parts={},{}
+    for k in pairs(input)do keys[#keys+1]=k end
+    table.sort(keys,function(a,b)return tostring(a)<tostring(b)end)
+    for _,k in ipairs(keys)do parts[#parts+1]=tostring(k)..":"..challengeHandoffFingerprint(input[k],depth+1,seen)end
+    seen[input]=nil
+    return "{"..table.concat(parts,"|").."}"
+end
+local function challengeHandoffStamp(plan)
+    if type(plan)~="table"then return nil end
+    return table.concat({tostring(plan.Name),tostring(plan.Toggle),tostring(plan.Route),tostring(plan.SourceGameId),tostring(plan.SourceRoundSerial),
+        tostring(plan.SourceFingerprint),tostring(plan.ConfigurationFingerprint),tostring(plan.PriorityFingerprint),tostring(plan.TargetProof),
+        tostring(plan.CooldownSeconds),tostring(plan.TeamFingerprint),challengeHandoffFingerprint(plan.QueueData),challengeHandoffFingerprint(plan.Operation)},"|")
+end
+local function challengeHandoffPlan(context,pending,lobby)
+    local joiner=Environment.__AnimeExpeditionsJoinerV1
+    local method=type(joiner)=="table"and(lobby and joiner.BuildLobbyModePlan or joiner.BuildModeHandoff or joiner.BuildChallengeHandoff)
+    if type(method)~="function"then return nil,"Mode handoff planner unavailable"end
+    local ok,plan,reason=pcall(method,joiner,context,pending)
+    return ok and plan or nil,ok and reason or tostring(plan)
+end
+local function challengeHandoffReconcile(ledger,context)
+    local pending=ledger.Pending
+    if not pending then return nil end
+    local joiner=Environment.__AnimeExpeditionsJoinerV1
+    if pending.LobbyInvoked and type(joiner)=="table"and type(joiner.ConfirmedLobbyArrival)=="function"and joiner:ConfirmedLobbyArrival(pending.Plan)==true then
+        ledger.LastOutcome,ledger.Pending="native-lobby-arrived",nil return nil
+    end
+    local nativeId=statePath(Dependencies.GamePlayerState,"GameID")
+    local known=type(nativeId)=="string"and nativeId~=""or type(nativeId)=="number"and nativeId==nativeId and nativeId>=0 and nativeId%1==0
+    local serial=type(context)=="table"and context.RoundSerial
+    if type(context)=="table"and context.InGame==true and known and tostring(nativeId)==context.GameId
+        and type(serial)=="number"and serial>=0 and serial%1==0
+        and(context.GameId~=pending.Plan.SourceGameId or serial~=pending.Plan.SourceRoundSerial)then
+        ledger.LastOutcome,ledger.Pending="native-round-changed",nil return nil
+    end
+    return pending
+end
+local function challengeHandoffPartyOwned(party,expected)
+    if type(party)~="table"or type(party.FireServer)~="function"then return false end
+    local data=stateValue(party.Data)
+    local players=statePath(data,"Players")
+    if type(data)~="table"or statePath(data,"Leader")~=LocalPlayer or type(players)~="table"or not table.find(players,LocalPlayer)then return false end
+    local maximum=statePath(data,"MaxPlayers")
+    local mode=type(expected)=="table"and expected.Gamemode
+    local limit=mode and statePath(Information,"Gamemodes",mode,"MaxPlayers")
+    local eventLimit=expected and expected.EventId and statePath(Information,"Events",expected.EventId,"MaxPlayers")
+    if not eventLimit and expected and expected.EventId then eventLimit=statePath(Information,"Events",expected.EventId,"QueueData","MaxPlayers")end
+    if mode=="Tournament"then
+        local current=statePath(Dependencies.TournamentData,expected.TournamentId)
+        local ends=statePath(current,"EndsAt")
+        if type(ends)~="number"or ends<=workspace:GetServerTimeNow()then return false end
+        limit=statePath(current,"PlayerCount")
+    else limit=eventLimit or limit end
+    if maximum==nil then maximum=expected and expected.MaxPlayers or limit end
+    if type(maximum)~="number"or maximum~=maximum or maximum<1 or maximum%1~=0 or #players>maximum then return false end
+    if type(limit)=="number"and #players>limit then return false end
+    return true
+end
+local function challengeHandoffPartyValid(party,expected)
+    if not challengeHandoffPartyOwned(party,expected)or statePath(party.Data,"StartDisabled")==true then return false end
+    return challengeHandoffFingerprint(statePath(party.Data,"QueueData"))==challengeHandoffFingerprint(expected)
+end
+function Controller:ChallengeHandoffOwnsResult(context)
+    local ledger=challengeHandoffLedger()
+    if challengeHandoffReconcile(ledger,context)then return true end
+    -- An armed explicit Rift return outranks a new mode proposal; an existing native request remains reserved above.
+    if type(self.RiftAfterRunReturnOwnsResult)=="function"and self:RiftAfterRunReturnOwnsResult(context)then return false end
+    local handled=self.ResultHandled[roundKey(context).."|result|"..tostring(context.ResultEpoch or self.ResultEpoch)]
+    if handled and handled~="challenge-handoff"then return false end
+    return challengeHandoffPlan(context)~=nil
+end
+function Controller:GetChallengeHandoffStatus()
+    local ledger=challengeHandoffLedger()
+    local pending=ledger.Pending
+    local joiner=Environment.__AnimeExpeditionsJoinerV1
+    return{Status=self.ChallengeHandoffStatus or type(joiner)=="table"and joiner.ModeHandoffStatus or"waiting-match-end",
+        Reason=self.ChallengeHandoffDetail or type(joiner)=="table"and joiner.ModeHandoffReason or"The highest eligible configured Joiner is checked after a native match result",
+        QueueData=pending and(pending.ExpectedQueueData or pending.Plan.QueueData),Target=pending and pending.Plan.Name,
+        Route=pending and pending.Plan.Route,Pending=pending~=nil,LastOutcome=ledger.LastOutcome}
+end
+function Controller:GetModeHandoffStatus()return self:GetChallengeHandoffStatus()end
+function Controller:ProcessChallengeHandoff(context,result,lobby,requestedPlan)
+    local ledger=challengeHandoffLedger()
+    local pending=challengeHandoffReconcile(ledger,context)
+    local function hold(reason,status)
+        self.LastAction="mode-handoff:waiting"
+        self.ChallengeHandoffStatus,self.ChallengeHandoffDetail=status or"waiting",tostring(reason)
+        return true,"challenge-handoff"
+    end
+    if self.ModeHandoffBusy then return pending and hold("Native entry dispatch is in flight")or false end
+    if pending and pending.StartInvoked then return hold("Entry was requested once; waiting for the native destination","submitted")end
+    if pending and pending.LobbyInvoked then return hold("Lobby was requested once for native preparation; waiting for positive Lobby arrival","lobby-required")end
+    lobby=lobby==true or pending and pending.Plan.SourceInLobby==true
+    local plan,reason=challengeHandoffPlan(context,pending,lobby)
+    if requestedPlan and(not plan or challengeHandoffStamp(requestedPlan)~=challengeHandoffStamp(plan))then return hold("Lobby plan changed before native dispatch")end
+    if not plan then return pending and hold(reason or"Pending native entry is paused; no Replay or Lobby fallback")or false end
+    if pending and challengeHandoffStamp(plan)~=pending.Stamp then
+        local joiner=Environment.__AnimeExpeditionsJoinerV1
+        local prepared=pending.PrepareInvoked and plan.Name==pending.Plan.Name and plan.ConfigurationFingerprint==pending.Plan.ConfigurationFingerprint
+            and plan.SourceFingerprint==pending.Plan.SourceFingerprint and type(joiner)=="table"and type(joiner.ModePreparationAcknowledged)=="function"
+            and joiner:ModePreparationAcknowledged(pending.Plan)
+        if not prepared then return hold("Target eligibility or configuration changed after native request; no repeated request")end
+        pending.Plan,pending.Stamp,pending.PrepareInvoked=plan,challengeHandoffStamp(plan),false
+    end
+    if not lobby and not result then return pending and hold("Waiting for the native result")or false end
+    local seen=self.ResultSeenAt or os.clock()
+    if not lobby then self.ResultSeenAt=seen end
+    if not lobby and os.clock()-seen<Config.ResultActionDelaySeconds+(plan.CooldownSeconds or 0)then return hold("Waiting for the result and Joiner cooldown")end
+    if Config.DryRun then return hold("Dry run: native mode entry was not sent","dry-run")end
+    if not pending then
+        if not lobby and not self:ClaimTransition(context,"challenge-handoff")then return hold("Another transition owns this result")end
+        pending={Plan=plan,Stamp=challengeHandoffStamp(plan),StepInvoked={},Bindings={},At=os.time()}
+        ledger.Pending=pending
+    end
+    pending.StepInvoked,pending.Bindings=pending.StepInvoked or{},pending.Bindings or{}
+    local function fresh()
+        if Environment[STATE_KEY]~=self or not self.Running or self.Stopping or GAME_USER_ID==nil or gameAccountId()~=GAME_USER_ID or ledger.Pending~=pending then return false end
+        local nowContext=currentContext()
+        local current=challengeHandoffPlan(nowContext,pending,lobby)
+        if not current or challengeHandoffStamp(current)~=pending.Stamp then return false end
+        local joiner=Environment.__AnimeExpeditionsJoinerV1
+        if lobby then return stateValue(Shared.IsInGame)==false and stateValue(Shared.IsInAFKChamber)==false end
+        return type(joiner)=="table"and type(joiner.ModeSourceMatches)=="function"and joiner:ModeSourceMatches(pending.Plan,currentContext())==true
+    end
+    local function bind(name,actor)
+        if type(actor)~="function"then return false end
+        if pending.Bindings[name] and pending.Bindings[name]~=actor then return false end
+        pending.Bindings[name]=actor return true
+    end
+    self.ModeHandoffBusy=true
+    local ok,failure=pcall(function()
+        withGameIdentity(function()
+            if not fresh()then return end
+            local route=plan.Route or"party"
+            if route=="lobby-required"then
+                local getter=Nodes.GET_GAME_REPLICA
+                local actor=getter and getter.InvokeSelf
+                if not getter or not bind("LobbyGetter",actor)then return end
+                local replica=actor(getter)
+                local send=replica and replica.FireServer
+                if not bind("LobbySend",send)or not fresh()or getter.InvokeSelf~=actor or replica.FireServer~=send then return end
+                pending.LobbyInvoked=true
+                send(replica,"Lobby")
+                return
+            end
+            if route=="bounty-prepare"then
+                local op=plan.Operation
+                local actor=rawget(Actions,"FireEventReplica")
+                local key="bounty:"..challengeHandoffFingerprint(op)
+                if pending.StepInvoked[key]or not bind("FireEventReplica",actor)or not fresh()or rawget(Actions,"FireEventReplica")~=actor then return end
+                pending.StepInvoked[key],pending.PrepareInvoked=true,true
+                actor(op.EventId,op.Action,op.ConfirmSecret and true or nil)
+                return
+            end
+            if route=="matchmaking"then
+                local actor=rawget(Actions,"StartMatchmaking")
+                if not bind("StartMatchmaking",actor)or not fresh()or rawget(Actions,"StartMatchmaking")~=actor then return end
+                pending.StartInvoked=true
+                actor(plan.QueueData)
+                return
+            end
+            local step
+            if route=="portal-activate"or route=="portal-join"then
+                local joiner=Environment.__AnimeExpeditionsJoinerV1
+                local adapter=joiner:GetModeNativeAdapter()
+                step=adapter:NextStep(plan.NativePlan,pending)
+                if not step then return end
+            else step={Kind=route,QueueData=plan.QueueData,Replica=plan.NativePlan and plan.NativePlan.Replica,
+                NativeAction=plan.NativePlan and plan.NativePlan.NativeAction,NativeNode=plan.NativePlan and plan.NativePlan.NativeNode,Args=plan.NativePlan and plan.NativePlan.Args}end
+            if step.Kind~="party"then
+                local key=step.Kind=="portal-join"and("portal-join:"..tostring(step.ReplicaId or step.Replica))or step.Kind
+                if pending.StepInvoked[key]then return end
+                local actor,args,replica
+                if step.Kind=="rift-portal"or step.Kind=="portal-join"then
+                    replica=step.Replica actor=replica and replica.FireServer
+                    args={step.Kind=="rift-portal"and"EnterRift"or"Join",n=1}
+                elseif step.Kind=="portal-activate"then
+                    actor=rawget(Actions,"FireNode") args={step.NativeNode,"FireServer",table.unpack(step.Args or{},1,(step.Args or{}).n or #(step.Args or{}))}
+                    args.n=2+((step.Args or{}).n or #(step.Args or{}))
+                elseif step.Kind=="native-special"then actor=rawget(Actions,step.NativeAction)args=step.Args
+                else return end
+                if not bind(key,actor)or not fresh()then return end
+                if route=="portal-activate"or route=="portal-join"then
+                    local joiner=Environment.__AnimeExpeditionsJoinerV1
+                    local final=joiner:GetModeNativeAdapter():NextStep(plan.NativePlan,pending)
+                    if not final or final.Kind~=step.Kind or final.Replica~=step.Replica or final.NativeNode~=step.NativeNode
+                        or final.NativeAction~=step.NativeAction or challengeHandoffFingerprint(final.Args)~=challengeHandoffFingerprint(step.Args)
+                        or challengeHandoffFingerprint(final.QueueData)~=challengeHandoffFingerprint(step.QueueData)then return end
+                    if not fresh()then return end
+                elseif step.Kind=="rift-portal"then
+                    local current=challengeHandoffPlan(currentContext(),pending,lobby)
+                    if not current or not current.NativePlan or current.NativePlan.Replica~=replica
+                        or current.NativePlan.RiftPortalId~=plan.NativePlan.RiftPortalId
+                        or current.NativePlan.RiftQueueData~=plan.NativePlan.RiftQueueData
+                        or current.NativePlan.RiftHostUserId~=plan.NativePlan.RiftHostUserId
+                        or current.NativePlan.RiftPortalData~=plan.NativePlan.RiftPortalData then return end
+                    local joiner=Environment.__AnimeExpeditionsJoinerV1
+                    if not fresh()or type(joiner)~="table"or type(joiner.ModeNativePlanReady)~="function"
+                        or joiner:ModeNativePlanReady(plan.NativePlan)~=true then return end
+                end
+                if replica and replica.FireServer~=actor then return end
+                if step.Kind=="portal-activate"and rawget(Actions,"FireNode")~=actor then return end
+                if step.Kind=="native-special"and rawget(Actions,step.NativeAction)~=actor then return end
+                if pending.StepInvoked[key]then return end
+                pending.StepInvoked[key],pending.SpecialInvoked=true,true
+                if step.Kind=="rift-portal"or step.Kind=="native-special"then pending.StartInvoked=true end
+                if replica then actor(replica,table.unpack(args,1,args.n or #args))else actor(table.unpack(args or{},1,(args or{}).n or #(args or{})))end
+                return
+            end
+            local expected=step.QueueData or plan.QueueData
+            local getter,create=Nodes.PARTY_GET_CURRENT_REPLICA,Nodes.PARTY_CREATE
+            local getActor,createActor=getter and getter.InvokeSelf,create and create.Request
+            local setQueue=rawget(Actions,"PartySetQueueData")
+            if not bind("PartyGet",getActor)or not bind("PartyCreate",createActor)or not bind("PartySet",setQueue)then return end
+            if pending.Getter and pending.Getter~=getter or pending.Create and pending.Create~=create then return end
+            pending.Getter,pending.Create=getter,create
+            local party=getActor(getter)
+            if party~=nil and type(party)~="table"then return end
+            if step.SkipSet then
+                if not party or not challengeHandoffPartyValid(party,expected)then return end
+                pending.ExpectedQueueData=expected
+            elseif not pending.CreateInvoked and not pending.QueueInvoked then
+                if party then
+                    if not challengeHandoffPartyOwned(party,expected)then return end
+                    local finalParty=getActor(getter)
+                    if finalParty~=party or not fresh()or not challengeHandoffPartyOwned(party,expected)or rawget(Actions,"PartySetQueueData")~=setQueue
+                        or Nodes.PARTY_GET_CURRENT_REPLICA~=getter or getter.InvokeSelf~=getActor then return end
+                    pending.Party,pending.QueueInvoked=party,true
+                    setQueue(expected)
+                else
+                    local finalParty=getActor(getter)
+                    if finalParty~=nil or not fresh()or create.Request~=createActor or Nodes.PARTY_CREATE~=create
+                        or Nodes.PARTY_GET_CURRENT_REPLICA~=getter or getter.InvokeSelf~=getActor then return end
+                    pending.CreateInvoked=true
+                    local request=createActor(create,expected)
+                    assert(type(request)=="table"and type(request.Timeout)=="function"and type(request.Once)=="function","Native PartyCreate request contract unavailable")
+                    request:Timeout(5)request:Once(function()pending.CreateResponded=true end)
+                end
+                return
+            end
+            if not party or pending.Party and pending.Party~=party or not challengeHandoffPartyValid(party,expected)then return end
+            local startActor=party.FireServer
+            local finalParty=getActor(getter)
+            if finalParty~=party or not fresh()or party.FireServer~=startActor or not challengeHandoffPartyValid(party,expected)
+                or Nodes.PARTY_GET_CURRENT_REPLICA~=getter or getter.InvokeSelf~=getActor then return end
+            if pending.StartInvoked then return end
+            pending.Party,pending.StartInvoked=party,true
+            pending.ExpectedQueueData=expected
+            startActor(party,"StartGame")
+        end)
+    end)
+    self.ModeHandoffBusy=false
+    if not ok then pending.Error=tostring(failure)self.LastError=tostring(failure)end
+    if pending.StartInvoked then
+        if result then self.ResultHandled[resultKey(result,context)]="challenge-handoff"end
+        self.ChallengeHandoffStatus,self.ChallengeHandoffDetail="submitted","Requested "..plan.Name.." once; waiting for native entry"
+        self.LastAction="game-finished:challenge-handoff"
+        return true,"challenge-handoff"
+    end
+    return hold(pending.Error or plan.RequiredContextReason or"Waiting for native preparation/complete queue acknowledgement; no repeated request",pending.LobbyInvoked and"lobby-required"or nil)
+end
+function Controller:SubmitLobbyModePlan(plan)
+    return self:ProcessChallengeHandoff(currentContext(),nil,true,plan)
+end
+function Controller:DrivePendingLobbyModePlan()
+    local ledger=challengeHandoffLedger()
+    local pending=challengeHandoffReconcile(ledger,currentContext())
+    if not pending or not pending.Plan.SourceInLobby then return false end
+    return self:ProcessChallengeHandoff(currentContext(),nil,true)
+end
+-- ALL_MODE_HANDOFF_GAME_END
+-- CHALLENGE_HANDOFF_GAME_END
+
+
+
 local function updateLabel(id, text)
     local gui = Environment.__AnimeExpeditionsGuiController
     local control = type(gui) == "table" and gui.Controls and gui.Controls[id] or nil
@@ -17887,6 +19069,11 @@ function Controller:ProcessAutoRestart(context)
     local key = "restart|" .. roundKey(context)
     if self.Triggered[key] then return false end
     if not self:ClaimTransition(context, "restart") then return false end
+    if self.RiftReturnPending then
+        self.RiftReturnRestartScope=self.RiftReturnPending.Scope
+        self.RiftReturnPending=nil
+        self:SetRiftAfterRunReturnStatus("cancelled-restart","Auto Restart is not this run's natural completion")
+    end
     self:QueueRestartWebhook(context, "Auto Restart")
     fireGameReplica("Restart")
     self.Triggered[key] = true
@@ -17919,6 +19106,52 @@ function Controller:ProcessAutoSell(context)
     return sold > 0, sold
 end
 
+local function starrkPendingReservation()
+    local player=game:GetService("Players").LocalPlayer
+    if not player then return false end
+    local key=tostring(player.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local ledgers=Environment.__AnimeExpeditionsStarrkAutoPlayLedgers
+    local engine=type(ledgers)=="table" and ledgers[key]
+    if type(engine)~="table" then return false end
+    local prep=type(engine.TeamPreparation)=="table" and engine.TeamPreparation or {}
+    local pending=type(prep.Pending)=="table" and prep.Pending
+    local start=type(prep.StartBarrier)=="table" and prep.StartBarrier
+    if not start and type(engine.Pending)=="table" and engine.Pending.Kind=="Start" then start=engine.Pending end
+    if not pending and not start then return false end
+    local id=statePath(Dependencies.GamePlayerState,"GameID")
+    local inc=statePath(Dependencies.GameState,"GameIncrement")
+    local validId=type(id)=="string" and id~="" or type(id)=="number" and id==id and id>=0 and id%1==0
+    local current=validId and type(inc)=="number" and inc==inc and inc>=0 and inc%1==0 and (tostring(id)..":"..tostring(inc)) or nil
+    local function sameRound(record)
+        local expected=record.RoundKey or prep.RoundKey or engine.RoundKey
+        return not current or not expected or current==expected
+    end
+    if pending and sameRound(pending) then
+        if not current then return true end
+        local slots=statePath(Dependencies.HotbarState,"Slots")
+        local slot=statePath(slots,tostring(pending.Slot)) or statePath(slots,pending.Slot)
+        local actual=statePath(slot,"ID")
+        local inventory=statePath(Dependencies.PlayerData,"UnitData")
+        local dependent=stateValue(Dependencies.UnitData)
+        local other
+        if type(inventory)=="table" then
+            if type(dependent)=="table" and dependent~=inventory then other=dependent end
+        else inventory=dependent end
+        local function assetIn(map)
+            if type(map)~="table" or actual==nil then return nil end
+            return statePath(statePath(map,actual) or statePath(map,tostring(actual)),"Asset")
+        end
+        local acknowledged=actual~=nil and tostring(actual)==tostring(pending.UnitID)
+            and assetIn(inventory)==pending.Asset and (not other or assetIn(other)==pending.Asset)
+        if not acknowledged then return true end
+    end
+    if start and sameRound(start) then
+        if not current or statePath(Dependencies.GameState,"Active")~=true
+            or statePath(Dependencies.HotbarState,"UnitManagement")~=false then return true end
+    end
+    return false
+end
+
 function Controller:ProcessAutoSkip(context)
     if context.Gamemode=="BossRush" then
         local boss=Environment.__AnimeExpeditionsBossRush
@@ -17945,7 +19178,23 @@ function Controller:ProcessAutoSkip(context)
     else
         releaseAutoSkipSetting()
     end
-    local voteChanged = setSetting("AutoVoteStart", value(FEATURE.AutoVoteStart, false) == true)
+    local desiredVote = value(FEATURE.AutoVoteStart, false) == true
+    local macro = Environment.__AnimeExpeditionsMacro
+    if type(macro) == "table" and type(macro.ShouldHoldAutoStart) == "function" then
+        local ok, hold = pcall(macro.ShouldHoldAutoStart, macro)
+        if not ok or hold then desiredVote = false end
+    end
+    -- Starrk owns this exact stage, including opted-in missing/failed runtime.
+    if context.InGame and context.Gamemode=="Rift" and context.MapName=="StarrkRift" and context.ActName=="Act 1" and context.Difficulty=="Hard" then
+        if value("AE-STARRK-AUTOPLAY",false)==true or starrkPendingReservation() then desiredVote=false end
+        local starrk=Environment.__AnimeExpeditionsStarrkAutoPlay
+        if type(starrk)=="table" and type(starrk.Holds)=="function" then
+            local ok,hold=pcall(starrk.Holds,starrk)
+            if not ok or hold then desiredVote=false end
+        end
+    end
+    -- Keep the user's UI preference; only suppress the native setting until verification.
+    local voteChanged = setSetting("AutoVoteStart", desiredVote)
     if changed or voteChanged then self.LastAction = "game-settings" end
     return changed or voteChanged
 end
@@ -17984,13 +19233,18 @@ function Controller:ProcessFailsafes(context, result)
 end
 
 function Controller:ProcessGameFinished(context, result)
-    if context.Gamemode=="BossRush" then
+    local ownsReturn=type(self.RiftAfterRunReturnOwnsResult)=="function" and self:RiftAfterRunReturnOwnsResult(context)
+    local returnAfterRun=type(self.RiftAfterRunReturnReady)=="function" and self:RiftAfterRunReturnReady(context)
+    if ownsReturn and not returnAfterRun then return false end -- Hold split terminal/Active replication frames.
+    if not returnAfterRun and context.Gamemode=="BossRush" then
         local boss=Environment.__AnimeExpeditionsBossRush
         local cfg=type(boss)=="table" and type(boss.ReadConfig)=="function" and boss:ReadConfig() or {}
         if cfg.Manual==true or cfg.Playing~=true then return false end
     end
-    if tidalSiegeOwnsRound() then return false end
+    if not returnAfterRun and type(self.ChallengeHandoffOwnsResult)=="function" and self:ChallengeHandoffOwnsResult(context) then return self:ProcessChallengeHandoff(context,result) end
+    if not returnAfterRun and tidalSiegeOwnsRound() then return false end
     if not result then return false end
+    if returnAfterRun and self.RiftReturnPending.Submitted then return false end
     local key = resultKey(result, context)
     local returnFromMonsterRift = isMonsterRiftContext(context) and value(FEATURE.AutoRunJoiner, false) == true
     -- Old builds could consume a synthetic Rift result as Replay before the
@@ -18001,7 +19255,9 @@ function Controller:ProcessGameFinished(context, result)
     if os.clock() - self.ResultSeenAt < Config.ResultActionDelaySeconds then return false end
     local action
     local ok = false
-    if returnFromMonsterRift then
+    if returnAfterRun then
+        action = "rift-after-run-lobby"
+    elseif returnFromMonsterRift then
         -- Auto Run Joiner owns the return leg from Rift to ordinary Monster
         -- Clash. Do not let Replay/late result flags steal this transition.
         action = "joiner-lobby"
@@ -18017,6 +19273,14 @@ function Controller:ProcessGameFinished(context, result)
     if action and not self:ClaimTransition(context, action) then return false end
     if action == "next" then ok = Config.DryRun or pcall(function() withGameIdentity(function() Actions.GameNext() end) end)
     elseif action == "replay" then ok = Config.DryRun or pcall(function() self:QueueRestartWebhook(context, "Auto Replay") fireGameReplica("Restart") end)
+    elseif action == "rift-after-run-lobby" then
+        if not self:RiftAfterRunReturnReady(context) or self.RiftReturnPending.Submitted then return false end
+        -- Reserve once before dispatch: even a thrown transport outcome must not duplicate or fall through to Replay.
+        self.RiftReturnPending.Submitted=true
+        ok=Config.DryRun or pcall(function()fireGameReplica("Lobby")end)
+        self.RiftReturnPending.SubmissionOK=ok
+        self.ResultHandled[key]=action
+        self:SetRiftAfterRunReturnStatus(ok and "submitted" or "outcome-unknown","Lobby requested once; waiting for native departure")
     elseif action then ok = Config.DryRun or pcall(function() fireGameReplica("Lobby") end) end
     if action and ok then
         self.ResultHandled[key] = action
@@ -18938,55 +20202,11 @@ function Controller:BuildStageWebhookPayload(context, result)
     }
 end
 
-function Controller:BuildRestartWebhookPayload(context, reason)
-    local map = type(Information.Maps) == "table" and Information.Maps[context.MapName] or nil
-    local mapName = type(map) == "table" and map.DisplayName or context.MapName or "Unknown"
-    mapName = tostring(mapName):gsub("(%l)(%u)", "%1 %2"):gsub("_", " ")
-    local mode = shortRewardName(context.StageType or context.Gamemode or "Unknown")
-    if context.Difficulty and context.Difficulty ~= "" then mode ..= " • " .. shortRewardName(context.Difficulty) end
-    return {
-        username = "Anime Expeditions",
-        embeds = {{
-            title = "🔄 Restart • Stage Summary",
-            description = spoilerPlayerIdentity(),
-            color = 0xF4D35E,
-            fields = {
-                { name = "Stage", value = shortRewardName(mapName) .. " • " .. shortRewardName(context.ActName or "-") .. "\n" .. mode, inline = false },
-                { name = "Elapsed time", value = formatDuration(context.GameTime), inline = true },
-                { name = "Restart wave", value = formatAmount(context.Wave), inline = true },
-                { name = "Reason", value = shortRewardName(reason), inline = false },
-                { name = "Result", value = "Restart confirmed; not counted as a victory or defeat.", inline = false },
-            },
-            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),
-        }},
-        allowed_mentions = { parse = {}, users = {} },
-    }
-end
-
 function Controller:ProcessRestartWebhook()
-    if self.Stopping or value(FEATURE.StageFinishedWebhook, false) ~= true then return false end
-    local sent = false
-    for key, event in pairs(self.PendingRestartWebhooks) do
-        if not self.WebhookHandled[key] and not self.WebhookInFlight[key] and os.clock() >= (self.WebhookRetryAt[key] or 0) then
-            self.WebhookInFlight[key] = true
-            self.WebhookAttemptBatches[key] = (self.WebhookAttemptBatches[key] or 0) + 1
-            local ok, _, retryable, disposition = self:SendWebhook(self:BuildRestartWebhookPayload(event.Context, event.Reason), "stage-restart")
-            self.WebhookInFlight[key] = nil
-            if disposition == "cancelled" then
-                self.WebhookAttemptBatches[key] = math.max(0, self.WebhookAttemptBatches[key] - 1)
-            elseif ok then
-                self.WebhookHandled[key] = true
-                self.PendingRestartWebhooks[key] = nil
-                sent = true
-            elseif retryable and self.WebhookAttemptBatches[key] < 2 then
-                self.WebhookRetryAt[key] = os.clock() + 15
-            else
-                self.WebhookHandled[key] = "failed"
-                self.PendingRestartWebhooks[key] = nil
-            end
-        end
-    end
-    return sent
+    -- Discard legacy reload/retry events without sending a Restart Stage Summary.
+    -- Keep restart intents and normal Stage Finished notifications independent.
+    table.clear(self.PendingRestartWebhooks)
+    return false
 end
 
 function Controller:ProcessStageWebhook(context, result)
@@ -19118,6 +20338,7 @@ end
 function Controller:_RunOnce()
     self:ObserveRoundTransition()
     local context = currentContext()
+    if type(self.ObserveRiftAfterRunReturn)=="function" then self:ObserveRiftAfterRunReturn(context) end
     if self.LastGameId ~= context.GameId then
         self:ClearHitAttackBinding("Game changed")
         self.LastGameId = context.GameId
@@ -19142,12 +20363,19 @@ function Controller:_RunOnce()
     if result then
         self:ClearHitAttackBinding("Game finished")
         process("stage-webhook", function() return self:ProcessStageWebhook(context, result) end)
-        terminal = process("failsafe", function() return self:ProcessFailsafes(context, result) end)
-        if not terminal then terminal = process("game-finished", function() return self:ProcessGameFinished(context, result) end) end
+        if (type(self.RiftAfterRunReturnOwnsResult)=="function" and self:RiftAfterRunReturnOwnsResult(context)) or (type(self.ChallengeHandoffOwnsResult)=="function" and self:ChallengeHandoffOwnsResult(context)) then
+            process("game-finished",function()return self:ProcessGameFinished(context,result)end)
+            terminal=true -- A pending terminal return also owns the delay/cooldown/unknown-outcome period.
+        else
+            terminal = process("failsafe", function() return self:ProcessFailsafes(context, result) end)
+            if not terminal then terminal = process("game-finished", function() return self:ProcessGameFinished(context, result) end) end
+        end
     else
         self.ResultSeenAt = nil
         terminal = process("restart", function() return self:ProcessAutoRestart(context) end)
-        if not terminal then
+        local starrk=Environment.__AnimeExpeditionsStarrkAutoPlay
+        local starrkOwns=type(starrk)=="table" and type(starrk.Holds)=="function" and starrk:Holds()==true
+        if not terminal and not starrkOwns then
             process("sell", function() return self:ProcessAutoSell(context) end)
             process("hit-replace", function() return self:ProcessHitReplace(context) end)
             process("rewind", function() return self:ProcessRewindLoop(context) end)
@@ -19195,6 +20423,9 @@ function Controller:BindGui()
         self.InstalledHandlers[id] = installed
         handlers[id] = installed
     end
+    install(RIFT_RETURN_KEY,function(enabled)
+        if not enabled then self.RiftReturnPending=nil self:SetRiftAfterRunReturnStatus("disabled",nil) end
+    end)
     install(FEATURE.TestWebhook, function() self:TestWebhook() end)
     install(FEATURE.SetHitPosition, function() self:SetHitReplacePosition() end)
     install(FEATURE.HitUnit, function()
@@ -19232,6 +20463,10 @@ function Controller:GetStatus()
         RoundHadProgress = self.RoundHadProgress,
         FallbackRestartBoundary = self.FallbackRestartBoundary and copyMap(self.FallbackRestartBoundary) or nil,
         PendingRoundReset = self.PendingRoundReset and copyMap(self.PendingRoundReset) or nil,
+        RiftReturnPending = self.RiftReturnPending and copyMap(self.RiftReturnPending) or nil,
+        RiftReturnRestartScope = self.RiftReturnRestartScope,
+        RiftReturnStatus = self.RiftReturnStatus,
+        RiftReturnDetail = self.RiftReturnDetail,
         RestartIntents = copyMap(self.RestartIntents),
         PendingRestartWebhooks = copyMap(self.PendingRestartWebhooks),
         ResultEpoch = self.ResultEpoch,
@@ -19258,6 +20493,10 @@ function Controller:ExportReloadState()
         RoundHadProgress = self.RoundHadProgress,
         FallbackRestartBoundary = self.FallbackRestartBoundary and copyMap(self.FallbackRestartBoundary) or nil,
         PendingRoundReset = self.PendingRoundReset and copyMap(self.PendingRoundReset) or nil,
+        RiftReturnPending = self.RiftReturnPending and copyMap(self.RiftReturnPending) or nil,
+        RiftReturnRestartScope = self.RiftReturnRestartScope,
+        RiftReturnStatus = self.RiftReturnStatus,
+        RiftReturnDetail = self.RiftReturnDetail,
         RestartIntents = copyMap(self.RestartIntents),
         PendingRestartWebhooks = copyMap(self.PendingRestartWebhooks),
         ResultEpoch = self.ResultEpoch,
@@ -19468,6 +20707,7 @@ local FEATURE = {
     InfernalJoinOnce = "AE-INFERNAL-JOIN-ONCE",
     BossRushAutoJoin = "AE-BOSSRUSH-AUTO-JOIN",
     MonsterAutoJoin = "AE-MONSTER-AUTO-JOIN",
+    RiftFakeHometown = "AE-RIFT-FAKE-HOMETOWN-AUTO-JOIN",
     TidalAutoJoin = "AE-TIDAL-AUTO-JOIN",
     TidalShinyFarm = "AE-TIDAL-SHINY-FARM",
 }
@@ -19487,6 +20727,7 @@ local DEFAULT_PRIORITY = {
     "Boss Rush Joiner",
     "Infernal Cult Joiner",
     "Monster Clash Joiner",
+    "Rift Fake Hometown Joiner",
 }
 
 local LEGACY_PRIORITY = {
@@ -19584,7 +20825,7 @@ local function getSessionData()
 end
 
 local function isInLobby()
-    return Fusion.peek(Shared.IsInGame) ~= true
+    return Fusion.peek(Shared.IsInGame) ~= true and Fusion.peek(Shared.IsInAFKChamber) == false
 end
 
 local function cleanPriorityName(label)
@@ -19631,7 +20872,7 @@ local function priorityOrder()
     local result = {}
     for _, label in ipairs(type(configured) == "table" and configured or {}) do
         local name = cleanPriorityName(label)
-        if name ~= "" and not table.find(result, name) then table.insert(result, name) end
+        if name ~= "" and table.find(DEFAULT_PRIORITY, name) and not table.find(result, name) then table.insert(result, name) end
     end
     for _, name in ipairs(DEFAULT_PRIORITY) do
         if not table.find(result, name) then table.insert(result, name) end
@@ -19710,9 +20951,9 @@ function Join:_status(status,reason)
     return { Status=status,Reason=reason,Pending=self.Ledger.Pending~=nil,
         NativeStage=self.Ledger.Pending and self.Ledger.Pending.Stage or nil }
 end
-function Join:Build()
+function Join:Build(forTransition)
     local s=self.Ctx.Read()
-    if s.InGame~=false then return nil,"Boss Rush requires a confirmed lobby state" end
+    if not forTransition and s.InGame~=false then return nil,"Boss Rush requires a confirmed lobby state" end
     if s.SessionReady~=true then return nil,"native session state is not ready" end
     if s.Matchmaking or s.MatchmakingFound then return nil,"another matchmaking request is active" end
     if s.PartyKnown~=true then return nil,"native Party replica getter unavailable" end
@@ -19824,9 +21065,9 @@ return Module
 end)()
 local bossRushAutoJoinRuntime, bossRushAutoJoinScope
 local getBossRushAutoJoinRuntime
-local function buildBossRushQueue()
+local function buildBossRushQueue(forTransition)
     if value(FEATURE.BossRushAutoJoin,false)~=true then return nil,"Boss Rush Auto Join requires explicit true opt-in" end
-    local queue,reason=getBossRushAutoJoinRuntime():Build()
+    local queue,reason=getBossRushAutoJoinRuntime():Build(forTransition)
     Controller.FeatureStates[FEATURE.BossRushAutoJoin]={Status=queue and "eligible" or "unavailable",Reason=reason}
     return queue,reason
 end
@@ -19849,10 +21090,10 @@ function Module.new(ctx)
     assert(type(ctx)=="table"and type(ctx.Read)=="function"and type(ctx.Ledger)=="table","Monster Clash context required")
     return setmetatable({Ctx=ctx,Ledger=ctx.Ledger},Join)
 end
-function Join:Build()
+function Join:Build(forTransition)
     local s=self.Ctx.Read()
     self.LastSnapshot=s
-    if s.InGame~=false then return nil,"Return to the lobby before joining Monster Clash" end
+    if not forTransition and s.InGame~=false then return nil,"Return to the lobby before joining Monster Clash" end
     if s.Recording~=false then return nil,"Macro recording is active or unavailable" end
     if not s.SessionReady or not s.PartyKnown then return nil,"Waiting for native session/party data" end
     if s.Matchmaking or s.MatchmakingFound then return nil,"Another matchmaking request is active" end
@@ -19955,9 +21196,9 @@ end)()
 
 -- MONSTER_JOIN_MODULE_END
 local getMonsterJoinRuntime
-local function buildMonsterQueue()
+local function buildMonsterQueue(forTransition)
     if value(FEATURE.MonsterAutoJoin,false)~=true then return nil,"Monster Clash requires opt-in"end
-    local queue,reason=getMonsterJoinRuntime():Build()
+    local queue,reason=getMonsterJoinRuntime():Build(forTransition)
     Controller.FeatureStates[FEATURE.MonsterAutoJoin]={Status=queue and "eligible"or"waiting",Reason=reason}
     return queue,reason
 end
@@ -19980,10 +21221,10 @@ function Module.new(ctx)
     assert(type(ctx)=="table"and type(ctx.Read)=="function"and type(ctx.Ledger)=="table","Infernal context required")
     return setmetatable({Ctx=ctx,Ledger=ctx.Ledger},Join)
 end
-function Join:Build()
+function Join:Build(forTransition)
     local s=self.Ctx.Read()
     self.LastSnapshot=s
-    if s.InGame~=false then return nil,"Return to the lobby before joining Infernal Cult" end
+    if not forTransition and s.InGame~=false then return nil,"Return to the lobby before joining Infernal Cult" end
     if not s.SessionReady or not s.PartyKnown then return nil,"Waiting for native session/party data" end
     if s.Matchmaking or s.MatchmakingFound then return nil,"Another matchmaking request is active" end
     if not s.EventAvailable or s.ModeAllowed~=true then return nil,"Native Infernal Cult event/queue is unavailable" end
@@ -20073,9 +21314,9 @@ return Module
 
 end)()
 local getInfernalRuntime
-local function buildInfernalQueue()
+local function buildInfernalQueue(forTransition)
     if value(FEATURE.InfernalAutoJoin,false)~=true then return nil,"Infernal Cult requires explicit opt-in"end
-    local queue,reason=getInfernalRuntime():Build()
+    local queue,reason=getInfernalRuntime():Build(forTransition)
     return queue,reason
 end
 local function buildTidalQueue()
@@ -20236,10 +21477,12 @@ function Controller:ObserveBossResult()
 end
 
 local function challengeAvailable(challengeType, index, entry)
-    local challengeHistory = (getPlayerData().ChallengeData or {})
+    local challengeHistory = Fusion.peek(getPlayerData().ChallengeData) or {}
+    local clearHistory = Fusion.peek(challengeHistory.ClearHistory) or {}
+    local dailyHistory = Fusion.peek(challengeHistory.DailyClearHistory) or {}
     return Information.ChallengeInfo:IsChallengeAvailable(
-        challengeHistory.ClearHistory or {},
-        challengeHistory.DailyClearHistory or {},
+        Fusion.peek(clearHistory[challengeType]) or {},
+        Fusion.peek(dailyHistory[challengeType]) or {},
         challengeType,
         index,
         entry.ChallengeStartTime or os.time()
@@ -20273,11 +21516,19 @@ local function buildChallengeQueue(challengeType, ignoreEffectsId, ignoreMapsId)
             if not matched then blocked = true end
         end
         if not blocked and challengeAvailable(challengeType, index, entry) then
-            return sanitizeQueueData({
-                Gamemode = "Challenge",
-                ChallengeType = challengeType,
-                ChallengeIndex = index,
-            })
+            local mapName, actName, difficulty = Fusion.peek(entry.MapName), Fusion.peek(entry.ActName), Fusion.peek(entry.Difficulty)
+            -- Match the native Challenge SelectButton payload; selectors alone cannot create a party.
+            if type(mapName) == "string" and mapName ~= "" and type(actName) == "string" and actName ~= ""
+                and type(difficulty) == "string" and difficulty ~= "" then
+                return sanitizeQueueData({
+                    Gamemode = "Challenge",
+                    ChallengeType = challengeType,
+                    ChallengeIndex = index,
+                    MapName = mapName,
+                    ActName = actName,
+                    Difficulty = difficulty,
+                })
+            end
         end
     end
     return nil, string.lower(challengeType) .. " challenge unavailable or filtered"
@@ -20309,6 +21560,158 @@ local function buildTowerQueue()
     return sanitizeQueueData({ Gamemode = "TowerOfGod", Floor = floor, Mode = mode, TournamentId = tournamentId })
 end
 
+-- RIFT_FAKE_HOMETOWN_JOIN_MODULE_BEGIN
+local RiftFakeHometownJoin = (function()
+local Module, Join = {}, {}
+Join.__index = Join
+local QUEUE = {Gamemode="Rift", MapName="StarrkRift", ActName="Act 1", Difficulty="Hard"}
+local function finite(n) return type(n)=="number" and n==n and n~=math.huge and n~=-math.huge end
+local function sameQueue(q)
+    if type(q)~="table" then return false end
+    for key, expected in pairs(QUEUE) do if q[key]~=expected then return false end end
+    return true
+end
+local function contains(players, player)
+    return type(players)=="table" and table.find(players, player)~=nil
+end
+local function findPortal(s, id)
+    for _, portal in ipairs(s.Portals or {}) do if portal.Id==id then return portal end end
+end
+local function eligible(portal, player)
+    local d=portal.Data
+    return portal.Alive==true and portal.Replica~=nil and finite(portal.Id)
+        and type(d)=="table" and d.RiftName=="StarrkRift" and d.IsActive==true
+        and sameQueue(d.QueueData) and d.MaxPlayers==4 and type(d.Players)=="table"
+        and #d.Players<d.MaxPlayers and not contains(d.Players,player)
+end
+function Module.new(ctx)
+    assert(type(ctx)=="table" and type(ctx.Read)=="function" and type(ctx.Ledger)=="table", "Rift join context required")
+    ctx.Ledger.Attempts=ctx.Ledger.Attempts or {}
+    return setmetatable({Ctx=ctx, Ledger=ctx.Ledger}, Join)
+end
+function Join:Window(s)
+    if not finite(s.ServerTime) then return nil end
+    local hour=math.floor(s.ServerTime/3600)
+    if self.Ledger.Window~=hour then
+        self.Ledger.Window, self.Ledger.Attempts, self.Ledger.BlockedWindow = hour, {}, nil
+    end
+    return hour
+end
+function Join:Build(forTransition)
+    local s=self.Ctx.Read()
+    local hour=self:Window(s)
+    if not forTransition and s.InGame~=false then return nil,"Return to the lobby before joining Fake Hometown" end
+    if s.Recording~=false then return nil,"Macro recording is active or unavailable" end
+    if not s.SessionReady or not s.PartyKnown or s.Player==nil or hour==nil then return nil,"Waiting for native lobby data" end
+    if s.Matchmaking or s.MatchmakingFound then return nil,"Another matchmaking request is active" end
+    if s.Party and (s.Party.Leader~=s.Player or not contains(s.Party.Players,s.Player)) then
+        return nil,"Only the current native party leader can join"
+    end
+    local limit=s.Limit
+    if type(limit)~="table" or not finite(limit.Remaining) or type(limit.InProgress)~="boolean" then return nil,"Waiting for native Rift allowance" end
+    if limit.InProgress then return nil,"A Rift run is already in progress" end
+    if limit.Remaining<=0 then return nil,"Hourly Rift clears used; wait for the next hour" end
+    if self.Ledger.BlockedWindow==hour then return nil,self.Ledger.Failure or "Rift entry was not confirmed; waiting for the next hour" end
+    -- Membership is authoritative even after a portal stops accepting new players.
+    for _, portal in ipairs(s.Portals or {}) do
+        if type(portal.Data)=="table" and contains(portal.Data.Players,s.Player) then
+            return nil,"Already joined a Rift portal; waiting for departure"
+        end
+    end
+    local selected
+    for _, portal in ipairs(s.Portals or {}) do
+        local pending=self.Ledger.Pending
+        local attempted=self.Ledger.Attempts[tostring(hour)..":"..tostring(portal.Id)]
+        if eligible(portal,s.Player) and (not pending or portal.Id==pending.PortalId)
+            and (not attempted or pending and portal.Id==pending.PortalId)
+            and (not selected or portal.Id<selected.Id) then selected=portal end
+    end
+    if not selected then return nil,"Waiting for the hourly Fake Hometown portal (first 15 minutes)" end
+    return table.clone(QUEUE),nil,selected.Id,hour
+end
+function Join:Observe()
+    local p=self.Ledger.Pending
+    if not p then return false end
+    local s=self.Ctx.Read()
+    if s.InGame==true then
+        local q=s.Parameters
+        local complete=type(q)=="table"
+        for key in pairs(QUEUE) do
+            if not complete or type(q[key])~="string" or q[key]=="" then complete=false break end
+        end
+        if not complete then
+            p.SceneDeadline=p.SceneDeadline or self.Ctx.Clock()+(self.Ctx.SceneTimeout or 30)
+            if self.Ctx.Clock()<p.SceneDeadline then return true,"Waiting for native Rift scene confirmation" end
+            self.Ledger.Pending=nil
+            self.Ledger.BlockedWindow=self:Window(s)
+            self.Ledger.Failure="Rift scene was not confirmed; waiting for the next hour"
+            return false,self.Ledger.Failure,"unconfirmed"
+        end
+        self.Ledger.Pending=nil
+        if sameQueue(q) then return false,"Native Fake Hometown entry confirmed","confirmed" end
+        return false,"Entered another mode; Fake Hometown entry was not confirmed","other-mode"
+    end
+    local portal=findPortal(s,p.PortalId)
+    local member=portal and portal.Replica==p.Replica and type(portal.Data)=="table" and contains(portal.Data.Players,s.Player)
+    if member then
+        if not p.Acknowledged then p.Acknowledged=true p.DepartureDeadline=self.Ctx.Clock()+(self.Ctx.DepartureTimeout or 90) end
+        if self.Ctx.Clock()<p.DepartureDeadline then return true,"Joined Fake Hometown portal; waiting for departure" end
+    elseif p.Acknowledged then
+        self.Ledger.Pending=nil
+        return false,"Native Rift membership was removed","cancelled"
+    elseif not portal or portal.Replica~=p.Replica or portal.Alive~=true or portal.Data.IsActive~=true then
+        self.Ledger.Pending=nil
+        return false,"Native Rift portal closed before entry was confirmed","cancelled"
+    elseif self.Ctx.Clock()<p.Deadline then
+        return true,"Waiting for native Rift membership confirmation; no repeat request"
+    end
+    self.Ledger.Pending=nil
+    self.Ledger.BlockedWindow=self:Window(s)
+    self.Ledger.Failure="Rift entry was not confirmed; waiting for the next hour"
+    return false,self.Ledger.Failure,"unconfirmed"
+end
+function Join:Submit(plan,generation)
+    if self.Ledger.Pending then error("Rift entry is already pending",0) end
+    self.Ctx.Check(plan,generation)
+    local q,reason,id=self:Build()
+    if not q or not sameQueue(plan.QueueData) or id~=plan.RiftPortalId then error(reason or "Rift portal selection changed",0) end
+    local s=self.Ctx.Read()
+    local portal=findPortal(s,id)
+    if not portal or not eligible(portal,s.Player) then error("Rift portal is no longer accepting players",0) end
+    local replica,queue,host=portal.Replica,portal.Data.QueueData,portal.Data.QueueData.HostUserId
+    local hour=self:Window(s)
+    local pending={PortalId=id,Replica=replica,Owner=self.Ctx.Owner,At=self.Ctx.Clock(),Deadline=self.Ctx.Clock()+(self.Ctx.AckTimeout or 12)}
+    self.Ledger.Pending=pending
+    local ok,result=pcall(function()
+        self.Ctx.Check(plan,generation)
+        local fresh,why,freshId=self:Build()
+        local snapshot=self.Ctx.Read()
+        local target=findPortal(snapshot,id)
+        if not fresh or freshId~=id or not target or target.Replica~=replica or not eligible(target,snapshot.Player)
+            or target.Data.QueueData~=queue or target.Data.QueueData.HostUserId~=host then error(why or "Native Rift portal changed before entry",0) end
+        self.Ledger.Attempts[tostring(hour)..":"..tostring(id)]=true
+        pending.Invoked=true
+        self.Ctx.Enter(replica)
+        return "Rift entry submitted; waiting for native portal confirmation"
+    end)
+    if not ok then
+        pending.Error=tostring(result)
+        if not pending.Invoked then self.Ledger.Pending=nil end
+        error(result,0)
+    end
+    return result
+end
+return Module
+end)()
+
+-- RIFT_FAKE_HOMETOWN_JOIN_MODULE_END
+local getRiftFakeHometownRuntime
+local function buildRiftFakeHometownQueue(forTransition)
+    local q,reason,id,window=getRiftFakeHometownRuntime():Build(forTransition)
+    Controller.FeatureStates[FEATURE.RiftFakeHometown]={Status=q and "eligible" or "waiting",Reason=reason}
+    return q,reason,nil,nil,id,window
+end
+
 local JOINERS = {
     ["Daily Challenge Joiner"] = {
         Toggle = FEATURE.Daily,
@@ -20336,10 +21739,721 @@ local JOINERS = {
     ["Boss Rush Joiner"] = { Toggle = FEATURE.BossRushAutoJoin, Build = buildBossRushQueue },
     ["Infernal Cult Joiner"] = { Toggle = FEATURE.InfernalAutoJoin, Build = buildInfernalQueue },
     ["Monster Clash Joiner"] = { Toggle = FEATURE.MonsterAutoJoin, Build = buildMonsterQueue },
+    ["Rift Fake Hometown Joiner"] = { Toggle = FEATURE.RiftFakeHometown, Build = buildRiftFakeHometownQueue },
 }
+
+-- CHALLENGE_HANDOFF_JOINER_BEGIN
+local ModeNativeFactory = assert(loadstring([======================[-- Native mode planning only. This module never sends a remote, changes settings, or starts gameplay.
+return function(Ctx)
+    local I,D,F,S=assert(Ctx.I),assert(Ctx.D),assert(Ctx.F),assert(Ctx.Shared)
+    local A={Version=1}
+    local function peek(v)local ok,r=pcall(F.peek,v)if ok then return r end return v end
+    local function path(v,...)
+        v=peek(v)
+        for n=1,select("#",...)do if type(v)~="table"then return nil end v=peek(v[select(n,...)])end
+        return v
+    end
+    local function copy(v,seen)
+        if type(v)~="table"then return v end
+        seen=seen or{}if seen[v]then return seen[v]end
+        local r={}seen[v]=r for k,x in pairs(v)do r[k]=copy(x,seen)end return r
+    end
+    local function stamp(v,depth)
+        if type(v)~="table"then return type(v)..":"..tostring(v)end
+        depth=depth or 0;if depth>16 then return "<depth>"end
+        local keys={}for k,x in pairs(v)do if type(x)~="function"then keys[#keys+1]=k end end
+        table.sort(keys,function(a,b)return tostring(a)<tostring(b)end)
+        local out={}for _,k in ipairs(keys)do out[#out+1]=tostring(k).."="..stamp(v[k],depth+1)end
+        return "{"..table.concat(out,";").."}"
+    end
+    local function call(t,k,...)
+        if type(t)~="table"or type(t[k])~="function"then return false,"Native "..k.." is unavailable"end
+        return pcall(t[k],t,...)
+    end
+    -- Exact projection used by native Information.Maps:SanitizeQueueData (original line 836).
+    local QUEUE_FIELDS={Event=true,EventId=true,MapName=true,ActName=true,Difficulty=true,Gamemode=true,
+        ChallengeType=true,ChallengeIndex=true,TrialUnit=true,PortalID=true,PortalData=true,PortalOwnerUserId=true,
+        TournamentId=true,Floor=true,DifficultyLevel=true,RiftName=true}
+    local PRESENTATION_FIELDS={MaxPlayers=true,Mode=true,Type=true,Factions=true,Augment=true,Modifiers=true,Resistances=true}
+    local function canonical(q)
+        local r={}for k in pairs(QUEUE_FIELDS)do if q[k]~=nil then r[k]=copy(q[k])end end return r
+    end
+    local function dot(t,k,...)
+        if type(t)~="table"or type(t[k])~="function"then return false,"Native "..k.." is unavailable"end
+        return pcall(t[k],...)
+    end
+    local function now()local ok,v=pcall(Ctx.ServerNow)return ok and type(v)=="number"and v==v and v~=math.huge and v~=-math.huge and v or nil end
+    local function pd()return peek(D.PlayerData)end
+    local function text(v)return type(v)=="string"and v~=""and v or nil end
+    local function meta(mode)return path(I,"Gamemodes",mode)end
+    local function player()return Ctx.Player end
+    local function uid()local p=player()return p and p.UserId end
+    local function ownedUnit(asset)
+        local units=peek(D.UnitData)
+        if type(units)~="table"then return nil end
+        for _,u in pairs(units)do if path(u,"Asset")==asset then return true end end
+        return false
+    end
+    local function event(id)
+        local state=path(S,"Events",id)
+        local data=path(D,"EventData",id)
+        if type(state)~="table"or path(data,"Active")~=true then return nil,"Waiting for active native "..id end
+        local definition=path(I,"Events",id)
+        if type(definition)~="table"then return nil,"Native event definition is unavailable"end
+        return definition,nil,data
+    end
+    local function eventsFor(mode,q)
+        local proof={}
+        if mode=="CthulhuEvent"then
+            local e,why,data=event(mode)if not e then return nil,why end
+            local t=now()if not t then return nil,"Native server time is unavailable"end
+            local ok,open=call(e,"IsPlayWindowOpen",t)
+            if not ok or open~=true or path(data,"Info","WindowOpen")~=true then return nil,"Waiting for the native World Boss play window"end
+            local ok2,start=call(e,"GetPlayWindowStart",t)
+            local ok3,won=call(e,"HasWonWindow",pd(),start)
+            if not ok2 or not ok3 or type(won)~="boolean"then return nil,"World Boss window eligibility is unknown"end
+            if won then return nil,"World Boss reward already won in this window"end
+            proof.Event=mode;proof.Window=start;proof.WindowEndsAt=path(data,"Info","WindowEndsAt")
+        elseif mode=="EclipseEvent"or mode=="InfernalCult"then
+            local id=mode=="EclipseEvent"and"EclipseEvent"or"ShoQuestlineEvent"
+            local e,why=event(id)if not e then return nil,why end
+            local t=now()if not t then return nil,"Native server time is unavailable"end
+            local ok,visible=call(e,"IsMapTagVisible",pd())
+            local ok2,map=call(e,"GetTaggedMap",t)
+            if not ok or visible~=true or not ok2 or not text(map)then return nil,"Waiting for an unlocked native tagged event map"end
+            if q and q.MapName~=map then return nil,"Native tagged map changed"end
+            local ok3,seed=call(e,"GetSeed",t)
+            if not ok3 then return nil,"Native tagged event rotation is unknown"end
+            proof.Event=id;proof.MapName=map;proof.Seed=seed
+        elseif mode=="GoldenHourEvent"then
+            local e,why=event(mode)if not e then return nil,why end
+            local t=now()if not t then return nil,"Native server time is unavailable"end
+            local ok,native=call(e,"GetBoostedQueueData",t)
+            local ok2,reward=call(e,"CanPlayerReceiveRewards",pd(),t)
+            if not ok or type(native)~="table"or not ok2 or reward~=true then return nil,"Waiting for an eligible native Golden Hour reward rotation"end
+            for _,k in ipairs({"Gamemode","MapName","ActName","Difficulty"})do if q and q[k]~=native[k]then return nil,"Native Golden Hour queue changed"end end
+            local ok3,seed=call(e,"GetSeed",t)if not ok3 then return nil,"Golden Hour rotation is unknown"end
+            proof.Event=mode;proof.Seed=seed
+        elseif mode=="VillainInvasion"or mode=="KaijuEvent"or mode=="Event"and q and q.EventId then
+            local id=mode=="Event"and q.EventId or mode
+            local e,why=event(id)if not e then return nil,why end
+            proof.Event=id
+        end
+        return proof
+    end
+    local function trialAllowed(id)
+        local U=I.UnitTrials
+        local ok,info=call(U,"GetTrialInfo",id)
+        local ok2,map=call(U,"GetTrialMapData",id)
+        if not ok or type(info)~="table"or not ok2 or type(map)~="table"or info.Enabled==false then return nil,"Native trial is unavailable"end
+        local ok3,required=call(U,"GetRequiredUnits",id)
+        if not ok3 or type(required)~="table"then return nil,"Native trial required units are unknown"end
+        for _,asset in ipairs(required)do if ownedUnit(asset)~=true then return nil,"Trial requires owned "..tostring(asset)end end
+        local ok4,quest=call(U,"RequiresQuest",id)
+        if not ok4 or type(quest)~="boolean"then return nil,"Native trial quest requirement is unknown"end
+        if quest then
+            local existing=path(D,"QuestData","Unit","Quests",id)
+            if existing==nil then
+                local ok5,category=call(I.Quests,"GetCategoryInfo","Unit")
+                local ok6,definition=call(I.Quests,"GetQuestInfo","Unit",id)
+                if not ok5 or type(category)~="table"or category.DataRequired or not ok6 or definition==nil then return nil,"Trial quest required"end
+            end
+        end
+        return {Info=info,Map=map,Required=required}
+    end
+    local function commonQueue(q)
+        if type(q)~="table"or not text(q.Gamemode)then return nil,"Native queue is unavailable"end
+        q=copy(q)
+        local m=meta(q.Gamemode)
+        if type(m)~="table"then return nil,"Unknown native game mode"end
+        local data=pd()if type(data)~="table"then return nil,"Player data is unavailable"end
+        if type(m.RequiredLevel)=="number"and(type(data.Level)~="number"or data.Level<m.RequiredLevel)then return nil,"Native mode requires level "..m.RequiredLevel end
+        local e,why=eventsFor(q.Gamemode,q)if not e then return nil,why end
+        local proof={Mode=q.Gamemode,Event=e,SelectionInput=copy(q)}
+        local presentation={}
+        local eventId=q.EventId or q.Gamemode
+        local eventSelection=path(I,"Events",eventId,"QueueData")
+        if type(eventSelection)=="table"then for k in pairs(PRESENTATION_FIELDS)do presentation[k]=copy(eventSelection[k])end end
+        if q.Gamemode=="Portal"then
+            local id=text(q.PortalID)
+            local owned=id and path(data,"PortalData",id)
+            if not id or type(owned)~="table"or type(path(I,"Portals","List",owned.Asset))~="table"or q.PortalOwnerUserId~=uid()then return nil,"Selected native portal is not owned by this player"end
+            local ok,native=call(I.Portals,"GetQueueData",id,owned,uid())
+            if not ok or type(native)~="table"or stamp(canonical(q))~=stamp(canonical(native))then return nil,"Selected portal queue differs from its native owned payload"end
+            for k in pairs(PRESENTATION_FIELDS)do presentation[k]=copy(native[k])end
+            proof.PortalID=id;proof.PortalAsset=owned.Asset;proof.PortalOwnerUserId=uid();proof.OwnedPortal=copy(owned)
+            proof.PortalNativeSelection=copy(native)
+        end
+        if q.Gamemode=="TowerOfGod"then
+            local id=q.TournamentId or(q.Mode=="Traitless"and"TowerOfGod_Traitless"or"TowerOfGod")
+            if id~="TowerOfGod"and id~="TowerOfGod_Traitless"then return nil,"Unknown native Tower tournament"end
+            if q.Mode~=nil and id~=(q.Mode=="Traitless"and"TowerOfGod_Traitless"or"TowerOfGod")then return nil,"Native Tower tournament does not match its selected mode"end
+            if q.Mode~=nil and q.Mode~="Normal"and q.Mode~="Traitless"and q.Mode~="Default"then return nil,"Unknown native Tower mode"end
+            presentation.Mode=q.Mode
+            local tournament=path(D,"TournamentData",id)
+            if type(tournament)~="table"or type(tournament.Season)~="number"then return nil,"Native Tower season is unavailable"end
+            local bracket=path(data,"TournamentData","ActiveBrackets",id,tostring(tournament.Season))or{}
+            local nextFloor=math.max(1,(tonumber(bracket.HighestScore)or 0)+1)
+            if type(q.Floor)~="number"or q.Floor%1~=0 or q.Floor<1 or q.Floor>nextFloor then return nil,"Native Tower floor is not unlocked"end
+            proof.Tower={TournamentId=id,Season=tournament.Season,Seed=tournament.Seed,Floor=q.Floor,HighestScore=bracket.HighestScore or 0}
+        elseif q.Gamemode=="Trial"or q.Gamemode=="IchigoResurrection"then
+            local trial,reason=trialAllowed(q.TrialUnit)if not trial then return nil,reason end
+            if q.MapName~=q.TrialUnit and q.MapName~=trial.Map.MapName then return nil,"Trial map does not match its native definition"end
+            proof.TrialUnit=q.TrialUnit;proof.RequiredUnits=copy(trial.Required)
+        elseif q.Gamemode~="Rift"then
+            if not text(q.MapName)then return nil,"Select a native map"end
+            local ok,map=call(I.Maps,"GetMapData",q.Gamemode,q.MapName)
+            if not ok or type(map)~="table"then return nil,"Native map is unavailable"end
+            local mapType=path(I,"Maps","GamemodeTypes",q.Gamemode)or m
+            if mapType.RequiresMapProgression then
+                local ok2,allowed=call(I.Maps,"HasMapUnlocked",data.CompletedMaps or{},q.Gamemode,q.MapName)
+                if not ok2 or allowed~=true then return nil,"Native map progression is locked"end
+            end
+            if q.ActName~=nil then
+                local ok2,act=call(I.Maps,"GetActData",q.Gamemode,q.MapName,q.ActName)
+                if not ok2 or type(act)~="table"then return nil,"Native act is unavailable"end
+                if act.RequiresUnlock and not path(data,"UnlockedActs",q.Gamemode,q.MapName,q.ActName)then return nil,"Native act requires its unlock"end
+                if mapType.RequiresActProgression then
+                    local ok3,allowed=call(I.Maps,"HasActUnlocked",data.CompletedMaps or{},q.Gamemode,q.MapName,q.ActName,q.Difficulty)
+                    if not ok3 or allowed~=true then return nil,"Native act progression is locked"end
+                end
+            end
+            if type(map.Difficulties)=="table"and #map.Difficulties>0 and q.Difficulty~=nil and not table.find(map.Difficulties,q.Difficulty)then return nil,"Native map difficulty is unavailable"end
+        end
+        if q.Gamemode=="Raid"and type(Ctx.StageEntryItems)~="table"then return nil,"Native Raid entry item requirements are unavailable"end
+        for asset,item in pairs(Ctx.StageEntryItems or{})do
+            if item.Gamemode==q.Gamemode and item.MapName==q.MapName and item.ActName==q.ActName then
+                if (tonumber(path(data,"ItemData",asset,"Amount"))or 0)<1 then return nil,"Each player needs 1 "..tostring(asset).." (consumed at entry)"end
+                proof.EntryItem=asset;proof.EntryItemAmount=path(data,"ItemData",asset,"Amount")
+            end
+        end
+        if q.Gamemode=="FourthGate"then
+            local rules=Ctx.FourthGateRules
+            local ok,allowed,message=dot(rules,"VerifyAccess",q,data)
+            if not ok or allowed~=true then return nil,message or"Activate a 4th Gate and select its current stage"end
+            proof.Activation=copy(path(data,"ItemActivations","FourthGate"))
+        end
+        if q.Gamemode=="Expedition"then
+            local level=q.DifficultyLevel
+            local difficulties=path(I,"Expeditions","DifficultyInfo")
+            if type(level)~="number"or level%1~=0 or level<1 or type(difficulties)~="table"or not difficulties[level]then return nil,"Select a native Expedition difficulty level"end
+            proof.DifficultyLevel=level
+        end
+        if q.Gamemode=="Tournament"then
+            local id=text(q.TournamentId);local native=id and path(D,"TournamentData",id)
+            local t=now()
+            if type(native)~="table"or native.MaxBrackets==1 or type(native.Season)~="number"or type(native.EndsAt)~="number"or not t or native.EndsAt<=t then return nil,"Native Tournament season is unavailable"end
+            if type(native.PlayerCount)~="number"or native.PlayerCount%1~=0 or native.PlayerCount<1 then return nil,"Native Tournament capacity is unavailable"end
+            if q.MapName~=native.MapName or q.ActName~=native.ActName or q.Difficulty~=native.Difficulty or q.MaxPlayers~=nil and q.MaxPlayers~=native.PlayerCount then return nil,"Native Tournament queue changed"end
+            if native.RequiresTeam and not path(data,"TournamentData","ActiveBrackets",id,tostring(native.Season),"TeamKey")then return nil,"Native tournament team must be finalized first"end
+            proof.Tournament={Id=id,Season=native.Season,Seed=native.Seed,EndsAt=native.EndsAt,PlayerCount=native.PlayerCount}
+            presentation.MaxPlayers=native.PlayerCount
+        end
+        for k,v in pairs(q)do
+            if not QUEUE_FIELDS[k]and(not PRESENTATION_FIELDS[k]or stamp(v)~=stamp(presentation[k]))then return nil,"Unverified native selection field "..tostring(k)end
+        end
+        if type(Ctx.Sanitize)=="function"then
+            local ok,normalized,reason=pcall(Ctx.Sanitize,copy(q))
+            if not ok or type(normalized)~="table"then return nil,reason or"Native queue sanitizer rejected entry"end
+            for k in pairs(QUEUE_FIELDS)do if stamp(normalized[k])~=stamp(q[k])then return nil,"Native queue sanitizer changed "..tostring(k)end end
+            for k,v in pairs(normalized)do
+                if not QUEUE_FIELDS[k]and(not PRESENTATION_FIELDS[k]or stamp(v)~=stamp(presentation[k]))then return nil,"Native queue sanitizer added an unverified field "..tostring(k)end
+            end
+            q=canonical(normalized)
+        else
+            return nil,"Native queue sanitizer is unavailable"
+        end
+        proof.Queue=copy(q)
+        return q,nil,proof
+    end
+    function A:ValidateQueue(q)return commonQueue(q)end
+    local function finish(mode,settings,q,route,extra)
+        local normalized,why,proof=commonQueue(q)if not normalized then return nil,why end
+        local plan={Mode=mode,Settings=copy(settings or{}),QueueData=normalized,Route=route or"party",Proof=proof}
+        for k,v in pairs(extra or{})do plan[k]=v end
+        plan.ProofStamp=stamp({Settings=plan.Settings,Queue=normalized,Proof=proof,Route=plan.Route,NativeAction=plan.NativeAction,NativeNode=plan.NativeNode})
+        return plan
+    end
+    function A:BuildPortal(settings)
+        settings=settings or{}
+        local id=text(settings.PortalID)or path(settings,"QueueData","PortalID")
+        local owned=path(pd(),"PortalData",id)
+        if not id or type(owned)~="table"or type(path(I,"Portals","List",owned.Asset))~="table"then return nil,"Waiting for the selected owned native portal"end
+        local ok,q=call(I.Portals,"GetQueueData",id,owned,uid())
+        if not ok or type(q)~="table"then return nil,"Native owned portal queue is unavailable"end
+        local plan,why=finish("Portal",settings,q,"portal-activate",{NativeNode="PORTAL_ACTIVATE",Args={id,n=1},PortalID=id,PortalAsset=owned.Asset,PortalOwnerUserId=uid()})
+        return plan,why
+    end
+    local function portalMatch(plan,q)
+        local matches=type(q)=="table"and q.Gamemode=="Portal"and q.PortalID==plan.PortalID and q.PortalOwnerUserId==plan.PortalOwnerUserId
+            and path(q,"PortalData","Asset")==plan.PortalAsset and q.MapName==plan.QueueData.MapName
+            and q.ActName==plan.QueueData.ActName and q.Difficulty==plan.QueueData.Difficulty
+        if not matches then return false end
+        return stamp(canonical(q))==stamp(plan.QueueData)
+    end
+    function A:NextStep(plan,pending)
+        if type(plan)~="table"then return nil,"Native plan is unavailable"end
+        if plan.Route~="portal-activate"and plan.Route~="portal-join"then return {Kind=plan.Route,QueueData=plan.QueueData,Replica=plan.Replica,NativeAction=plan.NativeAction,NativeNode=plan.NativeNode,Args=plan.Args}end
+        local party=peek(D.PartyData);local q=path(party,"QueueData")
+        if portalMatch(plan,q)then return {Kind="party",QueueData=copy(q),SkipSet=true,PortalID=plan.PortalID}end
+        local entries=type(Ctx.ReplicaSnapshot)=="function"and Ctx.ReplicaSnapshot("LobbyPortal")or{}
+        for _,row in pairs(type(entries)=="table"and entries or{})do
+            local d=peek(row.Data)
+            if row.Alive~=false and row.Replica and type(d)=="table"then
+                local native=path(d,"QueueData")
+                if type(native)~="table"and d.PartyId and type(Ctx.PartyById)=="function"then
+                    local ok,p=pcall(Ctx.PartyById,d.PartyId);if ok then native=path(p,"Data","QueueData")or path(p,"QueueData")end
+                end
+                if portalMatch(plan,native)then return {Kind="portal-join",Replica=row.Replica,ReplicaId=row.Id,QueueData=copy(native),PortalID=plan.PortalID}end
+            end
+        end
+        if pending and(pending.ActivateInvoked or pending.StepInvoked and pending.StepInvoked["portal-activate"])then return nil,"Waiting for native portal activation acknowledgement; no repeat activation"end
+        local owned=path(pd(),"PortalData",plan.PortalID)
+        if type(owned)~="table"or owned.Asset~=plan.PortalAsset then return nil,"Selected portal ownership changed"end
+        return {Kind="portal-activate",NativeNode="PORTAL_ACTIVATE",Args={plan.PortalID,n=1},QueueData=plan.QueueData}
+    end
+    function A:BuildRift(settings,snapshot)
+        settings=settings or{};local name=text(settings.RiftName)or"StarrkRift"
+        local entries=snapshot or(type(Ctx.ReplicaSnapshot)=="function"and Ctx.ReplicaSnapshot("RiftPortal"))or{}
+        for _,row in pairs(type(entries)=="table"and entries or{})do
+            local d=peek(row.Data)
+            if row.Alive~=false and row.Replica and type(d)=="table"and d.RiftName==name and d.IsActive==true then
+                local players=peek(d.Players)or{}
+                if table.find(players,player())then return nil,"Already joined this native Rift portal"end
+                if type(d.MaxPlayers)=="number"and #players>=d.MaxPlayers then return nil,"Native Rift portal is full"end
+                local plan={Mode="Rift",Settings=copy(settings),Route="rift-portal",Replica=row.Replica,ReplicaId=row.Id,
+                    RiftName=name,ExpectedContext={Gamemode=name=="KaijuEventRift"and"KaijuEvent"or"Rift",MapName=name=="KaijuEventRift"and"KaijuEvent"or name},
+                    Proof={RiftName=name,ReplicaId=row.Id,IsActive=true,Players=copy(players),MaxPlayers=d.MaxPlayers}}
+                plan.ProofStamp=stamp(plan.Proof);return plan
+            end
+        end
+        return nil,"Waiting for an active native "..name.." portal"
+    end
+    function A:Build(mode,settings)
+        settings=settings or{}
+        if mode=="Portal"then return self:BuildPortal(settings)end
+        if mode=="Rift"then return self:BuildRift(settings)end
+        if type(meta(mode))~="table"then return nil,"Unknown native game mode"end
+        local q={Gamemode=mode}
+        if mode=="FourthGate"then
+            local ok,native=dot(Ctx.FourthGateRules,"GetQueueData",path(pd(),"ItemActivations","FourthGate"))
+            if not ok or type(native)~="table"then return nil,"Activate a 4th Gate before joining"end
+            q=copy(native)
+        elseif mode=="IchigoResurrection"or mode=="Trial"then
+            local id=text(settings.TrialUnit)or(mode=="IchigoResurrection"and"IchigoResurrection")
+            local trial,why=trialAllowed(id)if not trial then return nil,why end
+            q={Gamemode=mode,TrialUnit=id,MapName=trial.Map.MapName,Difficulty=path(trial.Map,"Difficulties",1)}
+            if type(Ctx.NativeAction)~="function"or type(Ctx.NativeAction("EnterUnitTrial"))~="function"then return nil,"Native EnterUnitTrial action is unavailable"end
+            return finish(mode,settings,q,"native-special",{NativeAction="EnterUnitTrial",Args={id,n=1}})
+        elseif mode=="CthulhuEvent"or mode=="VillainInvasion"or mode=="KaijuEvent"then
+            local e,why=event(mode)if not e then return nil,why end
+            q=copy(peek(e.QueueData))
+            if type(q)~="table"or q.Gamemode~=mode then return nil,"Native event queue is unavailable"end
+        elseif mode=="GoldenHourEvent"then
+            local e,why=event(mode)if not e then return nil,why end
+            local ok,native=call(e,"GetBoostedQueueData",now())
+            if not ok or type(native)~="table"then return nil,"Native boosted queue is unavailable"end q=copy(native)
+        elseif mode=="EclipseEvent"or mode=="InfernalCult"then
+            local id=mode=="EclipseEvent"and mode or"ShoQuestlineEvent";local e,why=event(id)if not e then return nil,why end
+            local ok,map=call(e,"GetTaggedMap",now())if not ok or not text(map)then return nil,"Native tagged map is unavailable"end
+            q={Gamemode=mode,MapName=map,ActName="Act 1",Difficulty="Hard"}
+        elseif mode=="Tournament"then
+            local id=text(settings.TournamentId)
+            local ordered=peek(S.OrderedTournaments)or{}
+            if not id then for _,candidate in ipairs(ordered)do local d=path(D,"TournamentData",candidate)if type(d)=="table"and d.MaxBrackets~=1 then id=candidate;break end end end
+            local d=path(D,"TournamentData",id)
+            if type(d)~="table"or type(d.Season)~="number"or type(d.EndsAt)~="number"or not now()or d.EndsAt<=now()then return nil,"Waiting for a current native tournament season"end
+            if d.RequiresTeam and not path(pd(),"TournamentData","ActiveBrackets",id,tostring(d.Season),"TeamKey")then return nil,"Native tournament team must be finalized first"end
+            q={Gamemode=mode,TournamentId=id,MapName=d.MapName,ActName=d.ActName,Difficulty=d.Difficulty}
+            local plan,why=finish(mode,settings,q,"party");if plan then plan.ProofStamp=stamp({Queue=plan.QueueData,Proof=plan.Proof,Settings=plan.Settings})end return plan,why
+        else
+            local map=text(settings.MapName)
+            if not map then local ok,maps=call(I.Maps,"GetOrderedMaps",mode)if ok and type(maps)=="table"then map=maps[1]end end
+            if not text(map)then return nil,"Select a current native map"end
+            local ok,info=call(I.Maps,"GetMapData",mode,map)if not ok or type(info)~="table"then return nil,"Native map is unavailable"end
+            local act=text(settings.ActName)
+            if not act then local ok2,acts=call(I.Maps,"GetOrderedActs",mode,map)if ok2 and type(acts)=="table"then act=acts[1]end end
+            q={Gamemode=mode,MapName=map,ActName=act,Difficulty=text(settings.Difficulty)or path(info,"Difficulties",1)}
+            if mode=="Expedition"then q.DifficultyLevel=tonumber(settings.DifficultyLevel)or 1 end
+        end
+        return finish(mode,settings,q,"party")
+    end
+    function A:DirectPermission(mode,q)
+        if mode=="Rift"then return "rift-portal"end
+        if mode=="Portal"then return "portal-activate"end
+        if mode=="Trial"or mode=="IchigoResurrection"then return "native-special"end
+        local normalized,why=self:ValidateQueue(q)
+        return normalized and"party"or nil,why
+    end
+    function A:Revalidate(plan,pending)
+        if type(plan)~="table"then return false,"Native plan is unavailable"end
+        if plan.Route=="portal-activate"or plan.Route=="portal-join"then
+            local step,why=self:NextStep(plan,pending)
+            if not step then return false,why end
+            return true,nil,step
+        end
+        local fresh,why=self:Build(plan.Mode,plan.Settings)
+        if not fresh then return false,why end
+        if fresh.ProofStamp~=plan.ProofStamp then return false,"Native entry eligibility or selection changed",fresh end
+        return true,nil,fresh
+    end
+    return A
+end
+
+]======================]))()
+-- ALL_MODE_HANDOFF_JOINER_BEGIN
+local modeNativeAdapter
+local modePortalReplicas = setmetatable({}, {__mode="k"})
+local function modeSnapshot(input, depth, seen)
+    input = Fusion.peek(input)
+    if typeof(input)=="Instance" then
+        if input:IsA("Player") then return {NativeClass="Player",UserId=input.UserId,Path=input:GetFullName()} end
+        return {NativeClass=input.ClassName,Path=input:GetFullName()}
+    end
+    if type(input) ~= "table" then
+        if input == nil or type(input) == "string" or type(input) == "boolean" or type(input) == "number" and input == input and math.abs(input) < math.huge then return input end
+        error("Native queue contains an unsupported value", 0)
+    end
+    depth, seen = depth or 0, seen or {}
+    if depth > 16 or seen[input] then error("Native queue is cyclic or too deep",0) end
+    seen[input] = true
+    local result = {}
+    for key, current in pairs(input) do
+        if type(key) ~= "string" and type(key) ~= "number" then error("Native queue contains an unsupported key",0) end
+        result[key] = modeSnapshot(current,depth+1,seen)
+    end
+    seen[input] = nil
+    return result
+end
+local function modeRequire(name)
+    local shared = ReplicatedStorage:FindFirstChild("Shared")
+    local child = shared and shared:FindFirstChild(name)
+    local ok, result = pcall(function() return child and require(child) end)
+    return ok and result or nil
+end
+local function watchModePortals()
+    if Controller.ModePortalConnection then return end
+    local client=modeRequire("ReplicaClient")
+    if type(client)=="table"and type(client.OnNew)=="function"then
+        local ok,connection=pcall(client.OnNew,"LobbyPortal",function(replica)
+            if Environment[STATE_KEY]==Controller and Players.LocalPlayer==LocalPlayer then modePortalReplicas[replica]=true end
+        end)
+        if ok then Controller.ModePortalConnection=connection end
+    end
+end
+watchModePortals()
+local function modeReplicaSnapshot(kind)
+    if kind == "RiftPortal" then
+        local runtime = getRiftFakeHometownRuntime()
+        return runtime.Ctx.Read().Portals or {}
+    end
+    local result = {}
+    for replica in pairs(modePortalReplicas) do
+        local ok, alive = pcall(function() return replica:IsActive() end)
+        if ok and alive and type(replica.Data) == "table" then result[#result+1] = {Id=replica.Id,Replica=replica,Data=replica.Data,Alive=true}
+        else modePortalReplicas[replica] = nil end
+    end
+    return result
+end
+local function getModeNativeAdapter()
+    if modeNativeAdapter then return modeNativeAdapter end
+    local nodes = require(ReplicatedStorage:WaitForChild("Nodes"))
+    local content=FusionPackage:FindFirstChild("Content")
+    local stage=content and content:FindFirstChild("StageEntryItems")
+    local stageOK,stageItems=pcall(function()return stage and require(stage)end)
+    modeNativeAdapter = ModeNativeFactory({I=Information,D=Dependencies,F=Fusion,Shared=Shared,Nodes=nodes,Player=LocalPlayer,
+        ServerNow=function() return workspace:GetServerTimeNow() end,
+        NativeAction=function(name) return rawget(Actions,name) end,Sanitize=sanitizeQueueData,ReadUI=uiState,
+        FourthGateRules=modeRequire("FourthGateRules"),StageEntryItems=stageOK and stageItems or nil,
+        ReplicaSnapshot=modeReplicaSnapshot,
+        PartyById=function(id)
+            local getter=nodes.PARTY_GET_CURRENT_REPLICA
+            local party=getter and getter:InvokeSelf()
+            if party and (party.Id==id or party.ID==id) then return party end
+            local public=Fusion.peek(Dependencies.PublicParties)or{}
+            local data=Fusion.peek(public[tostring(id)])
+            if type(data)=="table"then return{Data=data}end
+            return nil
+        end})
+    return modeNativeAdapter
+end
+local function modeConfigurationFingerprint()
+    local configured={}
+    for _,id in pairs(FEATURE) do configured[id]=value(id) end
+    configured[FEATURE.Priority]=priorityOrder()
+    configured["NUI-0213"],configured["NUI-0256"]=value("NUI-0213"),value("NUI-0256")
+    return fingerprint(configured)
+end
+local function modeSource(context)
+    if Environment[STATE_KEY]~=Controller or not Controller.Running or Players.LocalPlayer~=LocalPlayer then return nil,"Joiner owner is unavailable" end
+    if type(context)~="table" or context.InGame~=true or type(context.RoundSerial)~="number" or context.RoundSerial<0 or context.RoundSerial%1~=0 then return nil,"Waiting for a confirmed source round" end
+    local state=Fusion.peek(Dependencies.GameState)
+    local parameters=type(state)=="table" and Fusion.peek(state.Parameters)
+    local ps=Fusion.peek(Dependencies.GamePlayerState)
+    local id=type(ps)=="table" and Fusion.peek(ps.GameID)
+    local terminal=type(state)=="table" and Fusion.peek(state.CurrentGameState)
+    if Fusion.peek(Shared.IsInGame)~=true or type(parameters)~="table" or (type(id)~="string" and type(id)~="number")
+        or tostring(id)=="" or tostring(id)~=context.GameId or Fusion.peek(state.Active)~=false or context.NativeActive~=false
+        or (terminal~="Lose" and terminal~="Lost" and terminal~="Defeat" and terminal~="Win" and terminal~="Victory") or context.CurrentState~=terminal then
+        return nil,"Waiting for an inactive native terminal result"
+    end
+    local source=modeSnapshot(parameters)
+    if type(source.Gamemode)~="string" or type((Information.Gamemodes or {})[source.Gamemode])~="table"
+        or context.Gamemode~=source.Gamemode or context.MapName~=source.MapName or context.ActName~=source.ActName or context.Difficulty~=source.Difficulty then return nil,"Native source mode/context is unavailable" end
+    local macro=Environment.__AnimeExpeditionsMacro
+    if value("NUI-0506",false)==true or type(macro)=="table" and (macro.Recording==true or macro.Busy==true or (tonumber(macro.ActiveOperations)or 0)>0) then return nil,"Macro recording or an operation is active" end
+    if source.Gamemode=="BossRush" then
+        local boss=Environment.__AnimeExpeditionsBossRush
+        local cfg=type(boss)=="table" and type(boss.ReadConfig)=="function" and boss:ReadConfig() or nil
+        if type(cfg)~="table" or cfg.Manual==true or cfg.Playing~=true then return nil,"Boss Rush automatic playback is paused" end
+    end
+    local session=getSessionData()
+    if session.Matchmaking or session.MatchmakingFound then return nil,"Another matchmaking request is active" end
+    return source,nil,tostring(id)
+end
+-- RIFT_JOINER_SNAPSHOT_PROOF_BEGIN
+local function modeRiftPortalProof(portal,id,window)
+    local function whole(n) return type(n)=="number"and n==n and n>=0 and n<math.huge and n%1==0 end
+    if type(portal)~="table"or portal.Id~=id or not whole(id)or not whole(window)
+        or portal.Alive~=true or type(portal.Replica)~="table"or type(portal.Replica.FireServer)~="function"then
+        return nil,"Waiting for a live native Rift portal identity"
+    end
+    local data=Fusion.peek(portal.Data)
+    local queue=type(data)=="table"and Fusion.peek(data.QueueData)
+    local players=type(data)=="table"and Fusion.peek(data.Players)
+    if type(data)~="table"or Fusion.peek(data.RiftName)~="StarrkRift"or Fusion.peek(data.IsActive)~=true
+        or Fusion.peek(data.MaxPlayers)~=4 or type(players)~="table"or #players>=4
+        or table.find(players,LocalPlayer)~=nil or type(queue)~="table"then
+        return nil,"Native Rift portal is no longer eligible"
+    end
+    for key,expected in pairs({Gamemode="Rift",MapName="StarrkRift",ActName="Act 1",Difficulty="Hard"})do
+        if Fusion.peek(queue[key])~=expected then return nil,"Native Rift queue identity changed"end
+    end
+    local members={}
+    for index,member in pairs(players)do
+        if not whole(index)or index<1 or index>#players or typeof(member)~="Instance"or not member:IsA("Player")then
+            return nil,"Native Rift membership is unavailable"
+        end
+        members[index]=modeSnapshot(member)
+    end
+    -- ReplicateRift uses SpawnCFrame only to position/animate the portal model.
+    -- Entry proof binds native eligibility and the complete queue, not visual state.
+    local proof={Id=id,Window=window,Alive=true,RiftName="StarrkRift",IsActive=true,MaxPlayers=4,
+        Players=members,QueueData=modeSnapshot(queue)}
+    return proof,nil,queue,Fusion.peek(queue.HostUserId),data
+end
+function Controller:ModeNativePlanReady(nativePlan)
+    if type(nativePlan)~="table"or nativePlan.Route~="rift-portal"then return false end
+    local runtime=getRiftFakeHometownRuntime()
+    local state=runtime.Ctx.Read()
+    if type(state)~="table"or type(state.ServerTime)~="number"or math.floor(state.ServerTime/3600)~=nativePlan.RiftWindow then return false end
+    for _,portal in ipairs(state.Portals or{})do
+        if portal.Id==nativePlan.RiftPortalId and portal.Replica==nativePlan.Replica then
+            local ok,proof,_,queue,host,data=pcall(modeRiftPortalProof,portal,nativePlan.RiftPortalId,nativePlan.RiftWindow)
+            return ok and proof~=nil and queue==nativePlan.RiftQueueData and host==nativePlan.RiftHostUserId
+                and data==nativePlan.RiftPortalData and fingerprint(proof)==nativePlan.RiftProofFingerprint
+        end
+    end
+    return false
+end
+-- RIFT_JOINER_SNAPSHOT_PROOF_END
+
+local function makeModeTargetPlan(name,joiner,forTransition,pending)
+    local queue,reason,operation,bossKey,riftId,riftWindow,nativePlan=joiner.Build(forTransition)
+    if forTransition==true and type(queue)=="table" and (queue.Gamemode=="TowerOfGod"or queue.Gamemode=="Tournament")then
+        return nil,"Tower and Tournament are excluded from automatic result destinations"
+    end
+    if not queue and not operation and forTransition==true and name=="Rift Fake Hometown Joiner"then
+        local runtime=getRiftFakeHometownRuntime()
+        local s=runtime.Ctx.Read()
+        local limit=s.Limit
+        local hour=type(s.ServerTime)=="number"and math.floor(s.ServerTime/3600)
+        local partyOK=not s.Party or s.Party.Leader==s.Player and type(s.Party.Players)=="table"and table.find(s.Party.Players,s.Player)~=nil
+        if s.InGame==true and s.Recording==false and s.SessionReady and s.PartyKnown and partyOK
+            and not s.Matchmaking and not s.MatchmakingFound and type(limit)=="table"
+            and type(limit.Remaining)=="number"and limit.Remaining>0 and limit.InProgress==false
+            and type(s.ServerTime)=="number"and s.ServerTime%3600<900 and hour~=runtime.Ledger.BlockedWindow
+            and type(s.Portals)=="table"and #s.Portals==0 and Controller.RiftPortalConnection
+            and type(Controller.RiftPortalSubscribedAt)=="number"and os.clock()-Controller.RiftPortalSubscribedAt>=2 then
+            return{Name=name,Toggle=joiner.Toggle,Route="lobby-required",TeamSlot=0,Matchmaking=false,
+                QueueData={Gamemode="Rift",MapName="StarrkRift",ActName="Act 1",Difficulty="Hard"},
+                TargetProof=table.concat({"rift-lobby-discovery",tostring(hour),tostring(limit.Remaining)},"|"),
+                RequiredContextReason="Native Rift allowance and spawn window are eligible; after portal observation settled no portal was found. Use one Lobby discovery fallback, then join only a verified native portal"}
+        end
+    end
+    if not queue and not operation then return nil,reason end
+    local plan={Name=name,Toggle=joiner.Toggle,QueueData=queue,Operation=operation,BossKey=bossKey,
+        Matchmaking=joiner.Matchmaking and value(joiner.Matchmaking,false)==true or false,
+        TeamSlot=not operation and value(FEATURE.TeamEquipper,false) and math.clamp(math.floor(tonumber(value(TEAM_FEATURE[name],0))or 0),0,8)or 0}
+    if forTransition==true and name=="Regular Challenge Joiner" and value("NUI-0213",false)~=true then return nil,"Regular Challenge result switching is disabled" end
+    if operation then
+        plan.Route,plan.TargetProof="bounty-prepare",fingerprint(operation)
+        return plan
+    end
+    if riftId then
+        for _,portal in ipairs(modeReplicaSnapshot("RiftPortal"))do if portal.Id==riftId then
+            local proof,why,rawQueue,host,data=modeRiftPortalProof(portal,riftId,riftWindow)
+            if not proof then return nil,why end
+            nativePlan={Mode="Rift",QueueData=queue,Route="rift-portal",Replica=portal.Replica,
+                ProofStamp=fingerprint(proof),RiftProofFingerprint=fingerprint(proof),RiftPortalId=riftId,RiftWindow=riftWindow,
+                RiftQueueData=rawQueue,RiftHostUserId=host,RiftPortalData=data}
+            break
+        end end
+        if not nativePlan then return nil,"Native Rift portal disappeared" end
+    elseif name=="Portal Joiner" then
+        nativePlan,reason=getModeNativeAdapter():Build("Portal",{PortalID=queue.PortalID,QueueData=queue})
+        if not nativePlan then return nil,reason end
+    elseif queue and (queue.Gamemode=="Trial"or queue.Gamemode=="IchigoResurrection")then
+        nativePlan,reason=getModeNativeAdapter():Build(queue.Gamemode,{TrialUnit=queue.TrialUnit})
+        if not nativePlan then return nil,reason end
+    elseif not nativePlan then
+        local valid,why,proof=getModeNativeAdapter():ValidateQueue(queue)
+        if not valid then return nil,why end
+        queue=valid
+        nativePlan={Mode=queue.Gamemode,QueueData=queue,Route="party",Proof=proof,ProofStamp=fingerprint(proof or queue)}
+    end
+    plan.QueueData=modeSnapshot(nativePlan.QueueData or queue)
+    plan.NativePlan=nativePlan
+    plan.Route=plan.Matchmaking and "matchmaking" or nativePlan.Route or "party"
+    plan.TargetProof=nativePlan.ProofStamp or fingerprint(nativePlan.Proof or plan.QueueData)
+    if plan.QueueData.Gamemode=="Challenge" then
+        local kind,index=plan.QueueData.ChallengeType,plan.QueueData.ChallengeIndex
+        local entry=Fusion.peek((Fusion.peek(Dependencies.ChallengeData)or{})[kind])
+        entry=type(entry)=="table" and Fusion.peek(entry[index])
+        local ok,reset=pcall(function()return Information.ChallengeInfo:GetResetKey(workspace:GetServerTimeNow(),kind)end)
+        if not ok or type(reset)~="string" or type(entry)~="table" then return nil,"Waiting for the exact native Challenge rotation" end
+        plan.RotationKey,plan.EntryFingerprint=reset,fingerprint(modeSnapshot(entry))
+        plan.TargetProof=table.concat({plan.TargetProof,reset,plan.EntryFingerprint},"|")
+    end
+    return plan
+end
+function Controller:ChooseJoinerPlan(forTransition,pending)
+    return withGameIdentity(function()
+    local tidalFarm=value(FEATURE.TidalShinyFarm,false)==true
+    local order=tidalFarm and {"Tidal Siege Joiner"} or priorityOrder()
+    for _,name in ipairs(order)do
+        local joiner=JOINERS[name]
+        local toggle=tidalFarm and FEATURE.TidalShinyFarm or joiner and joiner.Toggle
+        if joiner and value(toggle,false)==true and not(forTransition==true and name=="Tower Joiner")then
+            local plan,reason
+            if forTransition and pending and pending.Plan and pending.Plan.Name==name and pending.Plan.NativePlan and pending.SpecialInvoked then
+                local valid,why=getModeNativeAdapter():Revalidate(pending.Plan.NativePlan,pending)
+                if valid then plan=table.clone(pending.Plan) else reason=why end
+            end
+            if not plan then
+                local ok,current,why=pcall(makeModeTargetPlan,name,joiner,forTransition,pending)
+                if ok then plan,reason=current,why else reason="Native "..name.." eligibility proof rejected: "..tostring(current)end
+            end
+            if plan then plan.Toggle=toggle return plan,nil,order end
+            self.LastReason=reason
+        end
+    end
+    return nil,self.LastReason or "No enabled Joiner is currently eligible",order
+    end)
+end
+function Controller:BuildModeHandoff(context,pending)
+    if value("NUI-0256",false)~=true or value(FEATURE.Disable,false)==true then return nil,"Automatic result Joiner is disabled" end
+    local source,reason,id=modeSource(context)
+    if not source then return nil,reason end
+    local plan,why,order=self:ChooseJoinerPlan(true,pending)
+    if not plan then self.ModeHandoffStatus="no-eligible-target" self.ModeHandoffReason=why return nil,why end
+    local current=source
+    if source.Gamemode=="BossRush"then
+        current=table.clone(source)
+        local config=(Information.Gamemodes.BossRush or{}).Config
+        if type(config)=="table"and current.MapName==config.MapName then
+            if current.ActName==nil then current.ActName=config.ActName end
+            if current.Difficulty==nil then current.Difficulty=config.Difficulty end
+        end
+    end
+    local ok,sanitized=pcall(sanitizeQueueData,modeSnapshot(current))
+    if ok and type(sanitized)=="table" then current=modeSnapshot(sanitized) end
+    local same=type(plan.QueueData)=="table"
+    for key,target in pairs(plan.QueueData or {})do if fingerprint(current[key])~=fingerprint(target)then same=false break end end
+    if same then
+        self.ModeHandoffStatus,self.ModeHandoffReason="same-target","The highest eligible Joiner is the current queue; native Next/Replay policy remains in control"
+        return nil,self.ModeHandoffReason
+    end
+    plan.SourceGameId,plan.SourceRoundSerial=id,context.RoundSerial
+    plan.SourceQueueData,plan.SourceFingerprint=source,fingerprint(source)
+    plan.PriorityFingerprint,plan.ConfigurationFingerprint=fingerprint(order),modeConfigurationFingerprint()
+    plan.CooldownSeconds=math.max(0,tonumber(value(FEATURE.Cooldown,0))or 0)
+    plan.TargetProof=plan.TargetProof or fingerprint(plan.Operation or plan.QueueData)
+    if plan.TeamSlot>0 then
+        local team=(getPlayerData().TeamData or {})[tostring(plan.TeamSlot)]
+        if type(team)~="table" or type(team.Units)~="table" or next(team.Units)==nil then return nil,"Selected team slot has no saved units" end
+        plan.TeamFingerprint=fingerprint(team.Units)
+        if fingerprint(getPlayerData().HotbarData or {})~=plan.TeamFingerprint then
+            plan.Route="lobby-required"
+            plan.RequiredContextReason="Configured saved team differs; the existing native Lobby team-loading workflow will verify it before joining"
+        end
+    end
+    self.ModeHandoffStatus,self.ModeHandoffReason="eligible","Highest eligible Joiner: "..plan.Name
+    return plan
+end
+function Controller:BuildChallengeHandoff(context,pending) return self:BuildModeHandoff(context,pending) end
+function Controller:ConfirmedLobbyArrival()
+    return withGameIdentity(function()
+        if Fusion.peek(Shared.IsInGame)~=false or Fusion.peek(Shared.IsInAFKChamber)~=false
+            or type(Fusion.peek(Dependencies.SessionData))~="table"or type(Fusion.peek(Dependencies.PlayerData))~="table"then return false end
+        local nodes=require(ReplicatedStorage:WaitForChild("Nodes"))
+        local inGame,gameReplica,playerReplica=nodes.IS_IN_GAME,nodes.GET_GAME_REPLICA,nodes.GET_GAME_PLAYER_REPLICA
+        if not inGame or not gameReplica or not playerReplica or type(inGame.InvokeSelf)~="function"
+            or type(gameReplica.InvokeSelf)~="function"or type(playerReplica.InvokeSelf)~="function"then return false end
+        local a,b,c=inGame.InvokeSelf,gameReplica.InvokeSelf,playerReplica.InvokeSelf
+        local ok,ready=pcall(function()
+            return a(inGame)==false and b(gameReplica)==nil and c(playerReplica)==nil
+                and nodes.IS_IN_GAME==inGame and nodes.GET_GAME_REPLICA==gameReplica and nodes.GET_GAME_PLAYER_REPLICA==playerReplica
+                and inGame.InvokeSelf==a and gameReplica.InvokeSelf==b and playerReplica.InvokeSelf==c
+                and a(inGame)==false and b(gameReplica)==nil and c(playerReplica)==nil
+                and Fusion.peek(Shared.IsInGame)==false and Fusion.peek(Shared.IsInAFKChamber)==false
+        end)
+        return ok and ready==true
+    end)
+end
+function Controller:BuildLobbyModePlan(context,pending)
+    if Environment[STATE_KEY]~=self or not self.Running or Players.LocalPlayer~=LocalPlayer
+        or value(FEATURE.Disable,false)==true or Fusion.peek(Shared.IsInGame)~=false or Fusion.peek(Shared.IsInAFKChamber)~=false then return nil,"Waiting for the native Lobby"end
+    local macro=Environment.__AnimeExpeditionsMacro
+    if value("NUI-0506",false)==true or type(macro)=="table"and(macro.Recording or macro.Busy or(tonumber(macro.ActiveOperations)or 0)>0)then return nil,"Macro is active; native entry is paused"end
+    local plan,reason,order=self:ChooseJoinerPlan("lobby",pending)
+    if not plan then return nil,reason end
+    plan.SourceInLobby=true
+    plan.SourceGameId="lobby:"..tostring(game.JobId)
+    plan.SourceRoundSerial=type(context)=="table"and context.RoundSerial or 0
+    plan.SourceFingerprint=table.concat({"lobby",tostring(LocalPlayer.UserId),tostring(game.PlaceId),tostring(game.JobId)},"|")
+    plan.PriorityFingerprint,plan.ConfigurationFingerprint=fingerprint(order),modeConfigurationFingerprint()
+    plan.CooldownSeconds=0
+    if plan.TeamSlot>0 then
+        local team=(getPlayerData().TeamData or{})[tostring(plan.TeamSlot)]
+        if type(team)~="table"or type(team.Units)~="table"or next(team.Units)==nil then return nil,"Selected team slot has no saved units"end
+        plan.TeamFingerprint=fingerprint(team.Units)
+        if fingerprint(getPlayerData().HotbarData or{})~=plan.TeamFingerprint then return nil,"Waiting for the selected saved team to be verified"end
+    end
+    return plan
+end
+function Controller:GetModeNativeAdapter() return getModeNativeAdapter() end
+function Controller:GetModeHandoffReplicas(kind) return modeReplicaSnapshot(kind) end
+function Controller:ModeSourceMatches(plan,context)
+    local source,_,id=modeSource(context)
+    return source~=nil and id==plan.SourceGameId and context.RoundSerial==plan.SourceRoundSerial
+        and fingerprint(source)==plan.SourceFingerprint
+end
+function Controller:ModePreparationAcknowledged(plan)
+    if not plan or not plan.Operation then return false end
+    local _,boss=bossData()
+    return type(boss)=="table" and fingerprint(boss)~=plan.Operation.Before
+end
+-- ALL_MODE_HANDOFF_JOINER_END
+
+-- CHALLENGE_HANDOFF_JOINER_END
+
 
 function Controller:Evaluate()
     self.LastReason = nil
+    local scope = tostring(LocalPlayer.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local handoffs = Environment.__AnimeExpeditionsChallengeHandoffLedgers
+    if type(handoffs)=="table" and type(handoffs[scope])=="table" and handoffs[scope].Pending then return nil,"A native Challenge handoff is awaiting entry; no second Joiner request" end
     if value(FEATURE.Disable, false) then return nil, "auto joiners are disabled" end
     if not isInLobby() then return nil, "not in lobby" end
     local sessionData = getSessionData()
@@ -20349,30 +22463,34 @@ function Controller:Evaluate()
         return nil, "local player is not party leader"
     end
 
-    -- Farming owns joiner focus, even while its native event is unavailable.
-    -- The plan's farm toggle also lets the existing in-flight guards cancel it.
-    local tidalFarm = value(FEATURE.TidalShinyFarm, false) == true
-    local order = tidalFarm and { "Tidal Siege Joiner" } or priorityOrder()
-    for _, name in ipairs(order) do
-        local joiner = JOINERS[name]
-        local toggle = tidalFarm and FEATURE.TidalShinyFarm or (joiner and joiner.Toggle)
-        if joiner and value(toggle, false) then
-            local queueData, reason, operation, bossKey = joiner.Build()
-            if queueData or operation then
-                return {
-                    Name = name,
-                    Toggle = toggle,
-                    QueueData = queueData,
-                    Matchmaking = joiner.Matchmaking and value(joiner.Matchmaking, false) == true or false,
-                    TeamSlot = not operation and value(FEATURE.TeamEquipper, false) and math.clamp(math.floor(tonumber(value(TEAM_FEATURE[name], 0)) or 0), 0, 8) or 0,
-                    Operation = operation, BossKey = bossKey,
-                }
-            end
-            self.LastReason = reason
-        end
-    end
-    return nil, self.LastReason or "no enabled joiner is currently eligible"
+    return self:ChooseJoinerPlan(false)
 end
+
+-- RIFT_PLAN_VALUE_FINGERPRINT_BEGIN
+local function joinPlanFingerprint(plan)
+    -- NativePlan holds opaque live Replica/queue/Data references, not value data.
+    -- TargetProof carries the canonical eligibility proof; actors recheck handles.
+    local decision = {}
+    for key, current in pairs(plan) do
+        if key ~= "NativePlan" then decision[key] = current end
+    end
+    return fingerprint(decision)
+end
+
+local function joinPlanMatches(current, plan)
+    if type(current) ~= "table" or joinPlanFingerprint(current) ~= joinPlanFingerprint(plan) then return false end
+    local expected = plan.NativePlan
+    if type(expected) == "table" and expected.Route == "rift-portal" then
+        local observed = current.NativePlan
+        return type(observed) == "table" and observed.Route == expected.Route and observed.Mode == expected.Mode
+            and observed.Replica == expected.Replica and observed.RiftPortalId == expected.RiftPortalId
+            and observed.RiftWindow == expected.RiftWindow and observed.RiftQueueData == expected.RiftQueueData
+            and observed.RiftHostUserId == expected.RiftHostUserId and observed.RiftPortalData == expected.RiftPortalData
+            and Controller:ModeNativePlanReady(expected) == true
+    end
+    return true
+end
+-- RIFT_PLAN_VALUE_FINGERPRINT_END
 
 local function assertCurrentPlan(plan, generation)
     if not Controller.Running or Controller.LoopGeneration ~= generation then
@@ -20390,7 +22508,7 @@ local function assertCurrentPlan(plan, generation)
         error("local player is no longer party leader", 0)
     end
     local current = Controller:Evaluate()
-    if not current or fingerprint(current) ~= fingerprint(plan) then
+    if not joinPlanMatches(current, plan) then
         error("join plan configuration changed", 0)
     end
 end
@@ -20458,6 +22576,7 @@ end
 
 local infernalRuntime
 local function readInfernalState()
+    return withGameIdentity(function()
     local data=getPlayerData()
     local s=getSessionData()
     local event=(Information.Events or{}).ShoQuestlineEvent
@@ -20480,6 +22599,7 @@ local function readInfernalState()
         MapUnlocked=type(map)=="string"and Information.Maps:HasMapUnlocked(Fusion.peek(data.CompletedMaps)or{},"Mastery",map)==true,
         MapName=map,Seed=seed,Now=now,Photos=tonumber(((data.ItemData or{}).TornPhoto or{}).Amount)or 0,
         Parameters=type(gs)=="table"and Fusion.peek(gs.Parameters)or nil}
+    end)
 end
 getInfernalRuntime=function()
     if infernalRuntime then return infernalRuntime end
@@ -20604,42 +22724,110 @@ end
 
 -- MONSTER_JOIN_NATIVE_END
 
+-- RIFT_FAKE_HOMETOWN_NATIVE_BEGIN
+local riftPortalSet=setmetatable({}, {__mode="k"})
+local riftRuntime
+local riftScope=tostring(LocalPlayer.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+local riftLedgers=Environment.__AnimeExpeditionsRiftFakeHometownJoinLedgers
+if type(riftLedgers)~="table" then riftLedgers={} Environment.__AnimeExpeditionsRiftFakeHometownJoinLedgers=riftLedgers end
+local riftLedger=riftLedgers[riftScope]
+if type(riftLedger)~="table" then riftLedger={} riftLedgers[riftScope]=riftLedger end
+local function riftValue(x)
+    if type(x)=="table" then local raw=rawget(x,"_EXTREMELY_DANGEROUS_usedAsValue") if raw~=nil then return raw end end
+    local ok,v=pcall(Fusion.peek,x) if ok then return v end return x
+end
+local nativeShared=ReplicatedStorage:WaitForChild("Shared")
+local riftClientOK,riftClient=pcall(require,nativeShared:WaitForChild("ReplicaClient"))
+local riftRulesOK,riftRules=pcall(require,nativeShared:WaitForChild("RiftRules"))
+local function watchRiftPortals()
+if Controller.RiftPortalConnection then return end
+if riftClientOK and type(riftClient.OnNew)=="function" then
+    local ok,connection=pcall(riftClient.OnNew,"RiftPortal",function(replica)
+        if Environment[STATE_KEY]==Controller and Players.LocalPlayer==LocalPlayer then riftPortalSet[replica]=true end
+    end)
+    if ok then Controller.RiftPortalConnection=connection Controller.RiftPortalSubscribedAt=os.clock() Controller.RiftPortalError=nil else Controller.RiftPortalError=tostring(connection) end
+else Controller.RiftPortalError="Native Rift portal observer is unavailable" end
+end
+watchRiftPortals()
+local function readRiftFakeHometown()
+    local session=riftValue(Dependencies.SessionData)
+    local pd=riftValue(Dependencies.PlayerData)
+    local party=riftValue(Dependencies.PartyData)
+    local state=riftValue(Dependencies.GameState) or {}
+    local parameters=riftValue(state.Parameters) or {}
+    local q={} for _,field in ipairs({"Gamemode","MapName","ActName","Difficulty"}) do q[field]=riftValue(parameters[field]) end
+    local now=workspace:GetServerTimeNow()
+    local clears=type(pd)=="table" and riftValue(pd.RiftClears) or nil
+    local limit
+    if riftRulesOK and type(riftRules.GetStatus)=="function" and type(pd)=="table" then
+        clears=type(clears)=="table" and clears or {}
+        local ok,status=pcall(riftRules.GetStatus,now,riftValue(clears.HourStart),riftValue(clears.Count),riftValue(clears.InProgress))
+        if ok then limit=status end
+    end
+    local portals={}
+    for replica in pairs(riftPortalSet) do
+        local ok,alive=pcall(function() return replica:IsActive() end)
+        if ok and alive and type(replica.Data)=="table" then
+            portals[#portals+1]={Id=replica.Id,Replica=replica,Alive=true,Data=replica.Data}
+        else riftPortalSet[replica]=nil end
+    end
+    local macro=Environment.__AnimeExpeditionsMacro
+    return {InGame=riftValue(Shared.IsInGame),Recording=(type(macro)=="table" and macro.Recording==true) or value("NUI-0506",false)==true,
+        Player=LocalPlayer,Parameters=q,ServerTime=now,Limit=limit,Portals=portals,
+        SessionReady=type(session)=="table" and type(pd)=="table",PartyKnown=Dependencies.PartyData~=nil,
+        Matchmaking=type(session)=="table" and riftValue(session.Matchmaking),MatchmakingFound=type(session)=="table" and riftValue(session.MatchmakingFound),
+        Party=type(party)=="table" and {Leader=riftValue(party.Leader),Players=riftValue(party.Players)} or nil}
+end
+getRiftFakeHometownRuntime=function()
+    if not riftRuntime then
+        riftRuntime=RiftFakeHometownJoin.new({Read=readRiftFakeHometown,Ledger=riftLedger,Owner=Controller,Clock=os.clock,AckTimeout=12,DepartureTimeout=90,
+            Check=function(plan,generation)
+                if Environment[STATE_KEY]~=Controller or Players.LocalPlayer~=LocalPlayer then error("Rift Joiner owner/account changed",0) end
+                assertCurrentPlan(plan,generation)
+            end,
+            Enter=function(replica) replica:FireServer("EnterRift") end})
+    end
+    return riftRuntime
+end
+function Controller:RefreshRiftFakeHometownStatus()
+    local enabled=value(FEATURE.RiftFakeHometown,false)==true
+    local blocked,reason,outcome=false,nil,nil
+    local status="disabled"
+    if enabled and value(FEATURE.Disable,false)==true and not riftLedger.Pending then
+        status="paused" reason="Disable Auto Joiners is enabled"
+    elseif enabled or riftLedger.Pending then
+        local runtime=getRiftFakeHometownRuntime()
+        blocked,reason,outcome=runtime:Observe()
+        if blocked then status="waiting-entry"
+        elseif outcome then status=outcome
+        else local q,why=runtime:Build() status=q and "ready" or "waiting" reason=why end
+    end
+    self.FeatureStates[FEATURE.RiftFakeHometown]={Status=status,Reason=reason}
+    local title="Fake Hometown: "..status..(reason and "\n"..reason or "")
+    if self.RiftLabelText~=title then
+        local gui=Environment.__AnimeExpeditionsGuiController
+        local label=type(gui)=="table" and gui.Controls and gui.Controls["AE-RIFT-FAKE-HOMETOWN-STATUS"]
+        if type(label)=="table" and type(label.SetText)=="function" then pcall(function() label:SetText(title) end) self.RiftLabelText=title end
+    end
+    return blocked,reason,outcome
+end
+-- RIFT_FAKE_HOMETOWN_NATIVE_END
+
+-- ALL_MODE_LOBBY_SHARED_DRIVER_BEGIN
 local function submitPlan(plan, generation)
     return withGameIdentity(function()
         assertCurrentPlan(plan, generation)
-        if plan.Name == "Monster Clash Joiner" then return getMonsterJoinRuntime():Submit(plan,generation) end
-        if plan.Name == "Infernal Cult Joiner" then return getInfernalRuntime():Submit(plan,generation) end
-        if plan.Name == "Boss Rush Joiner" then return getBossRushAutoJoinRuntime():Submit(plan,generation) end
-        if plan.Operation then
-            local op = plan.Operation
-            if op.Action == "Roll" then Actions.FireEventReplica(op.EventId, "Roll")
-            else Actions.FireEventReplica(op.EventId, "Reroll", op.ConfirmSecret and true or nil) end
-            return "bounty-" .. string.lower(op.Action) .. "-submitted"
-        end
-        equipTeam(plan, generation)
-        if plan.Matchmaking then
-            Actions.StartMatchmaking(plan.QueueData)
-            Controller.OwnsMatchmaking = true
-            return "matchmaking-submitted"
-        end
-        local tidalSetQueueData
-        if plan.Name == "Tidal Siege Joiner" then
-            -- Actions can synthesize unregistered names; require the PartyView binding.
-            tidalSetQueueData = rawget(Actions, "PartySetQueueData")
-            if type(tidalSetQueueData) ~= "function" then
-                error("Tidal Siege native PartySetQueueData action is unavailable", 0)
-            end
-        end
-        Actions.CancelMatchmaking()
+        if not plan.Operation then equipTeam(plan, generation) end
         assertCurrentPlan(plan, generation)
-        if tidalSetQueueData then tidalSetQueueData(plan.QueueData)
-        else Actions.SetQueueData(plan.QueueData) end
-        task.wait(Config.QueueSettleSeconds)
-        assertCurrentPlan(plan, generation)
-        Actions.PartyStartGame(plan.QueueData)
-        return "solo-submitted"
+        local gameController = Environment.__AnimeExpeditionsGameWebhook
+        local submit = type(gameController)=="table" and rawget(gameController,"SubmitLobbyModePlan")
+        if type(submit)~="function" then error("Shared native mode entry driver is unavailable",0) end
+        local accepted, reason = submit(gameController)
+        if accepted~=true then error(reason or "Native mode entry was not accepted by the shared driver",0) end
+        return reason or "native-mode-entry-pending"
     end)
 end
+-- ALL_MODE_LOBBY_SHARED_DRIVER_END
 
 function Controller:RefreshLobbyState(now)
     local inLobby = isInLobby()
@@ -20650,13 +22838,89 @@ function Controller:RefreshLobbyState(now)
     return inLobby
 end
 
+-- REGULAR_CHALLENGE_AFK_RETURN_BEGIN
+function Controller:PrepareRegularLobby()
+    local scope = tostring(LocalPlayer.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local ledgers = Environment.__AnimeExpeditionsRegularChallengeAFKReturns
+    if type(ledgers) ~= "table" then ledgers = {} Environment.__AnimeExpeditionsRegularChallengeAFKReturns = ledgers end
+    local ledger = ledgers[scope]
+    if type(ledger) ~= "table" then ledger = {} ledgers[scope] = ledger end
+    local function waiting(reason)
+        self.Status = "waiting-afk-exit" self.LastReason = reason self.NextAttemptAt = os.clock() + Config.PollSeconds
+        return true
+    end
+    local inAFK = Fusion.peek(Shared.IsInAFKChamber)
+    if inAFK == false then ledger.Pending = nil return false end
+    if inAFK ~= true then
+        return ledger.Pending and waiting("Native AFK location is unknown; preserving pending return") or false
+    end
+    if Fusion.peek(Shared.IsInGame) == true or value(FEATURE.Disable, false) or value(FEATURE.Regular, false) ~= true then return false end
+    if ledger.Pending then return waiting("Waiting for native AFK exit acknowledgement; no repeat return request") end
+    local macro = Environment.__AnimeExpeditionsMacro
+    if value("NUI-0506", false) == true or type(macro) == "table" and (macro.Recording == true or macro.Busy == true or (tonumber(macro.ActiveOperations) or 0) > 0) then
+        return waiting("Macro is busy; AFK exit paused")
+    end
+    local queue = self:BuildRegularQueue()
+    if not queue then return false end
+    local leave = rawget(Actions, "AFKChamber_ReturnToLobby")
+    if type(leave) ~= "function" then return waiting("Native AFK return action is unavailable") end
+    local pending = {Queue = queue, Owner = self, SubmittedAt = os.time(), Invoked = false}
+    ledger.Pending = pending
+    local ok, failure = pcall(function()
+        return withGameIdentity(function()
+            if Environment[STATE_KEY] ~= self or not self.Running or value(FEATURE.Disable, false)
+                or value(FEATURE.Regular, false) ~= true or Fusion.peek(Shared.IsInGame) == true
+                or Fusion.peek(Shared.IsInAFKChamber) ~= true or rawget(Actions, "AFKChamber_ReturnToLobby") ~= leave then return end
+            local currentMacro = Environment.__AnimeExpeditionsMacro
+            if value("NUI-0506", false) == true or type(currentMacro) == "table" and (currentMacro.Recording == true or currentMacro.Busy == true or (tonumber(currentMacro.ActiveOperations) or 0) > 0) then return end
+            if not self:BuildRegularQueue() then return end
+            pending.Invoked = true
+            leave()
+        end)
+    end)
+    if not pending.Invoked then ledger.Pending = nil end
+    if not ok then pending.Error = tostring(failure) self.LastError = tostring(failure) end
+    return waiting(pending.Invoked and "Returning from AFK Chamber; wait for native Lobby before joining Regular Challenge" or "AFK return cancelled before submission")
+end
+-- REGULAR_CHALLENGE_AFK_RETURN_END
+
 function Controller:RunOnce(force)
     if not self.Running then return false, "stopped" end
     if self.Busy then return false, "busy" end
     local now = os.clock()
     if not force and now < self.NextAttemptAt then return false, "scheduled" end
 
+    -- Resume the same durable transaction before selecting or submitting another target.
+    local modeDriver = Environment.__AnimeExpeditionsGameWebhook
+    local driveMode = type(modeDriver)=="table" and rawget(modeDriver,"DrivePendingLobbyModePlan")
+    if type(driveMode)=="function" then
+        local ok, held, reason = pcall(driveMode,modeDriver)
+        if not ok then
+            self.Status,self.LastReason="waiting-native-mode-entry",tostring(held)
+            self.NextAttemptAt=os.clock()+Config.PollSeconds
+            return false,self.LastReason
+        end
+        if held==true then
+            self.Status,self.LastReason="waiting-native-mode-entry",reason or "Waiting for native mode entry acknowledgement"
+            self.NextAttemptAt=os.clock()+Config.PollSeconds
+            return false,self.LastReason
+        end
+    end
+
+    if self:PrepareRegularLobby() then return false, self.LastReason end
+
     local currentSession = getSessionData()
+    local riftBlocked,riftReason,riftOutcome=self:RefreshRiftFakeHometownStatus()
+    if riftOutcome then
+        self.PendingSubmission=nil
+        if riftOutcome=="confirmed" then
+            self.Confirmations+=1 self.LastConfirmation={Time=os.time(),State="native-rift-entry",Plan="Rift Fake Hometown Joiner"}
+        end
+    end
+    if riftBlocked then
+        self.Status="waiting-rift-fake-hometown-entry" self.LastReason=riftReason self.NextAttemptAt=now+Config.PollSeconds
+        return false,riftReason
+    end
     -- Reconcile this native request before another Joiner can overwrite its queue.
     local monsterScope=tostring(LocalPlayer.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
     local monsterLedgers=Environment.__AnimeExpeditionsMonsterJoinLedgers
@@ -20740,7 +23004,7 @@ function Controller:RunOnce(force)
         return true, plan
     end
 
-    local planKey = fingerprint(plan)
+    local planKey = joinPlanFingerprint(plan)
     if (self.PlanAttempts[planKey] or 0) >= (plan.Operation and 1 or Config.MaxAttemptsPerPlan) then
         self.Busy = false
         self.Status = "retry-exhausted"
@@ -20841,6 +23105,8 @@ end
 
 function Controller:Start()
     if self.LoopAlive then return false, "already running" end
+    watchRiftPortals()
+    watchModePortals()
     self.Running = Config.Enabled
     if not self.Running then self.Status = "disabled" return false, "disabled" end
     self.LoopGeneration += 1
@@ -20874,6 +23140,8 @@ function Controller:Stop(reason)
     self.LoopGeneration += 1
     self.Status = "stopped"
     self.StopReason = reason or "manual"
+    if self.RiftPortalConnection then pcall(function() self.RiftPortalConnection:Disconnect() end) self.RiftPortalConnection=nil end
+    if self.ModePortalConnection then pcall(function()self.ModePortalConnection:Disconnect()end)self.ModePortalConnection=nil end
     self:CancelOwnedMatchmaking()
     if self.Worker and type(task.cancel) == "function" then pcall(task.cancel, self.Worker) end
     self.Worker = nil
@@ -20895,6 +23163,121 @@ Controller:BindGui()
 Controller:Start()
 return Controller
 ]======]
+local AUTO_SHOP_SOURCE = [======[-- Native restock catalog shared by initial presentation and the lobby worker.
+return function(Environment)
+    local Catalog = { Version = 1 }
+    Catalog.Definitions = {
+        { Toggle = "NUI-0016", Select = "NUI-0017", DataKey = "ExpeditionShop", Label = "Expedition Shop" },
+        { Toggle = "NUI-0018", Select = "NUI-0019", DataKey = "GoldShop", Label = "Gold Shop" },
+        { Toggle = "NUI-0020", Select = "NUI-0021", DataKey = "RaidShop", Label = "Raid Shop" },
+        { Toggle = "AE-SHOP-BOSSRUSH-AUTO", Select = "AE-SHOP-BOSSRUSH-ITEMS", DataKey = "BossRushShop", Label = "Boss Rush Shop" },
+        { Toggle = "AE-SHOP-RIFT-AUTO", Select = "AE-SHOP-RIFT-ITEMS", DataKey = "RiftShop", Label = "Rift Shop" },
+        { Toggle = "NUI-0022", Select = "NUI-0023", DataKey = "EventShop", Label = "Event Shop", ExcludeShop = "WanderingTrader" },
+        { Toggle = "NUI-0024", Select = "NUI-0025", DataKey = "EventShop", Label = "Wandering Trader", OnlyShop = "WanderingTrader" },
+    }
+    local function peek(Fusion, input)
+        local ok, result = pcall(Fusion.peek, input)
+        if ok then return result end
+        return input
+    end
+    local function path(Fusion, input, ...)
+        local current = peek(Fusion, input)
+        for index = 1, select("#", ...) do
+            if type(current) ~= "table" then return nil end
+            current = peek(Fusion, current[select(index, ...)])
+        end
+        return current
+    end
+    local function sorted(input)
+        local result = {}
+        for key in pairs(type(input) == "table" and input or {}) do result[#result + 1] = key end
+        table.sort(result, function(a, b) return tostring(a) < tostring(b) end)
+        return result
+    end
+    local function positive(input)
+        return type(input) == "number" and input == input and input > 0 and input < math.huge
+    end
+    function Catalog:Resolve(Information, Dependencies, Fusion)
+        local result = {}
+        for _, spec in ipairs(self.Definitions) do
+            local row = { Toggle = spec.Toggle, Select = spec.Select, DataKey = spec.DataKey, Label = spec.Label, Options = {}, AssetLabels = {}, Shops = {} }
+            result[#result + 1] = row
+            local static = path(Fusion, Information, "Shops", spec.DataKey)
+            local nativeData = path(Fusion, Dependencies, "ShopData", spec.DataKey)
+            local nativeShops = path(Fusion, nativeData, "Shops")
+            local keys, labels = {}, {}
+            for key in pairs(type(static) == "table" and static or {}) do keys[key] = true end
+            for key in pairs(type(nativeShops) == "table" and nativeShops or {}) do keys[key] = true end
+            for _, key in ipairs(sorted(keys)) do
+                if type(key) == "string" and (not spec.OnlyShop or key == spec.OnlyShop) and key ~= spec.ExcludeShop then
+                    local nativeShop = path(Fusion, nativeShops, key)
+                    local shop = nativeShop ~= nil and nativeShop or path(Fusion, static, key)
+                    if type(shop) == "table" and positive(path(Fusion, shop, "RestockTime")) then
+                        local entry = { Key = key, Definition = shop, ShopData = nativeData, Items = {},
+                            Active = nativeShop ~= nil and path(Fusion, nativeData, "DataKey") == spec.DataKey
+                                and path(Fusion, nativeData, "ResetKeys", key) ~= nil }
+                        for _, index in ipairs(sorted(path(Fusion, shop, "Items"))) do
+                            local number = tonumber(index)
+                            local item = path(Fusion, shop, "Items", index)
+                            local asset = path(Fusion, item, "Name")
+                            if number and number > 0 and number % 1 == 0 and type(asset) == "string" and asset ~= ""
+                                and path(Fusion, item, "Restocks") == true then
+                                local label = path(Fusion, Information, "Assets", asset, "DisplayName")
+                                    or path(Fusion, Information, "Items", asset, "DisplayName")
+                                    or path(Fusion, Information, "Units", asset, "DisplayName") or asset
+                                if type(label) ~= "string" or label == "" then label = asset end
+                                entry.Items[#entry.Items + 1] = { Index = number, Asset = asset, Label = label, Definition = item }
+                                row.AssetLabels[asset] = label
+                                if not labels[label] then row.Options[#row.Options + 1] = label labels[label] = true end
+                            end
+                        end
+                        if #entry.Items > 0 then row.Shops[#row.Shops + 1] = entry end
+                    end
+                end
+            end
+            table.sort(row.Options)
+        end
+        return result
+    end
+    function Catalog:Hydrate(Spec, Information, Dependencies, Fusion)
+        local catalog = self:Resolve(Information, Dependencies, Fusion)
+        local byKey = {}
+        for _, row in ipairs(catalog) do byKey[row.Select] = row end
+        for _, page in ipairs(Spec.pages or {}) do
+            for _, section in ipairs(page.sections or {}) do
+                for _, control in ipairs(section.controls or {}) do
+                    local row = byKey[control.key]
+                    if row then
+                        control.options = table.clone(row.Options)
+                        control.autoShopSelection = true
+                        control.autoShopAssetLabels = row.AssetLabels
+                        control.dynamicOptions = true
+                    end
+                end
+            end
+        end
+        return catalog
+    end
+    function Catalog:DisplaySelection(control, saved)
+        local result, available = {}, {}
+        for _, label in ipairs(control.options or {}) do available[label] = true end
+        local function add(input)
+            local label = (control.autoShopAssetLabels or {})[tostring(input)] or tostring(input)
+            if available[label] then result[label] = true end
+        end
+        if type(saved) == "string" and saved ~= "" then add(saved)
+        elseif type(saved) == "table" then
+            for key, current in pairs(saved) do
+                if type(key) == "number" then add(current) elseif current == true then add(key) end
+            end
+        end
+        return result
+    end
+    Environment.__AnimeExpeditionsAutoShopCatalog = Catalog
+    return Catalog
+end
+]======]
+
 local LOBBY_SOURCE = [=======[-- Anime Expeditions Lobby controller. Native protocols were read, not invoked, during development.
 -- Actions must be actually registered: Fusion Actions.__index also returns functions for missing actions.
 local Environment = getgenv()
@@ -20914,7 +23297,13 @@ Config.PollSeconds = math.clamp(tonumber(Config.PollSeconds) or 1, 0.2, 10)
 Config.FishingNavigationMode = Config.FishingNavigationMode == "Walk" and "Walk" or "Teleport"
 -- A populated GameState does not forbid native fishing. Keep lobby-only behavior opt-in.
 Config.FishingLobbyOnly = Config.FishingLobbyOnly == true
-Config.FishingMinigameMode = Config.FishingMinigameMode == "Input" and "Input" or "Remote"
+-- Older builds defaulted to sending a direct Remote success for ordinary reels. Migrate
+-- that persisted default once; Remote remains available only as an explicit version-2 choice.
+if Config.FishingMinigameModeVersion ~= 2 then
+    Config.FishingMinigameMode = "Input"
+    Config.FishingMinigameModeVersion = 2
+end
+Config.FishingMinigameMode = Config.FishingMinigameMode == "Remote" and "Remote" or "Input"
 -- 0/0.01/0.1-second results were ignored in live tests. 0.25 completed five
 -- consecutive measured rounds; keep that positive guard rather than spamming retries.
 Config.FishingResultDelaySeconds = math.clamp(tonumber(Config.FishingResultDelaySeconds) or 0.25, 0.25, 15)
@@ -20934,6 +23323,7 @@ local Dependencies = require(FusionPackage:WaitForChild("Dependencies"))
 local Fusion = require(FusionPackage:WaitForChild("Fusion"))
 local Shared = require(FusionPackage:WaitForChild("Shared"))
 local Information = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Information"))
+local Images = require(FusionPackage:WaitForChild("Images"))
 local Nodes = require(ReplicatedStorage:WaitForChild("Nodes"))
 local getIdentity = getthreadidentity or get_thread_identity
 local setIdentity = setthreadidentity or set_thread_identity
@@ -21323,11 +23713,15 @@ function Controller:Claims()
     end
     if self:Enabled("NUI-0010") then
         self:Mark("NUI-0010", "waiting", "No claimable index entry")
-        for _, category in pairs(path(data(), "Index") or {}) do
-            for _, entry in pairs(peek(category) or {}) do
-                if path(entry, "Claimed") == false then self:Dispatch("NUI-0010", "index", path(data(), "Index"), "IndexClaimAllRewards") end
+        -- ClaimAll is one operation, not one full-index fingerprint per unclaimed entry.
+        local index,claimable=path(data(), "Index") or {},false
+        for _,category in pairs(index)do
+            for _,entry in pairs(peek(category)or {})do
+                if path(entry,"Claimed")==false then claimable=true break end
             end
+            if claimable then break end
         end
+        if claimable then self:Dispatch("NUI-0010","index",index,"IndexClaimAllRewards")end
     end
     if self:Enabled("NUI-0011") then
         local info, level = path(Information, "LevelMilestones"), tonumber(path(data(), "Level")) or 0
@@ -21521,42 +23915,62 @@ function Controller:FuelBatchQuantity(info, building)
     return math.max(0, math.floor(quantity)), { Fuel = fuel, Owned = budget.Balances[asset] }
 end
 
--- ShopPrompt uses DataKey, ShopKey, numeric item index, quantity; never asset name as index.
-function Controller:Shops()
-    local specs = { { "NUI-0016", "NUI-0017", "ExpeditionShop" }, { "NUI-0018", "NUI-0019", "GoldShop" }, { "NUI-0020", "NUI-0021", "RaidShop" }, { "NUI-0022", "NUI-0023", "EventShop" } }
-    if self:Enabled("NUI-0024") then
-        self:Mark("NUI-0024", "waiting-event", "No loaded shop replica matches the native Wandering Trader descriptor")
-        local info = path(Information, "Events", "WanderingTrader")
-        local expectedName, expectedKey = path(info, "DisplayName"), path(info, "DataKey")
-        for shopId, raw in pairs(peek(Dependencies.ShopData) or {}) do
-            local nativeKey = path(raw, "DataKey")
-            local matches = expectedKey ~= nil and nativeKey == expectedKey
-            for _, shop in pairs(path(raw, "Shops") or {}) do
-                if expectedName and path(shop, "Name") == expectedName then matches = true end
+-- AUTO_SHOP_CATALOG_LOBBY_BEGIN
+function Controller:AutoShopCatalog()
+    local catalog = Environment.__AnimeExpeditionsAutoShopCatalog
+    if type(catalog) ~= "table" or type(catalog.Resolve) ~= "function" then return {} end
+    return catalog:Resolve(Information, Dependencies, Fusion)
+end
+function Controller:RefreshAutoShopOptions(catalog)
+    local shared = Environment.__AnimeExpeditionsAutoShopCatalog
+    local gui = Environment.__AnimeExpeditionsGuiController
+    if type(shared) ~= "table" or type(gui) ~= "table" then return false end
+    catalog = catalog or self:AutoShopCatalog()
+    self.AutoShopOptionSignatures = self.AutoShopOptionSignatures or {}
+    for _, row in ipairs(catalog) do
+        local key = signature({ Options = row.Options, Assets = row.AssetLabels })
+        if self.AutoShopOptionSignatures[row.Select] ~= key then
+            local spec = type(gui.ControlSpecs) == "table" and gui.ControlSpecs[row.Select]
+            if type(spec) == "table" then
+                spec.options, spec.autoShopAssetLabels, spec.autoShopSelection = table.clone(row.Options), row.AssetLabels, true
+                local element = type(gui.Controls) == "table" and gui.Controls[row.Select]
+                if type(element) == "table" and type(element.SetValues) == "function" then
+                    local before = gui.AutoShopRefreshing
+                    gui.AutoShopRefreshing = true
+                    local ok, failure = pcall(function()
+                        element:SetValues(table.clone(row.Options))
+                        if type(element.SetValue) == "function" then element:SetValue(shared:DisplaySelection(spec, value(row.Select, {}))) end
+                    end)
+                    gui.AutoShopRefreshing = before
+                    if not ok then self.LastError = tostring(failure) end
+                    if ok then self.AutoShopOptionSignatures[row.Select] = key end
+                end
             end
-            -- Use only a real replicated DataKey; never manufacture one from the UI label.
-            if matches and nativeKey == shopId and path(raw, "Shops") then table.insert(specs, { "NUI-0024", "NUI-0025", nativeKey }) end
         end
     end
-    for _, spec in ipairs(specs) do
-        local id, selectId, shopId = table.unpack(spec)
+    return true
+end
+
+-- ShopPrompt uses a real DataKey, ShopKey, numeric item index and bounded quantity.
+-- Static definitions populate choices only; purchasing requires the current native subshop/reset.
+function Controller:Shops()
+    local catalog = self:AutoShopCatalog()
+    self:RefreshAutoShopOptions(catalog)
+    for _, row in ipairs(catalog) do
+        local id, shopId = row.Toggle, row.DataKey
         if self:Enabled(id) then
-            local shopData = path(Dependencies.ShopData, shopId)
-            local shops = path(shopData, "Shops")
-            self:Mark(id, "waiting", "No selected affordable in-stock item")
-            if not shops then self:Mark(id, "unavailable", "Shop replica not loaded: " .. shopId) else
-                for shopKey, raw in pairs(shops) do
-                    local shop = peek(raw)
-                    for index, rawItem in pairs(path(shop, "Items") or {}) do
-                        local item = peek(rawItem)
-                        local asset = path(item, "Name")
-                        if asset and tonumber(index) and selected(value(selectId, {}), asset) then
-                            local quantity, before, failure = self:ShopBatchQuantity(shopData, shopKey, shop, item, shopId)
+            self:Mark(id, #row.Shops > 0 and "waiting" or "unavailable", #row.Shops > 0 and "No selected affordable in-stock restocking item" or "No restocking native shop definition is available")
+            for _, shop in ipairs(row.Shops) do
+                if not shop.Active then self:Mark(id, "waiting-shop", "Waiting for native shop/reset replica: " .. shopId .. "/" .. shop.Key)
+                else
+                    for _, item in ipairs(shop.Items) do
+                        if selected(value(row.Select, {}), item.Asset) then
+                            local quantity, before, failure = self:ShopBatchQuantity(shop.ShopData, shop.Key, shop.Definition, item.Definition, shopId)
                             if failure then self:Mark(id, "unavailable", failure)
                             elseif quantity >= 1 then
                                 if shopId == "ExpeditionShop" then
-                                    self:Dispatch(id, shopId .. ":" .. shopKey .. ":" .. index, before, "ExpeditionShopPurchaseItem", shopKey, tonumber(index), quantity)
-                                else self:Dispatch(id, shopId .. ":" .. shopKey .. ":" .. index, before, "ShopPurchaseItem", shopId, shopKey, tonumber(index), quantity) end
+                                    self:Dispatch(id, shopId .. ":" .. shop.Key .. ":" .. item.Index, before, "ExpeditionShopPurchaseItem", shop.Key, item.Index, quantity)
+                                else self:Dispatch(id, shopId .. ":" .. shop.Key .. ":" .. item.Index, before, "ShopPurchaseItem", shopId, shop.Key, item.Index, quantity) end
                             end
                         end
                     end
@@ -21565,6 +23979,8 @@ function Controller:Shops()
         end
     end
 end
+-- AUTO_SHOP_CATALOG_LOBBY_END
+
 
 function Controller:Summons()
     for _, spec in ipairs({ { "Mini", "NUI-0026", "NUI-0027", "NUI-0028", "NUI-0029", "NUI-0030" }, { "Standard", "NUI-0031", "NUI-0032", "NUI-0033", "NUI-0034", "NUI-0035" } }) do
@@ -22196,8 +24612,8 @@ function Controller:OpenUI(label)
     self:Mark("NUI-0059", "unavailable", "No verified native menu mapping for: " .. tostring(label))
     return false
 end
--- Input mode is retained only as an explicit legacy option. Remote mode submits the
--- exact FISHING_RESULT(true) protocol used by ClientFishingHandler's SkipMinigame branch.
+-- Ordinary Reeling uses the native prompt/input path. A direct result is not valid for a
+-- normal minigame; Remote mode falls back to native Input before it can send one.
 function Controller:IsFishingGameReady()
     -- A populated GameState (or the text "InProgress") can still be the pre-start
     -- event screen. Only the native Active flag confirms that its game has begun.
@@ -22248,6 +24664,16 @@ function Controller:CompleteFishingMinigame(state)
         self:Mark("NUI-0015", "waiting-result", "Native rod already submits its SkipMinigame result")
         return false
     end
+    if Config.FishingMinigameMode == "Remote" then
+        if Config.DryRun then
+            self:Mark("NUI-0015", "dry-run", "Would restore the native reel minigame; no result sent")
+            return false
+        end
+        Config.FishingMinigameMode = "Input"
+        self:RestoreFishingPrompt(true)
+        self:Mark("NUI-0015", "native-input", "Normal reel requires the native minigame; restored its prompt and switched to Input")
+        return false
+    end
     self.FishingReelingAt = self.FishingReelingAt or os.clock()
     if not Config.DryRun and os.clock() - self.FishingReelingAt < Config.FishingResultDelaySeconds then
         self:Mark("NUI-0015", "waiting-result-delay", "Waiting briefly before reporting the native fishing result")
@@ -22267,6 +24693,7 @@ end
 function Controller:SetFishingInput(held)
     if held and (not self.Running or Config.Enabled == false or Environment[KEY] ~= self) then return false end
     if self.FishingHeld == held then return true end
+    -- FishingPrompt dynamically registers FishInputInputAction through BindInput("FishInput").
     local action = nativeAction("FishInputInputAction")
     if not action then self:Mark("NUI-0015", "waiting", "Native fishing input action not registered yet") return false end
     if not Config.DryRun then identity(function() action(held) end) end
@@ -22276,8 +24703,15 @@ end
 function Controller:FindFishingControls()
     local playerGui = Players.LocalPlayer and Players.LocalPlayer:FindFirstChild("PlayerGui")
     if not playerGui then return nil end
+    local fishImage = path(Images, "Icons_26px", "Fish")
+    if type(fishImage) ~= "string" then return nil end
     for _, fish in ipairs(playerGui:GetDescendants()) do
-        if fish.Name == "Fish" and fish:IsA("GuiObject") and fish.Visible and fish.Parent and fish.Position.Y.Scale == 0.5 then
+        local isImage = fish:IsA("ImageLabel") or fish:IsA("ImageButton")
+        if isImage and fish.Visible and fish.Parent and fish.Image == fishImage
+            and fish.Position.Y.Scale == 0.5 and fish.AnchorPoint.X == 0.5 and fish.AnchorPoint.Y == 0.5
+            and fish.Size.X.Scale == 0 and fish.Size.Y.Scale == 0
+            and fish.Size.X.Offset >= 20 and fish.Size.X.Offset <= 40
+            and fish.Size.Y.Offset >= 20 and fish.Size.Y.Offset <= 40 then
             for _, bar in ipairs(fish.Parent:GetChildren()) do
                 if bar ~= fish and bar:IsA("GuiObject") and bar.Visible and bar.Size.X.Scale > 0 and bar.Size.X.Scale < 1 and bar.Size.Y.Scale == 1 and bar.AnchorPoint.X == 0.5 and bar.Position.Y.Scale == 0 then return fish, bar end
             end
@@ -22693,13 +25127,18 @@ function Controller:RunOnce()
     self.Busy, self.Issued = true, false
     local ok, failure = xpcall(function()
         self:BindGui()
-        self:Claims()
-        self:Shops()
-        self:Summons()
-        self:Buildings()
-        self:Training()
-        self:GeodesAndCrafting()
-        self:Redeem()
+        -- LOBBY_MAINTENANCE_CADENCE: fast reel input must not accelerate inventory work.
+        local now=os.clock()
+        if now >= (self.NextMaintenanceAt or 0)then
+            self.NextMaintenanceAt=now+Config.PollSeconds
+            self:Claims()
+            self:Shops()
+            self:Summons()
+            self:Buildings()
+            self:Training()
+            self:GeodesAndCrafting()
+            self:Redeem()
+        end
         self:Fishing()
         if self:Enabled("NUI-0036") then
             if not path(Information, "Events", "ShenronEvent") or not path(Dependencies.EventData, "ShenronEvent") then
@@ -22719,7 +25158,7 @@ function Controller:BindGui()
     if self.BoundHandlers == handlers then return false end
     self:UnbindGui()
     self.BoundHandlers = handlers
-    local featureIds = { "AE-TRAINING-IGNORE-FULL", "AE-MONSTER-CLAIM" }
+    local featureIds = { "AE-TRAINING-IGNORE-FULL", "AE-MONSTER-CLAIM", "AE-SHOP-BOSSRUSH-AUTO", "AE-SHOP-BOSSRUSH-ITEMS", "AE-SHOP-RIFT-AUTO", "AE-SHOP-RIFT-ITEMS" }
     for number = 6, 68 do if number ~= 37 and number ~= 58 then table.insert(featureIds, string.format("NUI-%04d", number)) end end
     for _, id in ipairs(featureIds) do
             self:Mark(id, "configured", "Bound to lobby worker; no automation enabled by binding")
@@ -22915,7 +25354,6 @@ local Controller = {
     ToyObtained = type(Previous) == "table" and (Previous.ToyObtained or 0) or 0,
     ToyRestarts = 0,
     BlockedFeatures = {
-        ["NUI-0213"] = "Current native VotePrompt accepts Response(boolean), not QueueData. No in-match queue-switch entry point is exposed by the inspected current client; waiting for a compatible native interface.",
     },
 }
 Environment[STATE_KEY] = Controller
@@ -23453,6 +25891,21 @@ function Adapter:_current()
 end
 function Adapter:_permitted(kind)
     if not self:_current() then return false end
+    if kind == "StartGame" then
+        local env = self.Ctx.Environment or self.Ctx.Env
+        local macro = env.__AnimeExpeditionsMacro
+        local ui = env.AnimeExpeditionsUIState
+        local values = type(ui) == "table" and ui.Values or {}
+        if type(macro) == "table" and type(macro.ShouldHoldBossRushStart) == "function" then
+            local ok, hold = pcall(macro.ShouldHoldBossRushStart, macro)
+            if not ok or hold ~= false then return false end
+        else
+            local scope = tostring(self.Player.UserId)..":"..tostring(self.Game.PlaceId)..":"..tostring(self.Game.JobId)
+            local ledgers = env.__AnimeExpeditionsBossRushTeamLedgers
+            local ledger = type(ledgers) == "table" and ledgers[scope]
+            if values["NUI-0513"] ~= false or type(ledger) == "table" and ledger.Pending then return false end
+        end
+    end
     local cfg = self.Ctx.ReadConfig()
     if kind == "SelectCards" then return cfg.AutoCards == true end
     local allowed = kind == "StartGame" and cfg.AutoStart == true
@@ -23995,6 +26448,14 @@ function Adapter:Dispatch(intent, callback)
             local target = finiteInteger(cfg.TargetGates, 2, 6) and cfg.TargetGates or 2
             if fresh.CompletedGates == nil or (fresh.CompletedGates >= target and "FightBoss" or "Continue") ~= payload.Choice then return end
         end
+        if intent.Kind == "StartGame" then
+            local env = self.Ctx.Environment or self.Ctx.Env
+            local macro = env.__AnimeExpeditionsMacro
+            if type(macro)=="table" and type(macro.ReserveBossRushStart)=="function" then
+                local ok, reserved = pcall(macro.ReserveBossRushStart,macro)
+                if not ok or reserved~=true then return end
+            elseif (type(env.AnimeExpeditionsUIState)=="table" and env.AnimeExpeditionsUIState.Values or {})["NUI-0513"]~=false then return end
+        end
         invoked = true record.Status = "unknown"
         r:FireServer("Response", response)
     end
@@ -24215,6 +26676,18 @@ local function permitted(kind)
     if not BossRuntime:IsCurrent() or not allowedKinds[kind] then return false end
     local cfg=BossRuntime:ReadConfig()
     if kind=="SelectCards" then return cfg.AutoCards end
+    if kind=="StartGame" then
+        local macro=Environment.__AnimeExpeditionsMacro
+        if type(macro)=="table" and type(macro.ShouldHoldBossRushStart)=="function" then
+            local ok,hold=pcall(macro.ShouldHoldBossRushStart,macro)
+            if not ok or hold~=false then return false end
+        else
+            local scope=tostring(LocalPlayer.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+            local ledgers=Environment.__AnimeExpeditionsBossRushTeamLedgers
+            local ledger=type(ledgers)=="table" and ledgers[scope]
+            if bossValues()["NUI-0513"]~=false or type(ledger)=="table" and ledger.Pending then return false end
+        end
+    end
     local allowed=kind=="StartGame" and cfg.AutoStart
         or kind=="StartGate" and cfg.AutoEnter
         or kind=="RespondGateVote" and cfg.AutoContinue
@@ -24339,6 +26812,11 @@ function BossRuntime:UpdateLabel()
     local text="Boss Rush: "..tostring(self.State).."\nCards: "..(cfg.AutoCards and "on" or "off").." • Gates: "..(cfg.AutoGates and "on" or "off").." • Target: "..cfg.TargetGates
     if o.GateVotePrompt and o.GateVotePrompt.CompletedGates~=nil then text..="\nCleared: "..tostring(o.GateVotePrompt.CompletedGates) end
     if self.Reason then text..="\n"..tostring(self.Reason) end
+    if bossValues()["NUI-0513"]~=false then
+        local macro=Environment.__AnimeExpeditionsMacro
+        text..="\nTeam auto equip: "..tostring(type(macro)=="table" and (macro.BossRushTeamStatus or macro.Status) or "waiting-macro")
+        if type(macro)=="table" and macro.Status=="waiting-bossrush-units" and macro.LastError then text..="\n"..tostring(macro.LastError) end
+    end
     local navigation=self.Navigator:GetStatus()
     text..="\nAuto move: "..(cfg.AutoEnter and "on" or "off").." • "..tostring(navigation.State)
     if cfg.AutoEnter and navigation.Reason then text..="\n"..tostring(navigation.Reason) end
@@ -25270,7 +27748,7 @@ function Controller:BindGui()
                 self.LastError = nil
                 if id == FEATURE.Tome and not value(FEATURE.Tome, false) then self:CancelOwnedTome() end
                 if id == FEATURE.ToyFarm then self.ToyRestarts = 0 self.ToyLastAmount = nil self.ToyReceived = false end
-                if id == FEATURE.ChangeChallenge and value(id, false) then self.LastError = self.BlockedFeatures[id] self.Status = "waiting-native-interface" end
+                if id == FEATURE.ChangeChallenge and value(id, false) then self.Status = "waiting-match-end" end
                 if id == FEATURE.LanePosition then self:SavePosition("Lane", (...)) end
                 if id == FEATURE.PayloadPosition then self:SavePosition("Payload", (...)) end
             end
@@ -25298,13 +27776,26 @@ function Controller:Stop(reason)
     for id, handler in pairs(self.InstalledHandlers or {}) do if self.Handlers[id] == handler then self.Handlers[id] = self.PreviousHandlers[id] end end
     return true
 end
+local function challengeHandoffAvailability()
+    local enabled = value(FEATURE.ChangeChallenge, false)
+    local runtime = Environment.__AnimeExpeditionsGameWebhook
+    if type(runtime) == "table" and type(runtime.GetChallengeHandoffStatus) == "function" then
+        local ok, status = pcall(runtime.GetChallengeHandoffStatus, runtime)
+        if ok and type(status) == "table" then
+            local result = {} for key, value in pairs(status) do result[key] = value end
+            result.Enabled = enabled
+            return result
+        end
+    end
+    return { Enabled = enabled, Status = "waiting-match-end", Reason = "The highest eligible configured Joiner is checked after a native match result; Regular switching uses its own toggle" }
+end
 function Controller:GetStatus()
     return { Running = self.Running, LoopAlive = self.LoopAlive, Busy = self.Busy, Status = self.Status,
         LastAction = self.LastAction, LastError = self.LastError, Confirmations = self.Confirmations,
         LastRoute = self.LastRoute, CardBracket = self.CardBracket, PositionStatus = self:GetPositionStatus(),
         ToyObtained = self.ToyObtained, ToyRestarts = self.ToyRestarts, BlockedFeatures = self.BlockedFeatures,
         Availability = {
-            [FEATURE.ChangeChallenge] = { Enabled = value(FEATURE.ChangeChallenge, false), Status = "waiting-native-interface", Reason = self.BlockedFeatures[FEATURE.ChangeChallenge] },
+            [FEATURE.ChangeChallenge] = challengeHandoffAvailability(),
             [FEATURE.Hire] = { Enabled = value(FEATURE.Hire, false), Status = "requires-replicated-checkpoint-unit-offer", Reason = "Only genuine unit offers with native ShopKey, Price, Currency and purchase history are submitted; the inspected lobby had no CheckpointShop replica." },
         } }
 end
@@ -30616,7 +33107,7 @@ local function identity(fn)
     if not result[1] then error(result[2], 0) end
     return table.unpack(result, 2, result.n)
 end
-local JOURNAL = "AnimeExpeditionsClone/tidal_shiny_farm_" .. tostring(Players.LocalPlayer.UserId) .. ".json"
+local JOURNAL = "ZenHub/tidal_shiny_farm_" .. tostring(Players.LocalPlayer.UserId) .. ".json"
 local C = { Version = 1, Running = false, Busy = false, Generation = 0, Owner = owner(), State = "disabled", Leases = {}, SeenUnits = {}, Logs = {}, Counters = { Trash = 0, Conches = 0, Normal = 0, Shiny = 0, Restarts = 0 }, Config = Config }
 local resumeFields = { "SeenUnits", "ProtectedUnitIds", "Round", "ConchAttempt", "ConsumedRound", "ConchConfirmation", "TrashAttempt", "RestartAttempt", "Reward", "Counters", "Initialized", "CompletedShiny" }
 function C:ExportState()
@@ -30650,7 +33141,7 @@ function C:SaveJournal()
         return false
     end
     local ok, failure = pcall(function()
-        if type(isfolder) == "function" and type(makefolder) == "function" and not isfolder("AnimeExpeditionsClone") then makefolder("AnimeExpeditionsClone") end
+        if type(isfolder) == "function" and type(makefolder) == "function" and not isfolder("ZenHub") then makefolder("ZenHub") end
         writefile(JOURNAL, Http:JSONEncode(self:ExportState()))
     end)
     if not ok then self.LastError = "Could not save the pending-operation journal: " .. tostring(failure) end
@@ -31126,6 +33617,1248 @@ local function accountOwnsState()
         and Environment.AnimeExpeditionsUIState == State and normalizeConfigUserId(State.UserId) == CONFIG_USER_ID
         and Environment.__AnimeExpeditionsWebhookSecrets == Secrets and normalizeConfigUserId(Secrets.UserId) == CONFIG_USER_ID
 end
+local STARRK_AUTOPLAY_PLACEMENT_SOURCE = [=======================================================[-- Pure, bounded placement planner. Ground and IsLegal supply native world checks.
+-- Suggest(options) -> point, covered path length, details; or nil, nil, reason.
+-- Footprint values are horizontal radii. Gate mode keeps 1 stud inside max range.
+local Placement = {}
+local MAX_SEGMENTS, GATE_CANDIDATES, MAIN_CANDIDATES = 512, 64, 128
+local TAU, EPSILON = math.pi * 2, 1e-6
+local MAIN_EDGE_INSET = .1
+
+local function finite(n)
+    return type(n) == "number" and n == n and n ~= math.huge and n ~= -math.huge
+end
+
+local function vector(p)
+    return (typeof(p) == "Vector3" or type(p) == "table")
+        and finite(p.X) and finite(p.Y) and finite(p.Z)
+end
+
+local function distanceSquared(a, b)
+    local x, y, z = a.X-b.X, a.Y-b.Y, a.Z-b.Z
+    return x*x+y*y+z*z
+end
+
+local function horizontalDistanceSquared(a, b)
+    local x, z = a.X-b.X, a.Z-b.Z
+    return x*x+z*z
+end
+
+local function groundPoint(options, x, z)
+    local ok, result = pcall(options.Ground, x, z, options.Unit)
+    if not ok then return nil end
+    if finite(result) then return Vector3.new(x, result, z) end
+    if vector(result) and math.abs(result.X-x) <= .01 and math.abs(result.Z-z) <= .01 then
+        return result
+    end
+    return nil
+end
+
+local function clearOfUnits(point, options)
+    for _, occupied in ipairs(options.Occupied or {}) do
+        local position = vector(occupied) and occupied or type(occupied) == "table" and occupied.Position
+        local footprint = type(occupied) == "table" and occupied.Footprint
+        if footprint == nil then footprint = options.Footprint end
+        if not vector(position) or not finite(footprint) or footprint < 0 then return false end
+        local separation = options.Footprint + footprint + .25
+        if horizontalDistanceSquared(point, position) < separation*separation-EPSILON then return false end
+    end
+    return true
+end
+
+local function legal(point, options)
+    if not vector(point) or not clearOfUnits(point, options) then return false end
+    local ok, result = pcall(options.IsLegal, point, options.Unit)
+    return ok and result == true
+end
+
+-- Exact covered length of one 3D path segment inside the unit's max-range sphere.
+local function segmentCoverage(point, rangeSquared, segment)
+    local a, b = segment.A, segment.B
+    local dx, dy, dz = b.X-a.X, b.Y-a.Y, b.Z-a.Z
+    local ax, ay, az = a.X-point.X, a.Y-point.Y, a.Z-point.Z
+    local coefficient = segment.LengthSquared
+    local linear = 2*(ax*dx+ay*dy+az*dz)
+    local constant = ax*ax+ay*ay+az*az-rangeSquared
+    local discriminant = linear*linear-4*coefficient*constant
+    if discriminant <= 0 then return 0 end
+    local root = math.sqrt(discriminant)
+    local first = math.max(0, (-linear-root)/(2*coefficient))
+    local last = math.min(1, (-linear+root)/(2*coefficient))
+    return math.max(0, last-first)*segment.Length
+end
+
+local function preparePaths(options, gateMode)
+    if #options.Paths > MAX_SEGMENTS then return nil, "path exceeds 512 entries" end
+    local paths, segments, totalLength, inspected = {}, {}, 0, 0
+    for ordinal, path in ipairs(options.Paths) do
+        if type(path) ~= "table" or type(path.Points) ~= "table" then return nil, "invalid path data" end
+        if gateMode or path.IsMain == true then
+            local points = path.Points
+            if #points >= 2 then
+                inspected += #points-1
+                if inspected > MAX_SEGMENTS then return nil, "path exceeds 512 segments" end
+                local record = {Index=path.Index or ordinal, Ordinal=ordinal, Points=points}
+                table.insert(paths, record)
+                for index=1,#points-1 do
+                    local a, b = points[index], points[index+1]
+                    if not vector(a) or not vector(b) then return nil, "invalid path point" end
+                    local lengthSquared = distanceSquared(a,b)
+                    if lengthSquared > EPSILON then
+                        if #segments >= MAX_SEGMENTS then return nil, "path exceeds 512 nonzero segments" end
+                        local length = math.sqrt(lengthSquared)
+                        table.insert(segments, {A=a, B=b, Path=record.Index, Length=length, LengthSquared=lengthSquared, Start=totalLength})
+                        totalLength += length
+                    end
+                end
+            end
+        end
+    end
+    if #segments == 0 then return nil, gateMode and "no path segments" or "no explicit main path segments" end
+    return {Paths=paths, Segments=segments, TotalLength=totalLength}
+end
+
+local function coverage(point, range, prepared)
+    local score, coveredPaths = 0, {}
+    for _, segment in ipairs(prepared.Segments) do
+        local length = segmentCoverage(point, range*range, segment)
+        if length > EPSILON then
+            score += length
+            coveredPaths[segment.Path] = (coveredPaths[segment.Path] or 0)+length
+        end
+    end
+    local count = 0
+    for _ in pairs(coveredPaths) do count += 1 end
+    return score, count, coveredPaths
+end
+
+local function gatePoint(options, angle, effectiveRange)
+    local target = options.Target
+    local cosine, sine = math.cos(angle), math.sin(angle)
+    local radius, point = effectiveRange, nil
+    -- Ground can have a different elevation at each candidate. Reject unstable cliffs.
+    for _=1,8 do
+        point = groundPoint(options, target.X+cosine*radius, target.Z+sine*radius)
+        if not point then return nil end
+        local vertical = point.Y-target.Y
+        if math.abs(vertical) >= effectiveRange then return nil end
+        local nextRadius = math.sqrt(math.max(0,effectiveRange*effectiveRange-vertical*vertical))
+        if math.abs(nextRadius-radius) <= .005 then break end
+        radius = nextRadius
+    end
+    if not point then return nil end
+    local distance = math.sqrt(distanceSquared(point,target))
+    if math.abs(distance-effectiveRange) > .1 then return nil end
+    return point
+end
+
+local function pathAnchor(prepared, fraction)
+    local distance = prepared.TotalLength*fraction
+    for _, segment in ipairs(prepared.Segments) do
+        if distance <= segment.Start+segment.Length then
+            local t = math.clamp((distance-segment.Start)/segment.Length,0,1)
+            return Vector3.new(segment.A.X+(segment.B.X-segment.A.X)*t,
+                segment.A.Y+(segment.B.Y-segment.A.Y)*t,segment.A.Z+(segment.B.Z-segment.A.Z)*t)
+        end
+    end
+    return prepared.Segments[#prepared.Segments].B
+end
+
+function Placement.Suggest(options)
+    if type(options) ~= "table" then return nil,nil,"placement options required" end
+    if not finite(options.Range) or options.Range <= 1 then return nil,nil,"max range must exceed one stud" end
+    if type(options.Ground) ~= "function" or type(options.IsLegal) ~= "function" then return nil,nil,"native Ground and IsLegal callbacks required" end
+    if type(options.Paths) ~= "table" or type(options.Occupied or {}) ~= "table" then return nil,nil,"paths and occupancy must be tables" end
+    if options.Footprint == nil then options = table.clone(options) options.Footprint = 0 end
+    if not finite(options.Footprint) or options.Footprint < 0 then return nil,nil,"invalid footprint radius" end
+    local gateMode = options.Target ~= nil
+    local mainMode = options.Mode == "Main"
+    if mainMode and not gateMode then return nil,nil,"main Gate target required" end
+    if gateMode and not vector(options.Target) then return nil,nil,"invalid gate target" end
+    local prepared, failure = preparePaths(options,gateMode and not mainMode)
+    if not prepared then return nil,nil,failure end
+    local best, bestScore, bestCount, bestPaths, checked = nil, -1, -1, nil, 0
+    local seen = {}
+    local function consider(point)
+        if not point then return end
+        local key = string.format("%.3f|%.3f|%.3f",point.X,point.Y,point.Z)
+        if seen[key] then return end
+        seen[key] = true
+        checked += 1
+        if not legal(point,options) then return end
+        local score, count, byPath = coverage(point,options.Range,prepared)
+        if score > bestScore+EPSILON or math.abs(score-bestScore) <= EPSILON and count > bestCount then
+            best, bestScore, bestCount, bestPaths = point, score, count, byPath
+        end
+    end
+    if gateMode then
+        local edgeRange=options.Range-(mainMode and MAIN_EDGE_INSET or 1)
+        for index=0,GATE_CANDIDATES-1 do consider(gatePoint(options,index*TAU/GATE_CANDIDATES,edgeRange)) end
+    else
+        local near = options.Footprint+1
+        local far = math.max(near,options.Range*.5)
+        for anchorIndex=0,7 do
+            local anchor = pathAnchor(prepared,(anchorIndex+.5)/8)
+            for angleIndex=0,15 do
+                local angle = angleIndex*TAU/8
+                local radius = angleIndex < 8 and near or far
+                consider(groundPoint(options,anchor.X+math.cos(angle)*radius,anchor.Z+math.sin(angle)*radius))
+            end
+        end
+    end
+    if not best or bestScore <= EPSILON then return nil,nil,"no legal placement covers the selected paths" end
+    return best,bestScore,{Mode=mainMode and "Main" or gateMode and "Gate" or "MainPath",Candidates=checked,Segments=#prepared.Segments,
+        CoveredPaths=bestCount,CoverageByPath=bestPaths,EffectiveGateRange=gateMode and options.Range-(mainMode and MAIN_EDGE_INSET or 1) or nil,
+        CandidateLimit=gateMode and GATE_CANDIDATES or MAIN_CANDIDATES}
+end
+
+-- An existing server-owned unit needs no relocation charge when it already meets
+-- the main edge constraint and covers the main path. Do not test it against itself.
+function Placement.MatchesMainEdge(options,point)
+    if type(options)~="table" or not vector(point) or not vector(options.Target)
+        or not finite(options.Range) or options.Range<=1 or type(options.Paths)~="table" then return false end
+    local gap=math.sqrt(distanceSquared(point,options.Target))-(options.Range-MAIN_EDGE_INSET)
+    if math.abs(gap)>.15 then return false end
+    local prepared=preparePaths(options,false)
+    if not prepared then return false end
+    local score=coverage(point,options.Range,prepared)
+    return score>EPSILON,score
+end
+
+return Placement
+]=======================================================]
+local STARRK_AUTOPLAY_CORE_SOURCE = [=======================================================[local Core = {}
+local Engine = {}
+Engine.__index = Engine
+local FARM, BLACK, CRIMSON, SUBJECT, BIO, TRAITOR = "Senku", "UlquiorraEVO", "BenimaruEVO", "KafkaEVO", "CellEVO", "AizenEVO"
+local MAIN_LAYOUT_REVISION=2
+local function distance(a,b)
+    if a==nil or b==nil then return math.huge end
+    return (a-b).Magnitude
+end
+local function unitById(s,id)
+    for _,u in ipairs(s.Units or {}) do if u.Id==id then return u end end
+end
+local function unitsOf(s,asset)
+    local found={}
+    for _,u in ipairs(s.Units or {}) do if u.Asset==asset then found[#found+1]=u end end
+    table.sort(found,function(a,b)return tostring(a.Id)<tostring(b.Id)end)
+    return found
+end
+local function isMax(u,slot)
+    local maximum=tonumber(u and u.MaxUpgrade) or tonumber(slot and slot.MaxUpgrade)
+    return u~=nil and maximum~=nil and (tonumber(u.Upgrade) or 0)>=maximum
+end
+local function abilityUnlocked(u,name)
+    local abilities=u and u.Abilities
+    if type(abilities)~="table" then return false end
+    return abilities[name]~=nil and abilities[name]~=false or table.find(abilities,name)~=nil
+end
+function Core.new(adapter)
+    assert(type(adapter)=="table" and type(adapter.Read)=="function", "Starrk Auto Play adapter required")
+    return setmetatable({Ctx=adapter,Status="idle",Phase="initial",Events={},SeenGates={},GateTargets={},MainReturned={},CompletedActions=0},Engine)
+end
+function Engine:SetStatus(status,detail)
+    self.Status,self.Detail=status,detail
+    if type(self.Ctx.Publish)=="function" then self.Ctx.Publish(status,detail) end
+    return false,detail or status
+end
+function Engine:ResetRound(key)
+    self.RoundKey,self.Phase,self.Pending,self.Halt=key,"initial",nil,nil
+    self.TeamPreparation={}
+    self.SeenGates,self.GateTargets,self.MainReturned={}, {}, {}
+    self.MovementRetryAt={}
+    self.CurrentGateKey,self.FinalGateSeen,self.FinalGateFinished=nil,false,false
+    self.CompletedActions,self.MovementWait=0,nil
+    self.MainLayoutRevision=MAIN_LAYOUT_REVISION
+end
+function Engine:Issue(s,kind,args,extra)
+    if self.Pending then return false,"native acknowledgement pending" end
+    local fresh=self.Ctx.Read()
+    if not fresh.Enabled or fresh.Owned~=true or fresh.Recording or fresh.ContextValid~=true or fresh.RoundKey~=s.RoundKey then
+        return self:SetStatus("cancelled","Auto Play ownership or native round changed")
+    end
+    if fresh.TeamVerified~=true or fresh.TeamStamp~=s.TeamStamp or (self.TeamPreparation and self.TeamPreparation.Pending) then
+        return self:SetStatus("waiting-team-equipment","All six exact native slot IDs and assets must be verified before any AutoPlay operation")
+    end
+    if kind=="Start" and fresh.UnitManagement~=true or kind~="Start" and (fresh.Ready~=true or fresh.UnitManagement==true) then
+        return self:SetStatus("waiting-game","Native stage permission changed before dispatch")
+    end
+    local p={Kind=kind,Args=args,Extra=extra or {},RoundKey=s.RoundKey,Deadline=self.Ctx.Now()+8,Before={}}
+    for _,u in ipairs(s.Units or {}) do p.Before[u.Id]=true end
+    self.Pending=p
+    local actor=self.Ctx[kind]
+    local dispatchArgs=table.clone(args)
+    dispatchArgs[#dispatchArgs+1]={RoundKey=fresh.RoundKey,TeamStamp=fresh.TeamStamp}
+    if kind=="Start" then
+        self.TeamPreparation=self.TeamPreparation or {}
+        self.TeamPreparation.StartBarrier={RoundKey=s.RoundKey,Deadline=p.Deadline}
+    end
+    local ok,result,reason=pcall(function()return actor(table.unpack(dispatchArgs))end)
+    if not ok or result==false then
+        self.Pending=nil
+        if kind=="Start" then
+            if ok then self.TeamPreparation.StartBarrier=nil
+            else self.Halt="Unconfirmed Start; wait for native acknowledgement or rejoin a fresh round" return self:SetStatus("unconfirmed-native-operation",self.Halt) end
+        end
+        self.RetryAt=self.Ctx.Now()+1
+        return self:SetStatus("waiting-native-operation",tostring(ok and reason or result))
+    end
+    self:SetStatus("waiting-ack",kind)
+    return true,kind
+end
+function Engine:Reconcile(s)
+    local p=self.Pending
+    if not p then return false end
+    local confirmed,unit=false,nil
+    if p.Kind=="Place" then
+        for _,u in ipairs(s.Units or {}) do
+            if not p.Before[u.Id] and u.Asset==p.Args[1] and distance(u.Position,p.Args[2])<=5 then unit=u confirmed=true break end
+        end
+    elseif p.Kind=="SetUpgrade" then
+        unit=unitById(s,p.Args[1])
+        confirmed=unit~=nil and (unit.AutoUpgrade==true)==p.Args[2]
+    elseif p.Kind=="Relocate" then
+        unit=unitById(s,p.Args[1]) confirmed=unit~=nil and distance(unit.Position,p.Args[2])<=(p.Extra.MainReturn and .25 or 2)
+    elseif p.Kind=="EnableAbility" then
+        unit=unitById(s,p.Args[1]) confirmed=unit and type(unit.AutoAbilities)=="table" and unit.AutoAbilities[p.Args[2]]==true
+    elseif p.Kind=="Start" then confirmed=s.Ready==true and s.UnitManagement~=true end
+    if confirmed then
+        if p.Kind=="Start" and self.TeamPreparation then self.TeamPreparation.StartBarrier=nil end
+        self.Pending=nil self.CompletedActions+=1
+        self.Events[#self.Events+1]={Kind=p.Kind,Unit=unit and unit.Id,At=self.Ctx.Now()}
+        if #self.Events>80 then table.remove(self.Events,1) end
+        if unit and p.Extra.GateKey then self.GateTargets[unit.Id]=p.Extra.GateKey end
+        if unit and p.Extra.MainReturn and p.Extra.MainLayoutRevision==MAIN_LAYOUT_REVISION then self.MainReturned[unit.Id]=true end
+        return false
+    end
+    if self.Ctx.Now()>=p.Deadline then
+        self.Halt="Unconfirmed "..p.Kind.."; restart this Auto Play toggle to reconcile before retrying"
+        self.Pending=nil self:SetStatus("unconfirmed-native-operation",self.Halt)
+        return true
+    end
+    self:SetStatus("waiting-ack",p.Kind)
+    return true
+end
+function Engine:Plan(s,asset,mode,gate,avoidId)
+    local slot=s.Slots and s.Slots[asset]
+    if not slot then return nil,"Required unit is not equipped: "..asset end
+    if mode=="Main" then gate=s.MainGate end
+    local point,score,detail=self.Ctx.Plan(asset,mode,gate,avoidId,slot.MaxRange)
+    return point,point and nil or detail or score
+end
+function Engine:Place(s,asset,mode,gate)
+    local slot=s.Slots and s.Slots[asset]
+    if not slot then return self:SetStatus("waiting-units","Required unit is not equipped: "..asset) end
+    if tonumber(slot.Cost)==nil then return self:SetStatus("waiting-native-data","Placement cost is not ready: "..asset) end
+    if (tonumber(s.Yen) or 0)<slot.Cost then return self:SetStatus("waiting-yen",asset.." requires "..tostring(slot.Cost)) end
+    local point,reason=self:Plan(s,asset,mode,gate)
+    if not point then return self:SetStatus("waiting-placement",tostring(reason or asset)) end
+    return self:Issue(s,"Place",{asset,point},{GateKey=gate and gate.Key,MainReturn=mode=="Main",MainLayoutRevision=mode=="Main" and MAIN_LAYOUT_REVISION or nil})
+end
+function Engine:Upgrade(s,unit,on,priority)
+    if (unit.AutoUpgrade==true)==on then return false end
+    if on and isMax(unit,s.Slots[unit.Asset]) then return false end
+    return self:Issue(s,"SetUpgrade",{unit.Id,on,priority or 1})
+end
+function Engine:SelectGate(s)
+    local active,new={},{ }
+    for _,g in ipairs(s.Gates or {}) do
+        if g.Active==true then
+            active[#active+1]=g
+            if not self.SeenGates[g.Key] then new[#new+1]=g self.SeenGates[g.Key]=true end
+        end
+    end
+    local function order(a,b)
+        if (a.GateNumber or 0)~=(b.GateNumber or 0) then return (a.GateNumber or 0)>(b.GateNumber or 0) end
+        return tostring(a.Key)<tostring(b.Key)
+    end
+    table.sort(active,order) table.sort(new,order)
+    local gate=new[1]
+    if not gate then for _,g in ipairs(active) do if g.Key==self.CurrentGateKey then gate=g break end end end
+    gate=gate or active[1]
+    self.CurrentGateKey=gate and gate.Key or nil
+    if (tonumber(s.Wave) or 0)>=20 and #active>0 then self.FinalGateSeen=true end
+    if self.FinalGateSeen and #active==0 then self.FinalGateFinished=true end
+    if tonumber(s.LastGateWave) and (tonumber(s.Wave) or 0)>s.LastGateWave and #active==0 then
+        self.FinalGateSeen,self.FinalGateFinished=true,true
+    end
+    return gate
+end
+function Engine:MoveFighter(s,unit,gate,main)
+    if not unit then return false end
+    if main and self.MainReturned[unit.Id] or not main and self.GateTargets[unit.Id]==gate.Key then return false end
+    if main and type(self.Ctx.IsMainPosition)=="function" and self.Ctx.IsMainPosition(unit.Id)==true then
+        self.MainReturned[unit.Id]=true return false
+    end
+    if unit.CanRelocate~=true then self.MovementWait="Native relocation is not available for "..unit.Asset return false end
+    self.MovementRetryAt=self.MovementRetryAt or {}
+    local retryKey=tostring(unit.Id)..":"..tostring(main and "main" or gate.Key)
+    if self.Ctx.Now()<(self.MovementRetryAt[retryKey] or 0) then return false end
+    self.MovementRetryAt[retryKey]=self.Ctx.Now()+3
+    local point,reason=self:Plan(s,unit.Asset,main and "Main" or "Gate",gate,unit.Id)
+    if not point then self.MovementWait=tostring(reason or "No legal max-range placement") return false end
+    if distance(unit.Position,point)<=(main and .25 or 2) then
+        if main then self.MainReturned[unit.Id]=true else self.GateTargets[unit.Id]=gate.Key end
+        return false
+    end
+    local allowed,why=true,nil
+    if type(self.Ctx.CanRelocate)=="function" then allowed,why=self.Ctx.CanRelocate(unit.Id,point) end
+    if allowed~=true then self.MovementWait=tostring(why or "Native relocation permission is unavailable") return false end
+    self.MovementWait=nil
+    return self:Issue(s,"Relocate",{unit.Id,point},{GateKey=not main and gate.Key or nil,MainReturn=main,MainLayoutRevision=main and MAIN_LAYOUT_REVISION or nil})
+end
+function Engine:Tick()
+    local s=self.Ctx.Read()
+    if type(self.TeamPreparation)~="table" then self.TeamPreparation={} end
+    if self.Pending and self.Pending.Kind=="Start" then
+        self.TeamPreparation.StartBarrier=self.TeamPreparation.StartBarrier or {RoundKey=self.Pending.RoundKey or self.RoundKey,Deadline=self.Pending.Deadline}
+    end
+    local unresolved=false
+    if type(self.Ctx.ReconcileTeam)=="function" then unresolved=self.Ctx.ReconcileTeam(self.TeamPreparation)==true end
+    if self.Pending and self.Pending.Kind=="Start" and s.Owned==true and s.ContextValid==true and s.RoundKey~=nil then
+        local expected=self.Pending.RoundKey or self.RoundKey
+        if expected and s.RoundKey~=expected then self.Pending=nil
+        elseif expected==s.RoundKey and s.Ready==true and s.UnitManagement==false then self:Reconcile(s) end
+    end
+    if s.Enabled~=true then
+        self.WasEnabled=false
+        return self:SetStatus(unresolved and "disabled-pending-native" or "disabled",unresolved and "Submitted native operation still reserves Start until exact acknowledgement or a confirmed new round" or nil)
+    end
+    if not self.WasEnabled then self.Halt=nil self.RetryAt=nil self.WasEnabled=true end
+    if s.Owned~=true then return self:SetStatus("cancelled","Runtime ownership changed") end
+    if s.Recording then return self:SetStatus("paused-recording","Stop Macro recording to resume") end
+    if s.ContextValid~=true then return self:SetStatus("waiting-starrk-rift","Waiting for Rift / StarrkRift / Act 1 / Hard") end
+    if type(s.RoundKey)~="string" or s.RoundKey=="" then return self:SetStatus("waiting-native-data","Waiting for confirmed native round identity; pending outcomes are preserved") end
+    if self.RoundKey~=s.RoundKey then self:ResetRound(s.RoundKey) end
+    if self.MainLayoutRevision~=MAIN_LAYOUT_REVISION then
+        self.MainReturned,self.MovementRetryAt={},{}
+        self.MainLayoutRevision=MAIN_LAYOUT_REVISION
+    end
+    if type(self.TeamPreparation)~="table" then self.TeamPreparation={} end
+    if self.Pending and self.Pending.Kind=="Start" then
+        self.TeamPreparation.StartBarrier=self.TeamPreparation.StartBarrier or {RoundKey=self.RoundKey,Deadline=self.Pending.Deadline}
+    end
+    if self.TeamPreparation.StartBarrier and s.Ready==true and s.UnitManagement==false then self.TeamPreparation.StartBarrier=nil end
+    if self.Halt then return self:SetStatus("unconfirmed-native-operation",self.Halt) end
+    if self:Reconcile(s) then return false,self.Detail end
+    if self.RetryAt and self.Ctx.Now()<self.RetryAt then return false,"native operation cooldown" end
+    if type(self.Ctx.PrepareTeam)~="function" then return self:SetStatus("waiting-native-data","Native exact team preparation adapter is unavailable") end
+    local prepared,detail,status=self.Ctx.PrepareTeam(s.RoundKey,self.TeamPreparation)
+    if prepared~=true then return self:SetStatus(status or "waiting-team-equipment",detail) end
+    local fresh=self.Ctx.Read()
+    if fresh.RoundKey~=s.RoundKey or fresh.TeamVerified~=true or fresh.Owned~=true or fresh.Recording or fresh.ContextValid~=true or fresh.Enabled~=true then
+        return self:SetStatus("waiting-team-equipment","Native round, ownership or verified team changed after preparation")
+    end
+    s=fresh
+    local gate=self:SelectGate(s)
+    if s.Ready~=true or s.UnitManagement==true then
+        if s.UnitManagement==true then return self:Issue(s,"Start",{}) end
+        return self:SetStatus("waiting-game","Waiting for native combat start")
+    end
+    local farms=unitsOf(s,FARM)
+    local black=unitsOf(s,BLACK)[1]
+    if self.Phase=="initial" then
+        if #farms<2 then return self:Place(s,FARM,"Farm") end
+        if not black then return self:Place(s,BLACK,"Anchor") end
+        if black.AutoUpgrade==true then return self:Upgrade(s,black,false) end
+        if #farms<3 then return self:Place(s,FARM,"Farm") end
+        for i=1,3 do if farms[i].AutoUpgrade~=true and not isMax(farms[i],s.Slots[FARM]) then return self:Upgrade(s,farms[i],true,1) end end
+        self.Phase="gate-crimson"
+    end
+    local crimson=unitsOf(s,CRIMSON)[1]
+    local subject=unitsOf(s,SUBJECT)[1]
+    if gate then
+        if crimson and self:MoveFighter(s,crimson,gate,false) then return true,"relocate Crimson Captain" end
+        if subject and self:MoveFighter(s,subject,gate,false) then return true,"relocate Subject 8" end
+    end
+    if self.Phase=="gate-crimson" then
+        if not crimson then
+            if not gate then return self:SetStatus("waiting-gate","Crimson Captain waits for an active Gate") end
+            return self:Place(s,CRIMSON,"Gate",gate)
+        end
+        if crimson.AutoUpgrade~=true and not isMax(crimson,s.Slots[CRIMSON]) then return self:Upgrade(s,crimson,true,1) end
+        if not isMax(crimson,s.Slots[CRIMSON]) then return self:SetStatus("upgrading-crimson","Waiting for Crimson Captain max upgrade") end
+        self.Phase="gate-subject"
+    end
+    if self.Phase=="gate-subject" then
+        if not subject then
+            if not gate then return self:SetStatus("waiting-gate","Subject 8 waits for an active Gate") end
+            return self:Place(s,SUBJECT,"Gate",gate)
+        end
+        if subject.AutoUpgrade~=true and not isMax(subject,s.Slots[SUBJECT]) then return self:Upgrade(s,subject,true,1) end
+        if not isMax(subject,s.Slots[SUBJECT]) then return self:SetStatus("upgrading-subject","Waiting for Subject 8 max upgrade") end
+        self.Phase="main"
+    end
+    if self.Phase=="main" or self.Phase=="return-main" or self.Phase=="complete" then
+        local bio=unitsOf(s,BIO)[1]
+        if not bio then return self:Place(s,BIO,"Main") end
+        if self:MoveFighter(s,bio,nil,true) then return true,"correct Bioinsect main Gate edge" end
+        local traitor=unitsOf(s,TRAITOR)[1]
+        if not traitor then return self:Place(s,TRAITOR,"Main") end
+        if traitor.AutoUpgrade~=true and not isMax(traitor,s.Slots[TRAITOR]) then return self:Upgrade(s,traitor,true,1) end
+        if not black then return self:SetStatus("waiting-units","Black Heart is no longer on the field") end
+        if black.AutoUpgrade~=true and not isMax(black,s.Slots[BLACK]) then return self:Upgrade(s,black,true,1) end
+        if abilityUnlocked(black,"UlquiorraAbility1")
+            and type(black.AbilityUses)=="table" and (tonumber(black.AbilityUses.UlquiorraAbility1) or 0)>0
+            and not (type(black.AutoAbilities)=="table" and black.AutoAbilities.UlquiorraAbility1==true) then
+            return self:Issue(s,"EnableAbility",{black.Id,"UlquiorraAbility1"})
+        end
+        if self.FinalGateFinished then
+            self.Phase="return-main"
+            if crimson and self:MoveFighter(s,crimson,nil,true) then return true,"return Crimson Captain to main path" end
+            if subject and self:MoveFighter(s,subject,nil,true) then return true,"return Subject 8 to main path" end
+            if crimson and subject and self.MainReturned[crimson.Id] and self.MainReturned[subject.Id] and self.MainReturned[bio.Id] then self.Phase="complete" end
+        end
+        return self:SetStatus(self.Phase=="complete" and "supporting-main-path" or "watching-gates",self.MovementWait)
+    end
+    return self:SetStatus("watching-gates",self.MovementWait)
+end
+function Engine:GetStatus()
+    return {Status=self.Status,Detail=self.Detail,Phase=self.Phase,RoundKey=self.RoundKey,Pending=self.Pending and self.Pending.Kind,
+        CompletedActions=self.CompletedActions,Gate=self.CurrentGateKey,FinalGateSeen=self.FinalGateSeen,FinalGateFinished=self.FinalGateFinished,
+        MovementWait=self.MovementWait,Events=self.Events,TeamPreparation=self.TeamPreparation}
+end
+return Core
+]=======================================================]
+local STARRK_AUTOPLAY_NATIVE_SOURCE = [=======================================================[-- Native adapter factory. Every server mutation rechecks owner, stage and permissions.
+-- Dot-call API; the pure Core owns scheduling and acknowledgement/retry policy.
+return function(ctx)
+    assert(type(ctx)=="table" and type(ctx.Gui)=="table" and type(ctx.Placement)=="table", "Starrk adapter context required")
+    local E, G, Placement = ctx.Environment or getgenv(), ctx.Gui, ctx.Placement
+    local RS, Players = game:GetService("ReplicatedStorage"), game:GetService("Players")
+    local player, placeId, jobId = Players.LocalPlayer, game.PlaceId, game.JobId
+    local F = RS:WaitForChild("FusionPackage")
+    local Fusion, D = require(F.Fusion), require(F.Dependencies)
+    local Shared, Actions = require(F.Shared), require(F.Actions)
+    local N, U = require(RS.Nodes), require(RS.Shared.UnitUtils)
+    local I, RC = require(RS.Shared.Information), require(RS.Shared.ReplicaClient)
+    local FEATURE = ctx.FeatureKey or "AE-STARRK-AUTOPLAY"
+    local ANCHOR, LABEL = "AE-STARRK-AUTOPLAY-ANCHOR", "AE-STARRK-AUTOPLAY-STATUS"
+    local supported = {Senku=true,UlquiorraEVO=true,BenimaruEVO=true,KafkaEVO=true,CellEVO=true,AizenEVO=true}
+    local api, slotCache, slotStamp, lastLabel, lastStatsAt = {}, nil, nil, nil, -math.huge
+    local getIdentity, setIdentity = getthreadidentity or get_thread_identity, setthreadidentity or set_thread_identity
+    local function identity(fn)
+        local previous = type(getIdentity)=="function" and getIdentity() or nil
+        if type(setIdentity)=="function" then setIdentity(2) end
+        local result=table.pack(xpcall(fn,debug.traceback))
+        if previous~=nil and type(setIdentity)=="function" then pcall(setIdentity,previous) end
+        if not result[1] then error(result[2],0) end
+        return table.unpack(result,2,result.n)
+    end
+    local function peek(v)
+        if type(v)=="table" then
+            local raw=rawget(v,"_EXTREMELY_DANGEROUS_usedAsValue")
+            if raw~=nil then return raw end
+        end
+        local ok,result=pcall(Fusion.peek,v)
+        if ok then return result end
+        return v
+    end
+    local function at(v,...)
+        v=peek(v)
+        for _,key in ipairs({...}) do if type(v)~="table" then return nil end v=peek(v[key]) end
+        return v
+    end
+    local function plain(v,depth)
+        v=peek(v)
+        if type(v)~="table" or (depth or 0)>=5 then return v end
+        local result,count={},0
+        for k,x in pairs(v) do count+=1 if count>256 then break end result[k]=plain(x,(depth or 0)+1) end
+        return result
+    end
+    local function finite(v) return type(v)=="number" and v==v and v~=math.huge and v~=-math.huge end
+    local function vector(v)
+        if typeof(v)=="Vector3" then return v end
+        if type(v)=="table" then
+            local x,y,z=v.X or v[1],v.Y or v[2],v.Z or v[3]
+            if finite(x) and finite(y) and finite(z) then return Vector3.new(x,y,z) end
+        end
+    end
+    local function values() return type(G.State)=="table" and type(G.State.Values)=="table" and G.State.Values or {} end
+    local function owned()
+        if Players.LocalPlayer~=player or game.PlaceId~=placeId or game.JobId~=jobId then return false end
+        if E.__AnimeExpeditionsGuiController~=G then return false end
+        if type(ctx.IsCurrent)=="function" then local ok,v=pcall(ctx.IsCurrent,ctx.Owner) if not ok or v~=true then return false end end
+        return true
+    end
+    local function recording()
+        local m=E.__AnimeExpeditionsMacro
+        return values()["NUI-0506"]==true or (type(m)=="table" and m.Recording==true)
+    end
+    local function macroBusy()
+        local m=E.__AnimeExpeditionsMacro
+        return type(m)=="table" and (m.Busy==true or m.Replaying==true or (tonumber(m.ActiveOperations) or 0)>0)
+    end
+    local function contextValid()
+        local p=at(D.GameState,"Parameters")
+        return peek(Shared.IsInGame)==true and at(p,"Gamemode")=="Rift" and at(p,"MapName")=="StarrkRift"
+            and at(p,"ActName")=="Act 1" and at(p,"Difficulty")=="Hard"
+    end
+    -- Native IDs, inventory assets and six actual hotbar slots are the only team proof.
+    local requiredAssets={"Senku","UlquiorraEVO","BenimaruEVO","KafkaEVO","CellEVO","AizenEVO"}
+    local function unitId(value)
+        if type(value)=="string" and #value>0 then return value end
+        if finite(value) and value>=0 and value%1==0 then return tostring(value) end
+    end
+    local function nativeRound()
+        local id=at(D.GamePlayerState,"GameID")
+        local increment=at(D.GameState,"GameIncrement")
+        if not unitId(id) or not finite(increment) or increment<0 or increment%1~=0 then return nil end
+        return tostring(id)..":"..tostring(increment)
+    end
+    local function autoStartDisabled()
+        local enabled=at(D.PlayerData,"Settings","AutoVoteStart")
+        if enabled==nil then enabled=at(I,"Settings","Default","AutoVoteStart") end
+        return enabled==false
+    end
+    local function preparationAllowed()
+        return nativeRound()~=nil and at(D.HotbarState,"UnitManagement")==true
+            and at(D.GameState,"Active")==false and at(D.GameState,"Wave")==0
+    end
+    local function teamState()
+        local inventory=at(D.PlayerData,"UnitData")
+        local dependent=peek(D.UnitData)
+        local counterpart
+        if type(inventory)=="table" then
+            if type(dependent)=="table" and dependent~=inventory then counterpart=dependent end
+        else inventory=dependent end
+        local hotbar=at(D.HotbarState,"Slots")
+        local team={Valid=false,Ready=false,Equipped={},Plan={},Missing={},MissingInventory={},Stamp="unavailable"}
+        if type(inventory)~="table" or type(hotbar)~="table" then
+            team.Detail="Native owned inventory or six-slot hotbar is unavailable" return team
+        end
+        local byId,candidates={},{}
+        for _,asset in ipairs(requiredAssets) do candidates[asset]={} end
+        for rawId,state in pairs(inventory) do
+            local id=unitId(rawId)
+            local asset=at(state,"Asset")
+            if id and supported[asset] then
+                if byId[id] then team.Detail="Native inventory has ambiguous unit IDs" return team end
+                local level=at(state,"Level")
+                local entry={UnitID=id,RawID=rawId,Asset=asset,Level=finite(level) and level or 0}
+                byId[id]=entry candidates[asset][#candidates[asset]+1]=entry
+            elseif id then
+                byId[id]={UnitID=id,RawID=rawId,Asset=asset}
+            end
+        end
+        for _,asset in ipairs(requiredAssets) do
+            table.sort(candidates[asset],function(a,b)
+                if a.Level~=b.Level then return a.Level>b.Level end return a.UnitID<b.UnitID
+            end)
+            if #candidates[asset]==0 then team.MissingInventory[#team.MissingInventory+1]=asset end
+        end
+        local chosen,used,stamp={},{},{}
+        for slot=1,6 do
+            local entry=peek(hotbar[tostring(slot)] or hotbar[slot])
+            local rawId=at(entry,"ID")
+            local id=unitId(rawId)
+            if rawId~=nil and not id then team.Detail="Native hotbar contains an invalid slot ID" return team end
+            local unit=id and byId[id]
+            if id and (not unit or type(unit.Asset)~="string" or unit.Asset=="") then
+                team.Detail="Native hotbar inventory metadata is unavailable for slot "..tostring(slot) return team
+            end
+            if id and counterpart and at(counterpart[unit.RawID] or counterpart[id],"Asset")~=unit.Asset then
+                team.Detail="Native inventory maps disagree for equipped ID "..id return team
+            end
+            if id and used[id] then team.Detail="Native hotbar repeats an owned unit ID" return team end
+            if id then used[id]=true end
+            local asset=unit and unit.Asset
+            team.Equipped[slot]={Slot=slot,UnitID=id,Asset=asset}
+            stamp[#stamp+1]=tostring(slot)..":"..tostring(id and #id or 0)..":"..tostring(id or "")..":"..tostring(asset or "")
+            if supported[asset] and not chosen[asset] then
+                chosen[asset]={Slot=slot,UnitID=id,Asset=asset}
+                team.Plan[slot]=chosen[asset]
+            end
+        end
+        team.Stamp=table.concat(stamp,"|")
+        local free={}
+        for slot=1,6 do if not team.Plan[slot] then free[#free+1]=slot end end
+        local nextFree=1
+        for _,asset in ipairs(requiredAssets) do
+            if not chosen[asset] then
+                team.Missing[#team.Missing+1]=asset
+                local unit=candidates[asset][1]
+                if unit then
+                    if counterpart and at(counterpart[unit.RawID] or counterpart[unit.UnitID],"Asset")~=unit.Asset then
+                        team.Detail="Native inventory maps disagree for selected ID "..unit.UnitID return team
+                    end
+                    local slot=free[nextFree] nextFree+=1
+                    team.Plan[slot]={Slot=slot,UnitID=unit.UnitID,Asset=asset}
+                end
+            end
+        end
+        team.Valid=true
+        team.Ready=#team.Missing==0 and #team.MissingInventory==0
+        if #team.MissingInventory>0 then team.Detail="Missing owned inventory units: "..table.concat(team.MissingInventory,", ")
+        elseif not team.Ready then team.Detail="Required team not equipped: "..table.concat(team.Missing,", ")
+        else team.Detail="All six required native slot IDs and assets are verified" end
+        return team
+    end
+    local function guard(startOnly)
+        if not owned() then return false,"AutoPlay owner/account/job changed" end
+        if values()[FEATURE]~=true then return false,"Starrk AutoPlay is disabled" end
+        if recording() then return false,"Macro recording is active" end
+        if macroBusy() then return false,"Waiting for an in-flight Macro operation to drain" end
+        if not contextValid() then return false,"Native Starrk Rift context is unavailable" end
+        if not startOnly and (at(D.GameState,"Active")~=true or at(D.HotbarState,"UnitManagement")~=false) then
+            return false,"Waiting for native active stage and unit permissions"
+        end
+        if not startOnly then
+            local team=teamState()
+            if not team.Valid or not team.Ready then return false,team.Detail end
+        end
+        return true
+    end
+    -- Read-only reconciliation also runs while disabled; it never submits equipment/Start.
+    function api.ReconcileTeam(state)
+        if type(state)~="table" or not owned() or not contextValid() then return false end
+        local round=nativeRound()
+        local function expected(record) return record.RoundKey or state.RoundKey end
+        local pending=state.Pending
+        if type(pending)=="table" then
+            if round and expected(pending) and expected(pending)~=round then
+                state.Pending=nil
+            elseif round then
+                local team=teamState()
+                local actual=team.Equipped[pending.Slot]
+                if team.Valid and actual and actual.UnitID==pending.UnitID and actual.Asset==pending.Asset then
+                    state.Pending=nil state.LastAcknowledged={Slot=pending.Slot,UnitID=pending.UnitID,Asset=pending.Asset}
+                end
+            end
+        end
+        local start=state.StartBarrier
+        if type(start)=="table" and round then
+            if expected(start) and expected(start)~=round
+                or at(D.GameState,"Active")==true and at(D.HotbarState,"UnitManagement")==false then state.StartBarrier=nil end
+        end
+        return type(state.Pending)=="table" or type(state.StartBarrier)=="table"
+    end
+    function api.Holds(state)
+        if not owned() or not contextValid() then return false end
+        if api.ReconcileTeam(state) then return true end
+        return values()[FEATURE]==true and not recording()
+    end
+    local function assertGuard(startOnly)
+        local ok,reason=guard(startOnly) if not ok then error(reason,0) end
+    end
+    local function preparationPermission(expectedRound)
+        local ok,reason=guard(true) if not ok then return false,reason end
+        if not expectedRound or nativeRound()~=expectedRound then return false,"Native game/round identity is unavailable or changed" end
+        if not preparationAllowed() then return false,"Native pre-start unit management permission is unavailable" end
+        if not autoStartDisabled() then return false,"Waiting for native AutoVoteStart=false acknowledgement" end
+        return true
+    end
+    local function dispatchContext(operation)
+        local round=nativeRound()
+        local team=teamState()
+        if not round then return nil,nil,"Native game/round identity is unavailable" end
+        if not team.Valid or not team.Ready then return nil,nil,team.Detail end
+        if operation~=nil and (type(operation)~="table" or operation.RoundKey~=round or operation.TeamStamp~=team.Stamp) then
+            return nil,nil,"Native operation round or six-slot team changed"
+        end
+        return round,team.Stamp
+    end
+    local function assertDispatch(expectedRound,expectedStamp,startOnly)
+        assertGuard(startOnly)
+        if not expectedRound or nativeRound()~=expectedRound then error("Native operation round changed",0) end
+        local team=teamState()
+        if not team.Valid or not team.Ready or team.Stamp~=expectedStamp then error("Required native six-slot team changed",0) end
+        if startOnly then
+            local ok,reason=preparationPermission(expectedRound) if not ok then error(reason,0) end
+        end
+        -- Reads/identity changes can yield: recheck ownership and raw permission last.
+        assertGuard(startOnly)
+        if nativeRound()~=expectedRound then error("Native operation round changed",0) end
+    end
+    function api.PrepareTeam(expectedRound,state)
+        if type(state)~="table" then return false,"Native team transaction ledger is unavailable","waiting-native-data" end
+        local ok,reason=guard(true) if not ok then return false,reason,"cancelled" end
+        if not expectedRound or nativeRound()~=expectedRound then
+            return false,"Native game/round identity is unavailable or changed","waiting-native-data"
+        end
+        if state.RoundKey and state.RoundKey~=expectedRound then return false,"Team preparation belongs to a different native round","cancelled" end
+        state.RoundKey=expectedRound
+        local team=teamState()
+        local pending=state.Pending
+        if pending then
+            if pending.RoundKey~=expectedRound then return false,"Pending equipment belongs to a different native round","cancelled" end
+            local actual=team.Equipped[pending.Slot]
+            if team.Valid and actual and actual.UnitID==pending.UnitID and actual.Asset==pending.Asset then
+                state.Pending=nil state.LastAcknowledged={Slot=pending.Slot,UnitID=pending.UnitID,Asset=pending.Asset}
+            elseif at(D.GameState,"Active")==true or (tonumber(at(D.GameState,"Wave")) or 0)>0 then
+                return false,"Required team was not confirmed before combat; restart this stage manually to prepare the team","restart-needed"
+            elseif os.clock()>=(pending.Deadline or -math.huge) then
+                return false,"Unconfirmed equipment for "..tostring(pending.Asset).." in slot "..tostring(pending.Slot).."; waiting for exact native ID acknowledgement (no automatic retry)","unconfirmed-team-equipment"
+            else
+                return false,"Waiting for exact native slot "..tostring(pending.Slot).." ID "..tostring(pending.UnitID).." / "..tostring(pending.Asset).." acknowledgement","waiting-team-ack"
+            end
+        end
+        if not team.Valid then return false,team.Detail,"waiting-native-data" end
+        if at(D.GameState,"Active")==true or (tonumber(at(D.GameState,"Wave")) or 0)>0 then
+            if team.Ready and at(D.HotbarState,"UnitManagement")==false then return true,team.Detail,"verified" end
+            return false,"Required native team is incomplete or management is still open in combat; restart this stage manually to prepare the team","restart-needed"
+        end
+        if state.StartBarrier then return false,"Earlier Start outcome is unconfirmed; wait for native start acknowledgement or rejoin a fresh round","unconfirmed-native-operation" end
+        if not preparationAllowed() then return false,"Waiting for confirmed native pre-start unit management and round","waiting-native-data" end
+        if not autoStartDisabled() then return false,"Waiting for native AutoVoteStart=false acknowledgement","waiting-auto-start" end
+        if #team.MissingInventory>0 then return false,team.Detail,"waiting-team-inventory" end
+        if team.Ready then return true,team.Detail,"verified" end
+        local equip=rawget(Actions,"EquipUnit")
+        if type(equip)~="function" then return false,"Registered native EquipUnit action is unavailable","waiting-native-data" end
+        local step
+        for slot=1,6 do
+            local desired,actual=team.Plan[slot],team.Equipped[slot]
+            if desired and (not actual or actual.UnitID~=desired.UnitID or actual.Asset~=desired.Asset) then step=desired break end
+        end
+        if not step then return false,"No exact owned team preparation plan is available","waiting-native-data" end
+        local p={Slot=step.Slot,UnitID=step.UnitID,Asset=step.Asset,RoundKey=expectedRound,BeforeStamp=team.Stamp,Deadline=os.clock()+8}
+        state.Pending=p -- persisted before identity/action can yield; reload cannot duplicate it.
+        local dispatched=false
+        local callOk,result=pcall(function()
+            return identity(function()
+                local allowed,why=preparationPermission(expectedRound) if not allowed then return false,why end
+                local fresh=teamState()
+                if not fresh.Valid or fresh.Stamp~=p.BeforeStamp or #fresh.MissingInventory>0 then return false,"Native team changed before equipment dispatch" end
+                local chosen=fresh.Plan[p.Slot]
+                if not chosen or chosen.UnitID~=p.UnitID or chosen.Asset~=p.Asset then return false,"Native owned inventory selection changed before equipment dispatch" end
+                allowed,why=preparationPermission(expectedRound) if not allowed then return false,why end
+                if rawget(Actions,"EquipUnit")~=equip then return false,"Registered native EquipUnit action changed" end
+                dispatched=true
+                equip(p.UnitID,tostring(p.Slot))
+                return true
+            end)
+        end)
+        if not dispatched then
+            if state.Pending==p then state.Pending=nil end
+            return false,callOk and "Native preparation changed before submission" or tostring(result),"cancelled"
+        end
+        p.Submission=callOk and result~=false and "submitted" or "unknown"
+        if not callOk or result==false then p.Error=tostring(result) end
+        return false,"Submitted native equipment for "..p.Asset.." in slot "..tostring(p.Slot).."; waiting for exact ID acknowledgement","waiting-team-ack"
+    end
+    local function gamePlayer()
+        local r=N.GET_GAME_PLAYER_REPLICA:InvokeSelf()
+        if type(r)~="table" or r.Token~="GamePlayerData" or type(r.FireServer)~="function" then error("Native GamePlayerData replica unavailable",0) end
+        local id=at(D.GamePlayerState,"GameID")
+        if id~=nil and r.Data and r.Data.GameID~=nil and r.Data.GameID~=id then error("Native GamePlayerData round changed",0) end
+        return r
+    end
+    local function send(expectedRound,expectedStamp,action,...)
+        local args=table.pack(...)
+        return identity(function()
+            assertDispatch(expectedRound,expectedStamp,false)
+            local r=gamePlayer()
+            assertDispatch(expectedRound,expectedStamp,false)
+            r:FireServer(action,table.unpack(args,1,args.n))
+            return true,"submitted"
+        end)
+    end
+    local function params(unit,equipment,buffs)
+        return {Level=at(unit,"Level"),Trait=at(unit,"Trait"),Equipment=plain(at(unit,"Equipment")),
+            EquipmentData=equipment or plain(at(unit,"EquipmentData")),StatPotential=plain(at(unit,"StatPotential")),
+            Ascension=at(unit,"Ascension"),GameModifiers=plain(D.GameModifiers),Buffs=buffs}
+    end
+    local function calculated(stats,p)
+        local f=rawget(Actions,"GetCalculatedStatsFromData")
+        if type(f)~="function" then error("Native calculated unit stats are unavailable",0) end
+        return identity(function() return f(stats,p) end)
+    end
+    local function slots()
+        local hotbar=at(D.HotbarState,"Slots") or {}
+        local unitData=at(D.PlayerData,"UnitData") or peek(D.UnitData) or {}
+        local records,stamp={},{}
+        for slot=1,8 do
+            local entry=peek(hotbar[tostring(slot)] or hotbar[slot])
+            local id=at(entry,"ID")
+            local unit=id and peek(unitData[id])
+            local asset=at(unit,"Asset")
+            if supported[asset] then
+                records[#records+1]={Slot=slot,Unit=unit,Asset=asset,ID=id}
+                stamp[#stamp+1]=tostring(slot)..":"..tostring(id)..":"..tostring(asset)..":"..tostring(at(unit,"Level"))..":"..tostring(at(unit,"Trait"))
+                    ..":"..tostring(at(unit,"Ascension"))..":"..tostring(at(unit,"Equipment"))..":"..tostring(at(unit,"StatPotential"))
+            end
+        end
+        local signature=table.concat(stamp,"|")..":"..tostring(peek(D.GameModifiers))
+        if slotCache and slotStamp==signature and os.clock()-lastStatsAt<2 then return slotCache end
+        local result={}
+        for _,r in ipairs(records) do
+            local info=I:GetAsset(r.Asset)
+            local upgrades=info and info.UpgradeInfo
+            if type(upgrades)=="table" then
+                local maximum=0 for k in pairs(upgrades) do if type(k)=="number" and k>maximum then maximum=k end end
+                local p=params(r.Unit)
+                local maximumStats=calculated(upgrades[maximum] or {},p)
+                local initialStats=calculated(upgrades[0] or {},p)
+                local size=U:GetUnitBoundingBoxSize(r.Asset)
+                local trait=I.Traits and I.Traits.TraitData and I.Traits.TraitData[at(r.Unit,"Trait")]
+                local placementLimit=at(r.Unit,"PlacementLimit") or info.PlacementLimit
+                if at(r.Unit,"PlacementLimit")==nil and at(D.GameModifiers,"Traitless")~=true and type(trait)=="table" and finite(trait.PlacementLimit) then
+                    placementLimit=math.min(placementLimit or math.huge,trait.PlacementLimit)
+                end
+                result[r.Asset]={Slot=r.Slot,UnitID=r.ID,Cost=initialStats.Cost or (upgrades[0] or {}).Cost,
+                    MaxRange=maximumStats.Range,MaxUpgrade=maximum,Footprint=math.sqrt(size.X*size.X+size.Z*size.Z)/2,Size=size,
+                    PlacementLimit=placementLimit}
+            end
+        end
+        slotStamp,slotCache,lastStatsAt=signature,result,os.clock()
+        return result
+    end
+    local function paths()
+        local source=at(D.MapState,"Paths") or {}
+        local result={}
+        for index,points in pairs(source) do
+            if #result>=32 then break end
+            local p={}
+            for _,v in ipairs(peek(points) or {}) do if #p>=256 then break end local point=vector(peek(v)) if point then p[#p+1]=point end end
+            result[#result+1]={Index=tonumber(index) or index,Points=p,IsMain=tonumber(index)==1}
+        end
+        table.sort(result,function(a,b) return tostring(a.Index)<tostring(b.Index) end)
+        return result
+    end
+    local function units(slotData)
+        local out={}
+        local auto=at(D.GamePlayerState,"AutoUpgradePriorities") or {}
+        local automatic=at(D.GamePlayerState,"AutoAbilities") or {}
+        for replica in pairs(RC.Test().TokenReplicas.GameUnit or {}) do
+            if #out>=256 then break end
+            local d=replica.Data
+            if type(d)=="table" and d.Owner==player then
+                local unit=d.UnitData or {}
+                local asset=at(unit,"Asset")
+                local cf=peek(d.CFrame)
+                if supported[asset] and typeof(cf)=="CFrame" then
+                    local info=I:GetAsset(asset)
+                    local upgrades=info and info.UpgradeInfo or {}
+                    local maximum=at(d,"MaxUpgrade") or (slotData[asset] and slotData[asset].MaxUpgrade) or #upgrades
+                    local buffs=plain(at(D.Buffs,d.ID))
+                    local maxStats=calculated(upgrades[maximum] or {},params(unit,plain(d.EquipmentData),buffs))
+                    local abilityList={}
+                    for ability in pairs(peek(d.Abilities) or {}) do
+                        local abilityInfo=I.Abilities and I.Abilities.Abilities and I.Abilities.Abilities[ability]
+                        local uses=at(d.AbilityUses,ability)
+                        if type(ability)=="string" and abilityInfo and abilityInfo.AutoUseAllowed==true
+                            and (abilityInfo.CooldownType~="Uses" or finite(uses) and uses>0) then abilityList[#abilityList+1]=ability end
+                    end
+                    table.sort(abilityList)
+                    out[#out+1]={Id=d.ID,id=d.ID,ID=d.ID,Asset=asset,Upgrade=peek(d.Upgrade) or 0,MaxUpgrade=maximum,
+                        Position=cf.Position,CFrame=cf,AutoUpgrade=finite(peek(auto[d.ID])),AutoPriority=peek(auto[d.ID]),
+                        AutoAbilities=plain(automatic[d.ID]) or {},Abilities=abilityList,AbilityUses=plain(d.AbilityUses) or {},
+                        CanRelocate=peek(d.CanRelocate)==true,Assignment=plain(d.RiftGateAssignment),MaxRange=maxStats.Range,
+                        Footprint=slotData[asset] and slotData[asset].Footprint,Unupgradeable=peek(d.Unupgradeable)==true,Replica=replica}
+                end
+            end
+        end
+        table.sort(out,function(a,b) return tostring(a.id)<tostring(b.id) end)
+        return out
+    end
+    local function gates()
+        local out={}
+        local cores,models={},{}
+        local folder=workspace:FindFirstChild("Enemies")
+        if folder then
+            for index,model in ipairs(folder:GetChildren()) do
+                if index>512 then break end
+                local id=model:GetAttribute("EnemyID")
+                if id~=nil then models[tostring(id)]=model end
+            end
+        end
+        local inspected=0
+        for replica in pairs(RC.Test().TokenReplicas.GameSpawnedEnemy or {}) do
+            inspected+=1 if inspected>512 then break end
+            local d=replica.Data
+            local mapId=at(D.MapState,"MapID")
+            if type(d)=="table" and d.ModelName=="RiftGateCore" and d.Finished~=true and d.Dead~=true
+                and (not finite(d.Health) or d.Health>0) and (mapId==nil or tostring(d.MapID)==tostring(mapId)) then
+                local cf=d.ForcedCFrame
+                local model=models[tostring(replica.Id)]
+                if typeof(cf)~="CFrame" and model and model:IsA("Model") then cf=model:GetPivot() end
+                if typeof(cf)=="CFrame" then
+                    cores[#cores+1]={Position=cf.Position,PathIndex=d.PathIndex,Id=replica.Id,Used=false}
+                end
+            end
+        end
+        local source=at(D.GameState,"GateMarkers") or {}
+        for key,marker in pairs(source) do
+            if #out>=32 then break end
+            local m=plain(marker)
+            local point=vector(m.Position)
+            local core
+            for _,candidate in ipairs(cores) do
+                if tostring(candidate.PathIndex)==tostring(m.PathIndex) then core=candidate candidate.Used=true break end
+            end
+            local number=m.GateNumber or (tonumber(m.PathIndex) and math.max(1,tonumber(m.PathIndex)-1))
+            if point then out[#out+1]={Key="gate:"..tostring(m.PathIndex or key)..":"..tostring(number),SourceKey=tostring(key),
+                Position=core and core.Position or point,MarkerPosition=point,CoreId=core and core.Id,
+                PathIndex=m.PathIndex,GateNumber=number,
+                MarkerRadius=m.Radius,Label=m.Label,Active=at(D.GameState,"Active")==true and (m.Label=="SEND UNIT" or m.Label=="DEFEATING GATE"),Wave=m.Wave,
+                CloseDuration=m.CloseDuration,CloseStartedAt=m.CloseStartedAt} end
+        end
+        for _,core in ipairs(cores) do
+            if not core.Used and #out<32 then
+                local number=tonumber(core.PathIndex) and math.max(1,tonumber(core.PathIndex)-1)
+                out[#out+1]={Key="gate:"..tostring(core.PathIndex)..":"..tostring(number),Position=core.Position,CoreId=core.Id,
+                    PathIndex=core.PathIndex,GateNumber=number,Label="DEFEATING GATE",Active=at(D.GameState,"Active")==true}
+            end
+        end
+        table.sort(out,function(a,b)return tostring(a.PathIndex or a.Key)<tostring(b.PathIndex or b.Key) end)
+        return out
+    end
+    api.Now=os.clock
+    function api.Read()
+        local beforeTeam,beforeRound=teamState(),nativeRound()
+        local s=slots()
+        local worldPaths=paths()
+        local mainGate
+        for _,path in ipairs(worldPaths) do
+            if path.IsMain and vector(path.Points[1]) then
+                mainGate={Key="main:1",Position=path.Points[1],PathIndex=1,Source="MapState.Paths[1][1]"}
+                break
+            end
+        end
+        local lastGateWave
+        for _,wave in ipairs(at(I.Events,"StarrkRift","GateWaves") or {}) do
+            if finite(wave) then lastGateWave=math.max(lastGateWave or wave,wave) end
+        end
+        local snapshot={Enabled=values()[FEATURE]==true,Owned=owned(),Recording=recording(),MacroBusy=macroBusy(),ContextValid=contextValid(),
+            RoundKey=tostring(at(D.GamePlayerState,"GameID"))..":"..tostring(at(D.GameState,"GameIncrement")),
+            Wave=at(D.GameState,"Wave") or 0,Ready=at(D.GameState,"Active")==true,
+            UnitManagement=at(D.HotbarState,"UnitManagement")==true,Yen=at(D.GamePlayerState,"Yen"),
+            Anchor=values()[ANCHOR],Units=units(s),Slots=s,Gates=gates(),Paths=worldPaths,MainGate=mainGate,LastGateWave=lastGateWave,
+            GameSpeed=at(D.GameState,"GameSpeed") or 1}
+        local team,round=teamState(),nativeRound()
+        local stable=beforeRound~=nil and beforeRound==round and beforeTeam.Stamp==team.Stamp
+        snapshot.RoundKey=round -- never stringify unavailable identity into a new round
+        snapshot.TeamVerified=stable and team.Valid and team.Ready
+        snapshot.TeamStamp=team.Stamp
+        snapshot.TeamStatus=snapshot.TeamVerified and "verified" or not team.Valid and "waiting-native-data" or "waiting-team-equipment"
+        snapshot.TeamDetail=stable and team.Detail or "Native team or round changed while reading snapshot"
+        snapshot.PreparationAllowed=preparationAllowed()
+        snapshot.AutoStartDisabled=autoStartDisabled()
+        return snapshot
+    end
+    local function findUnit(id,s)
+        for _,u in ipairs((s or api.Read()).Units) do if u.id==id then return u end end
+    end
+    local function ground(asset,x,z,reference)
+        local slot=slots()[asset] if not slot then return nil end
+        local ignore=U:GetRaycastIgnoreList()
+        local p=RaycastParams.new() p.ExcludeInstances=ignore p.IncludeInstances=nil
+        local y=reference and reference.Y or 2000
+        local hit=workspace:Raycast(Vector3.new(x,y+256,z),Vector3.new(0,-768,0),p)
+        local root=at(D.MapState,"Map")
+        if not hit or (typeof(root)=="Instance" and not hit.Instance:IsDescendantOf(root)) then return nil end
+        return Vector3.new(x,hit.Position.Y+slot.Size.Y/2,z)
+    end
+    local function legal(asset,point)
+        if not vector(point) then return false end
+        local ok,result=pcall(function()return identity(function()return U:IsPlacementAllowed(asset,CFrame.new(point),{PlacementRoot=at(D.MapState,"Map")})end)end)
+        return ok and result==true
+    end
+    function api.Plan(asset,mode,gate,avoidId,maxRange)
+        local s=api.Read()
+        local record=s.Slots[asset]
+        if not s.Owned or not s.ContextValid or not record then return nil,nil,"Native unit/stage data is unavailable" end
+        local range=finite(maxRange) and maxRange or record.MaxRange
+        local moving=avoidId and findUnit(avoidId,s)
+        if moving and finite(moving.MaxRange) then range=moving.MaxRange end
+        local occupied={} for _,u in ipairs(s.Units) do if u.id~=avoidId then occupied[#occupied+1]={Position=u.Position,Footprint=u.Footprint or 2} end end
+        if mode=="Main" then
+            gate=s.MainGate
+            if not gate or not vector(gate.Position) then return nil,nil,"Native main-path Gate is unavailable" end
+        end
+        local reference=gate and vector(gate.Position) or vector(s.Anchor)
+        if not reference then return nil,nil,"Capture a Starrk Rift anchor before placement" end
+        local groundAt=function(x,z)return ground(asset,x,z,reference)end
+        local checks=0
+        local isLegal=function(p)
+            checks+=1
+            if checks%8==0 then task.wait() end
+            if not owned() or not contextValid() then return false end
+            return legal(asset,p)
+        end
+        if mode=="Anchor" or mode=="Farm" then
+            local spacing=record.Footprint*2+1
+            local best,score=nil,math.huge
+            local firstRing=mode=="Farm" and math.ceil(8/spacing) or 0
+            local lastRing=mode=="Anchor" and 0 or firstRing+4
+            for ring=firstRing,lastRing do for index=0,(ring==0 and 0 or 15) do
+                local angle=index*math.pi/8
+                local p=groundAt(reference.X+math.cos(angle)*ring*spacing,reference.Z+math.sin(angle)*ring*spacing)
+                local clear=true
+                if p then for _,o in ipairs(occupied) do if (Vector3.new(p.X,0,p.Z)-Vector3.new(o.Position.X,0,o.Position.Z)).Magnitude<record.Footprint+o.Footprint+.25 then clear=false break end end end
+                if p and clear and isLegal(p) then local d=(p-reference).Magnitude if d<score then best,score=p,d end end
+            end end
+            return best,best and -score or nil,best and {Mode=mode,Distance=score}
+                or (mode=="Anchor" and "The exact captured Black Heart anchor is blocked; waiting without moving it" or "No legal farm placement near the captured anchor")
+        end
+        if mode~="Gate" and mode~="Main" then return nil,nil,"Unknown placement mode" end
+        if mode=="Gate" and (not gate or not vector(gate.Position)) then return nil,nil,"Native Gate target unavailable" end
+        return Placement.Suggest({Unit=asset,Range=range,Footprint=record.Footprint,Paths=s.Paths,Occupied=occupied,
+            Mode=mode,Target=gate and gate.Position or nil,Ground=groundAt,IsLegal=isLegal})
+    end
+    function api.IsMainPosition(id)
+        local s=api.Read() local u=findUnit(id,s)
+        if not u or not s.MainGate or type(Placement.MatchesMainEdge)~="function" then return false end
+        local slot=s.Slots[u.Asset]
+        return Placement.MatchesMainEdge({Target=s.MainGate.Position,Range=u.MaxRange or slot and slot.MaxRange,Paths=s.Paths},u.Position)
+    end
+    function api.Place(asset,point,operation)
+        local expectedRound,expectedStamp,why=dispatchContext(operation) if not expectedRound then return false,why end
+        local ok,reason=guard(false) if not ok then return false,reason end
+        local s=api.Read() local slot=s.Slots[asset]
+        if not slot or not finite(slot.Cost) or not finite(s.Yen) or s.Yen<slot.Cost then return false,"Waiting for native slot/cost/Yen" end
+        if at(D.HotbarState,"PlacementAllowed")~=true then return false,"Native hotbar placement is unavailable" end
+        local count=0 for _,u in ipairs(s.Units) do if u.Asset==asset then count+=1 end end
+        if finite(slot.PlacementLimit) and count>=slot.PlacementLimit then return false,"Native unit placement limit reached" end
+        if not legal(asset,point) then return false,"Native placement validation rejected the destination" end
+        return send(expectedRound,expectedStamp,"PlaceGameUnit",slot.Slot,CFrame.new(point))
+    end
+    function api.SetUpgrade(id,on,priority,operation)
+        local expectedRound,expectedStamp,why=dispatchContext(operation) if not expectedRound then return false,why end
+        local ok,reason=guard(false) if not ok then return false,reason end
+        local u=findUnit(id) if not u then return false,"Owned native unit is unavailable" end
+        if on==true then
+            if u.Unupgradeable or u.Upgrade>=u.MaxUpgrade then return false,"Unit cannot be upgraded further" end
+            priority=math.clamp(math.floor(tonumber(priority) or 1),1,6)
+            if u.AutoUpgrade and u.AutoPriority==priority then return true,"already enabled" end
+            return send(expectedRound,expectedStamp,"ChangeGameUnitAutoUpgradePriority",id,priority)
+        end
+        if not u.AutoUpgrade then return true,"already disabled" end
+        return send(expectedRound,expectedStamp,"DisableGameUnitAutoUpgrade",id)
+    end
+    function api.CanRelocate(id,point)
+        local ok,reason=guard(false) if not ok then return false,reason end
+        local s=api.Read() local u=findUnit(id,s)
+        if not u or not u.CanRelocate then return false,"Native unit relocation is unavailable" end
+        local a=u.Assignment
+        if type(a)=="table" then
+            if a.Status=="Sealing" then return false,"Native unit is sealing a Gate" end
+            if not finite(a.RelocateCharges) or a.RelocateCharges<=0 then return false,"No native relocation charges remain" end
+            if a.Status=="Available" then
+                local permitted=false
+                for _,g in ipairs(s.Gates) do
+                    if g.Label=="SEND UNIT" and finite(g.MarkerRadius) and vector(point) then
+                        local marker=g.MarkerPosition or g.Position
+                        local d=Vector3.new(point.X-marker.X,0,point.Z-marker.Z)
+                        if d.Magnitude<=g.MarkerRadius then permitted=true break end
+                    end
+                end
+                if not permitted then return false,"Native Available assignment requires the Gate zone; strict range-edge destination is outside it" end
+            end
+        end
+        if not legal(u.Asset,point) then return false,"Native placement validation rejected the relocation destination" end
+        return true
+    end
+    function api.Relocate(id,point,operation)
+        local expectedRound,expectedStamp,why=dispatchContext(operation) if not expectedRound then return false,why end
+        local ok,reason=api.CanRelocate(id,point)
+        if not ok then return false,reason end
+        return send(expectedRound,expectedStamp,"RelocateUnit",id,CFrame.new(point),false)
+    end
+    function api.EnableAbility(id,ability,operation)
+        local expectedRound,expectedStamp,why=dispatchContext(operation) if not expectedRound then return false,why end
+        local ok,reason=guard(false) if not ok then return false,reason end
+        local u=findUnit(id) if not u then return false,"Owned native unit is unavailable" end
+        if u.AutoAbilities[ability]==true then return true,"already enabled" end
+        if not table.find(u.Abilities,ability) then return false,"Native ability is not currently unlocked" end
+        local info=I.Abilities and I.Abilities.Abilities and I.Abilities.Abilities[ability]
+        if not info or info.AutoUseAllowed~=true then return false,"Native ability does not allow automatic use" end
+        local remaining=u.AbilityUses[ability]
+        if info.CooldownType=="Uses" and (not finite(remaining) or remaining<=0) then return false,"Native ability has no confirmed remaining uses" end
+        return send(expectedRound,expectedStamp,"ToggleAutoAbility",id,ability)
+    end
+    function api.Start(operation)
+        local expectedRound,expectedStamp,why=dispatchContext(operation) if not expectedRound then return false,why end
+        local ok,reason=preparationPermission(expectedRound) if not ok then return false,reason end
+        if (at(D.GameState,"Wave") or 0)>0 or at(D.GameState,"Active")==true then return false,"Native game has already started" end
+        local fire=firesignal or fire_signal
+        if type(fire)~="function" then return false,"Native Start Game signal helper is unavailable" end
+        local pg=player:FindFirstChildOfClass("PlayerGui")
+        if not pg then return false,"PlayerGui is unavailable" end
+        local notifications=pg:FindFirstChild("Notifications")
+        if not notifications then return false,"Native Start Game notification is unavailable" end
+        local count=0
+        for _,label in ipairs(notifications:GetDescendants()) do
+            count+=1 if count>512 then break end
+            if label:IsA("TextLabel") and label.Visible and label.Text=="Start Game" then
+                local b=label.Parent while b and not b:IsA("GuiButton") do b=b.Parent end
+                if b then return identity(function()assertDispatch(expectedRound,expectedStamp,true)fire(b.Activated)return true,"native Start Game submitted"end) end
+            end
+        end
+        return false,"Native Start Game button is unavailable"
+    end
+    function api.Publish(status,detail)
+        if not owned() then return false end
+        local text="Starrk Rift AutoPlay: "..tostring(status)..(detail and "\n"..tostring(detail) or "")
+        if lastLabel==text then return true end
+        local c=G.Controls and G.Controls[LABEL]
+        if c and type(c.SetText)=="function" then local ok=pcall(function()c:SetText(text)end) if ok then lastLabel=text end return ok end
+        return false
+    end
+    return api
+end
+]=======================================================]
+local STARRK_AUTOPLAY_RUNTIME_SOURCE = [=======================================================[return function(ctx)
+    local E,G=ctx.Environment,ctx.Gui
+    local old=E.__AnimeExpeditionsStarrkAutoPlay
+    if type(old)=="table" and type(old.Stop)=="function" then old:Stop("reload") end
+    local runtime={Running=true,Gui=G}
+    E.__AnimeExpeditionsStarrkAutoPlay=runtime
+    local adapter=ctx.Native({Environment=E,Gui=G,Placement=ctx.Placement,Owner=runtime,
+        IsCurrent=function(owner)return owner==runtime and runtime.Running and G.Alive and E.__AnimeExpeditionsStarrkAutoPlay==runtime end})
+    local engine=ctx.Core.new(adapter)
+    local player=game:GetService("Players").LocalPlayer
+    local ledgerKey=tostring(player.UserId)..":"..tostring(game.PlaceId)..":"..tostring(game.JobId)
+    local ledgers=E.__AnimeExpeditionsStarrkAutoPlayLedgers
+    if type(ledgers)~="table" then ledgers={} E.__AnimeExpeditionsStarrkAutoPlayLedgers=ledgers end
+    local prior=ledgers[ledgerKey]
+    if type(prior)=="table" then for k,v in pairs(prior) do if k~="Ctx" then engine[k]=v end end end
+    ledgers[ledgerKey]=engine
+    runtime.Adapter,runtime.Engine=adapter,engine
+    function runtime:Holds()
+        if not self.Running or not G.Alive or E.__AnimeExpeditionsGuiController~=G or E.__AnimeExpeditionsStarrkAutoPlay~=self then return false end
+        if type(engine.TeamPreparation)~="table" then engine.TeamPreparation={} end
+        if engine.Pending and engine.Pending.Kind=="Start" then
+            engine.TeamPreparation.StartBarrier=engine.TeamPreparation.StartBarrier or {RoundKey=engine.Pending.RoundKey or engine.RoundKey,Deadline=engine.Pending.Deadline}
+        end
+        return type(adapter.Holds)=="function" and adapter.Holds(engine.TeamPreparation)==true
+    end
+    function runtime:GetState()
+        local state=engine:GetStatus()
+        state.Running=self.Running state.LastError=self.LastError state.TickMilliseconds=self.TickMilliseconds
+        return state
+    end
+    function runtime:Stop(reason)
+        self.Running=false self.StopReason=reason or "stopped"
+        if E.__AnimeExpeditionsStarrkAutoPlay==self then E.__AnimeExpeditionsStarrkAutoPlay=nil end
+    end
+    task.spawn(function()
+        while runtime.Running and G.Alive and E.__AnimeExpeditionsGuiController==G do
+            local before=os.clock()
+            local ok,err=xpcall(function()
+                local snapshot=adapter.Read()
+                if snapshot.Enabled and snapshot.ContextValid and snapshot.MacroBusy then
+                    adapter.Publish("waiting-macro-operation","Waiting for the previous Macro operation to finish")
+                    return
+                end
+                engine:Tick()
+            end,debug.traceback)
+            runtime.TickMilliseconds=(os.clock()-before)*1000
+            if not ok then
+                runtime.LastError=tostring(err)
+                adapter.Publish("error",runtime.LastError)
+                runtime.Running=false
+                warn("[Starrk Auto Play]",runtime.LastError)
+                break
+            end
+            task.wait(.5)
+        end
+    end)
+    return runtime
+end
+]=======================================================]
+
 local SETTINGS_SOURCE = [===============================================[local SettingsConfig = assert(loadstring([==============================================[-- Portable staged settings only: no filesystem, HTTP, code execution or GUI globals.
 local Module={}
 local Core={};Core.__index=Core
@@ -31487,22 +35220,75 @@ local function hex(value)
 end
 Module.Hex=hex
 
+
+-- EXECUTE_TELEPORT_EAGER_V1: discovery does not invoke or clear an executor queue.
+function Module.ResolveQueue(environment,globals)
+    for _,scope in ipairs({type(globals)=="table"and globals or{},type(environment)=="table"and environment or{}})do
+        if type(scope.queueonteleport)=="function"then return scope.queueonteleport,"queueonteleport"end
+        if type(scope.queue_on_teleport)=="function"then return scope.queue_on_teleport,"queue_on_teleport"end
+        if type(scope.syn)=="table"and type(scope.syn.queue_on_teleport)=="function"then
+            return scope.syn.queue_on_teleport,"syn.queue_on_teleport"
+        end
+    end
+    return nil,"unavailable"
+end
+
 function Module.BuildBootstrap(account,path,token,sourceChecksum,libraryChecksum,universe)
-    -- The private cache is a code snapshot written only from the active approved
-    -- GUI/library sources. Embedded checksums bind this queued request to exactly
-    -- that snapshot; Enabled/token allow later OFF to revoke queued work.
+    -- Persisted approved code only: no HTTP loader and no shared queue clearing.
+    -- Read revocation AFTER load/player waits; duplicate destination invocations
+    -- reserve one ticket before compiling or running any GUI code.
     return ([=[local function checksum(s)local v=5381 for i=1,#s do v=(v*33+s:byte(i))%%4294967296 end return v end
 local account=%q local path=%q local token=%q local universe=%q
-if type(readfile)~="function" or type(isfile)~="function" or not isfile(path)then return end
-local H=game:GetService("HttpService")local ok,b=pcall(function()return H:JSONDecode(readfile(path))end)
-if not ok or type(b)~="table"or b.Enabled~=true or b.Account~=account or b.Token~=token then return end
-if type(b.Source)~="string"or type(b.Library)~="string"or checksum(b.Source)~=%s or checksum(b.Library)~=%s then return end
+local E=type(getgenv)=="function"and getgenv()or nil
+local function failure(message,preserveReady)
+    if E then
+        local last=E.__AnimeExpeditionsAutoExecuteLast
+        local destination=tostring(game.JobId or "")
+        if preserveReady and type(last)=="table"and last.Status=="ready"and last.Destination==destination then
+            E.__AnimeExpeditionsAutoExecuteLastRejected={Reason=tostring(message),Destination=destination}
+        else E.__AnimeExpeditionsAutoExecuteLast={Status="failed",Reason=tostring(message)}end
+    end
+    warn("[Zen Hub Auto Execute] "..tostring(message))
+    return false
+end
+if type(E)~="table"then return failure("getgenv unavailable at destination")end
 if not game:IsLoaded()then game.Loaded:Wait()end
-local P=game:GetService("Players")local p=P.LocalPlayer
-if not p or tostring(p.UserId)~=account or tostring(game.GameId)~=universe then return end
-local E=getgenv()E.__AnimeExpeditionsGuiSource=b.Source E.__AnimeExpeditionsLibrarySource=b.Library
-local f,err=loadstring(b.Source)if type(f)~="function"then warn("[Zen Hub] Cached GUI compile failed",err)return end
-f()
+local P=game:GetService("Players")
+if not P.LocalPlayer then P:GetPropertyChangedSignal("LocalPlayer"):Wait()end
+local p=P.LocalPlayer
+if not p then return failure("LocalPlayer unavailable after readiness signal")end
+if tostring(p.UserId)~=account or tostring(game.GameId)~=universe then return failure("Account or game universe changed; cached GUI was not executed")end
+local destination=tostring(game.JobId or "")
+if destination==""then return failure("Destination job identity unavailable")end
+local key=token.."|"..destination
+local tickets=E.__AnimeExpeditionsAutoExecuteBoots
+-- A successful GUI normally re-arms the next teleport and rotates the disk
+-- token. Repeated executor delivery of its OLD payload must not overwrite the
+-- successful destination diagnosis with a misleading superseded-cache error.
+if type(tickets)=="table"and tickets[key]then return false end
+if type(readfile)~="function"or type(isfile)~="function"then return failure("Filesystem API unavailable at destination")end
+local exists,found=pcall(isfile,path)
+if not exists or not found then return failure("Approved cache is missing or unreadable")end
+local H=game:GetService("HttpService")
+local ok,b=pcall(function()return H:JSONDecode(readfile(path))end)
+if not ok or type(b)~="table"then return failure("Approved cache could not be decoded")end
+if b.Version~=1 or b.Enabled~=true or b.Account~=account or b.Token~=token then return failure("Queued execution was revoked or superseded",true)end
+if type(b.Source)~="string"or type(b.Library)~="string"or checksum(b.Source)~=%s or checksum(b.Library)~=%s then return failure("Approved source checksum verification failed")end
+if type(tickets)~="table"then tickets={}E.__AnimeExpeditionsAutoExecuteBoots=tickets end
+if tickets[key]then return false end
+local ticket={Status="booting",Destination=destination}
+tickets[key]=ticket E.__AnimeExpeditionsAutoExecuteLast=ticket
+E.__AnimeExpeditionsGuiSource=b.Source E.__AnimeExpeditionsLibrarySource=b.Library
+local f,err=loadstring(b.Source)
+if type(f)~="function"then ticket.Status="failed"ticket.Reason=tostring(err)return failure("Cached GUI compile failed: "..tostring(err))end
+local ran,result=xpcall(f,function(err)return tostring(err)end)
+if not ran then ticket.Status="failed"ticket.Reason=tostring(result)return failure("Cached GUI runtime failed: "..tostring(result))end
+if type(result)~="table"or result.Alive~=true then
+    ticket.Status="failed"ticket.Reason="Cached GUI did not return an active controller"
+    return failure(ticket.Reason)
+end
+ticket.Status="ready" E.__AnimeExpeditionsAutoExecuteLast=ticket
+return true
 ]=]):format(tostring(account),path,token,tostring(universe),tostring(sourceChecksum),tostring(libraryChecksum))
 end
 
@@ -31534,10 +35320,18 @@ function Runtime:Notice(text)
         if ok then self.LastLabelWritten=rendered end
     end
 end
+
+function Runtime:PersistTeleportSettings()
+    if type(self.Ctx.SaveSettings)~="function"then return false,"Verified settings save API unavailable"end
+    local ok,saved,reason=pcall(self.Ctx.SaveSettings)
+    if not ok or saved~=true then return false,tostring(reason or saved or "Settings save failed")end
+    return true
+end
+
 function Runtime:CanAutoExecute()
     local c=self.Ctx
     if not tostring(c.UniverseId or ""):match("^%d+$")then return false,"Game universe identity unavailable"end
-    for _,name in ipairs({"QueueOnTeleport","ReadFile","WriteFile","IsFile","MakeFolder","Encode","Decode","ReadApprovedSource","ReadApprovedLibrary"})do
+    for _,name in ipairs({"QueueOnTeleport","ReadFile","WriteFile","IsFile","MakeFolder","Encode","Decode","ReadApprovedSource","ReadApprovedLibrary","SaveSettings"})do
         if type(c[name])~="function"then return false,name.." unavailable"end
     end
     if not c.TeleportSignal or type(c.TeleportSignal.Connect)~="function"then return false,"Teleport signal unavailable"end
@@ -31547,65 +35341,107 @@ function Runtime:CanAutoExecute()
     end
     return true,source,library
 end
+
 function Runtime:Cache(enabled)
     local c=self.Ctx
     if not enabled then
-        if type(c.IsFile)=="function"and c.IsFile(self.CachePath)then
-            local ok,b=pcall(function()return c.Decode(c.ReadFile(self.CachePath))end)
-            if not ok then return false,"Could not verify cached queue revocation: "..tostring(b)end
-            if ok and type(b)=="table"and b.Account==self.Account then
-                b.Enabled=false
-                local written,err=pcall(function()c.WriteFile(self.CachePath,c.Encode(b))end)
-                if not written then return false,tostring(err)end
-            end
-        end
+        local ok,err=pcall(function()
+            assert(type(c.IsFile)=="function"and type(c.ReadFile)=="function"and type(c.WriteFile)=="function"and type(c.Encode)=="function"and type(c.Decode)=="function","Cache revocation APIs unavailable")
+            if not c.IsFile(self.CachePath)then return end
+            local b=c.Decode(c.ReadFile(self.CachePath))
+            assert(type(b)=="table"and b.Account==self.Account,"Cache account mismatch")
+            -- A stopped/reloaded owner must not revoke a newer owner's token.
+            if self.CacheToken and b.Token~=self.CacheToken then return end
+            b.Enabled=false
+            local raw=c.Encode(b)c.WriteFile(self.CachePath,raw)
+            local actual=c.ReadFile(self.CachePath)local check=c.Decode(actual)
+            assert(actual==raw and type(check)=="table"and check.Account==self.Account and check.Token==b.Token and check.Enabled==false,"Cache revocation verification failed")
+        end)
+        if not ok then return false,tostring(err)end
         return true
     end
     local ready,source,library=self:CanAutoExecute()
     if not ready then return false,source end
     self.Ticket.Serial=(tonumber(self.Ticket.Serial)or 0)+1
     local token=self.Session..":"..tostring(self.Ticket.Serial)
+    self.CacheToken=token
     local bundle={Version=1,Account=self.Account,Enabled=true,Token=token,Source=source,Library=library}
     local ok,err=pcall(function()
-        c.MakeFolder("AnimeExpeditionsClone")
-        c.WriteFile(self.CachePath,c.Encode(bundle))
-        local check=c.Decode(c.ReadFile(self.CachePath))
-        assert(check.Account==self.Account and check.Token==token and check.Enabled==true
+        c.MakeFolder("ZenHub")
+        local raw=c.Encode(bundle)c.WriteFile(self.CachePath,raw)
+        local actual=c.ReadFile(self.CachePath)local check=c.Decode(actual)
+        assert(actual==raw and type(check)=="table"and check.Version==1 and check.Account==self.Account and check.Token==token and check.Enabled==true
             and check.Source==source and check.Library==library,"Cache verification failed")
     end)
     if not ok then return false,tostring(err)end
     return true,Module.BuildBootstrap(self.Account,self.CachePath,token,checksum(source),checksum(library),c.UniverseId)
 end
+
 function Runtime:Teleport(state)
     if not self:Current()or self:Value(IDS.AutoExecute,false)~=true then return false end
-    if state==self.Ctx.TeleportFailed then self.Queued=false return false end
-    if state~=self.Ctx.TeleportStarted or self.Queued then return false end
-    local ok,bootstrap=self:Cache(true)
-    if not ok then self:Notice("Auto Execute unavailable: "..tostring(bootstrap))return false end
-    if not self:Current()or self:Value(IDS.AutoExecute,false)~=true then return false end
-    self.Queued=true -- reserve before executor call; never duplicate unknown outcomes
-    local queued,err=pcall(self.Ctx.QueueOnTeleport,bootstrap)
-    self:Notice(queued and "Auto Execute queued for this teleport"or "Auto Execute queue failed: "..tostring(err))
-    return queued
+    if state==self.Ctx.TeleportFailed then
+        self:Notice(self.Queued and "Auto Execute remains queued; teleport failed before arrival"
+            or self.QueueFailure or "Auto Execute not queued; toggle OFF then ON to retry")
+        return false
+    end
+    if state~=self.Ctx.TeleportStarted then return false end
+    if not self.Queued then self:Notice(self.QueueFailure or "Auto Execute not queued; toggle OFF then ON to retry")return false end
+    -- Flush only the account settings journal here. The large approved code was
+    -- already verified and queued while the source session was fully available.
+    local saved,why=self:PersistTeleportSettings()
+    if not saved then
+        local revoked,reason=self:Cache(false)self.Queued=false
+        self.QueueFailure="Auto Execute settings save failed: "..tostring(why)..(revoked and "; queued run revoked"or "; revocation failed: "..tostring(reason))
+        self:Notice(self.QueueFailure)
+        return false
+    end
+    self:Notice("Auto Execute queued; latest account settings saved for teleport")
+    return true
 end
+
 function Runtime:SyncAutoExecute()
     if not self:Current()then return false,"stopped"end
-    disconnect(self.TeleportConnection)self.TeleportConnection=nil
     if self:Value(IDS.AutoExecute,false)~=true then
-        self.Queued=false
+        disconnect(self.TeleportConnection)self.TeleportConnection=nil
+        self.Queued=false self.QueueAttempted=false self.QueueFailure=nil
         local ok,err=self:Cache(false)
         if not ok then self:Notice("Auto Execute OFF; queued cache could not be revoked: "..tostring(err))
         else self:Notice("Auto Execute OFF")end
         return ok
     end
+    if self.QueueAttempted then return self.Queued==true,"queue already attempted; toggle OFF then ON to retry"end
     local ready,reason=self:CanAutoExecute()
     if not ready then self:Notice("Auto Execute unavailable: "..tostring(reason))return false end
-    local cached,err=self:Cache(true)
-    if not cached then self:Notice("Auto Execute cache failed: "..tostring(err))return false end
-    self.TeleportConnection=self.Ctx.TeleportSignal:Connect(function(state)self:Teleport(state)end)
-    self:Notice("Auto Execute armed; queues only when teleport starts")
+    local saved,why=self:PersistTeleportSettings()
+    if not saved then self:Notice("Auto Execute settings save failed: "..tostring(why))return false end
+    local cached,bootstrap=self:Cache(true)
+    if not cached then self:Notice("Auto Execute cache failed: "..tostring(bootstrap))return false end
+    local queuedToken=self.CacheToken
+    if not self:Current()or self:Value(IDS.AutoExecute,false)~=true then self:Cache(false)return false,"cancelled"end
+    disconnect(self.TeleportConnection)self.TeleportConnection=nil
+    local connected,connection=pcall(function()return self.Ctx.TeleportSignal:Connect(function(state)self:Teleport(state)end)end)
+    if not connected or not connection then
+        self:Cache(false)self:Notice("Auto Execute signal failed: "..tostring(connection))return false
+    end
+    self.TeleportConnection=connection
+    self.QueueAttempted=true -- reserve before calling an executor of unknown outcome
+    local called,result,detail=pcall(self.Ctx.QueueOnTeleport,bootstrap)
+    -- An older yielded queue call must never revoke or overwrite a later
+    -- explicit OFF/ON arm, even when the old executor call eventually succeeds.
+    if self.CacheToken~=queuedToken then return false,"queue attempt superseded"end
+    self.Queued=called and result~=false
+    if not self.Queued then
+        local revoked,err=self:Cache(false)
+        self.QueueFailure="Auto Execute queue failed ("..tostring(self.Ctx.QueueAPI or "executor").."): "..tostring(detail or result)
+            ..(revoked and ""or "; revocation failed: "..tostring(err))
+        self:Notice(self.QueueFailure)
+        return false
+    end
+    if not self:Current()or self:Value(IDS.AutoExecute,false)~=true then self:Cache(false)self.Queued=false return false,"cancelled"end
+    self:Notice("Auto Execute armed; approved GUI queued before teleport ("..tostring(self.Ctx.QueueAPI or "executor")..")")
     return true
 end
+
 function Runtime:ApplyKey()
     local name=self:Value(IDS.ToggleKey,"RightControl")
     if type(name)~="string"or not allowedKey[name]then return false,"Unsupported toggle key"end
@@ -31701,11 +35537,15 @@ function Runtime:Sync()
     return ok and mobile and colors
 end
 function Runtime:GetStatus()
-    return {Running=self.Running,Status=self.Status,Queued=self.Queued,Theme=self.AppliedTheme,
+    return {Running=self.Running,Status=self.Status,Queued=self.Queued,QueueAttempted=self.QueueAttempted,QueueAPI=self.Ctx.QueueAPI,Theme=self.AppliedTheme,
         RejoinAttempts=self.Ticket.RejoinAttempts,NetworkPrimed=self.Network and self.Network.Primed==true}
 end
 function Runtime:Stop(reason)
     if not self.Running then return end
+    if self.QueueAttempted or self.Queued then
+        local revoked,why=self:Cache(false)
+        if not revoked then self:Notice("Auto Execute stop revocation failed: "..tostring(why))end
+    end
     self.Running=false self.Generation+=1 self.StopReason=reason
     disconnect(self.TeleportConnection)self.TeleportConnection=nil
     if self.MobileButton and type(self.MobileButton.Destroy)=="function"then self.MobileButton:Destroy()end
@@ -31723,7 +35563,7 @@ function Module.new(ctx)
     local ticket=ctx.Environment.__AnimeExpeditionsSettingsTicket
     if type(ticket)~="table"or ticket.Session~=session then ticket={Session=session,Serial=0,RejoinAttempts=0}ctx.Environment.__AnimeExpeditionsSettingsTicket=ticket end
     local self=setmetatable({Ctx=ctx,Running=true,Generation=1,Account=account,Session=session,Ticket=ticket,
-        CachePath="AnimeExpeditionsClone/autoexec_"..account..".json",DefaultPalette=clone(ctx.DefaultPalette),
+        CachePath="ZenHub/autoexec_"..account..".json",DefaultPalette=clone(ctx.DefaultPalette),
         OriginalKey=ctx.Library.ToggleKeybind,Handlers={},PreviousHandlers={},Status="Settings ready"},Runtime)
     ctx.Environment[KEY]=self
     local handlers=ctx.Environment.AnimeExpeditionsFeatureHandlers or{}ctx.Environment.AnimeExpeditionsFeatureHandlers=handlers
@@ -31770,9 +35610,7 @@ return function(Module,E,Gui,SoftFocus,preview)
     end
     local keys={}
     for _,name in ipairs(Module.KeyNames)do keys[name]=Enum.KeyCode[name]end
-    local queue=type(queue_on_teleport)=="function"and queue_on_teleport
-        or type(queueonteleport)=="function"and queueonteleport or nil
-    if type(queue)~="function"and type(syn)=="table"then queue=syn.queue_on_teleport end
+    local queue,queueAPI=Module.ResolveQueue(E,{queueonteleport=queueonteleport,queue_on_teleport=queue_on_teleport,syn=syn})
     local defaults=table.clone(SoftFocus.Palette)
     return {
         Environment=E,Gui=Gui,Library=Gui.Library,Window=Gui.Window,DefaultPalette=defaults,KeyCodes=keys,
@@ -31782,7 +35620,8 @@ return function(Module,E,Gui,SoftFocus,preview)
         SetValue=function(id,value)return Gui:SetValue(id,value)end,
         ReadApprovedSource=function()return approvedSource end,
         ReadApprovedLibrary=function()return approvedLibrary end,
-        QueueOnTeleport=type(queue)=="function"and queue or nil,
+        QueueOnTeleport=type(queue)=="function"and queue or nil,QueueAPI=queueAPI,
+        SaveSettings=function()return Gui:SaveState()end,
         TeleportSignal=player.OnTeleport,TeleportStarted=Enum.TeleportState.Started,TeleportFailed=Enum.TeleportState.Failed,
         ReadFile=type(readfile)=="function"and readfile or nil,
         WriteFile=type(writefile)=="function"and writefile or nil,
@@ -32634,8 +36473,15 @@ do
     -- Additive native map discovery runs before account settings load and UI creation.
     -- Existing stable bindings and saved selections are never renamed or deleted.
     local ok,info=pcall(function()return require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Information"))end)
-    local page
-    for _,p in ipairs(Spec.pages)do if p.name=="Macro"then page=p break end end
+    local page,storyMap
+    for _,p in ipairs(Spec.pages)do
+        if p.name=="Macro"then page=p end
+        if p.name=="Joiner"then
+            for _,s in ipairs(p.sections)do for _,c in ipairs(s.controls)do
+                if c.key=="NUI-0221"then storyMap=c end
+            end end
+        end
+    end
     if ok and type(info)=="table"and type(info.Maps)=="table"and page then
         Spec.macroCatalogBindings=Spec.macroCatalogBindings or{}
         local sections,controls,contexts={},{},{}
@@ -32643,6 +36489,18 @@ do
         for _,s in ipairs(page.sections)do sections[s.name]=s;for _,c in ipairs(s.controls)do controls[c.key]=c end end
         for _,b in ipairs(Spec.macroCatalogBindings)do contexts[signature(b.Context)]=b.Key end
         local function valid(id)return type(id)=="string"and #id<=100 and id:match("^[%w_%-]+$")end
+        -- One native Story catalog feeds both tabs. Keep Acts in NUI-0222,
+        -- preserve saved values and legacy Macro keys, and retain fallback on failure.
+        local storyListed,storyIds=pcall(info.Maps.GetOrderedMaps,info.Maps,"Story")
+        if storyMap and storyListed and type(storyIds)=="table"then
+            local options,seen={},{}
+            for _,id in ipairs(storyIds)do if valid(id)then
+                local named,label=pcall(info.Maps.GetMapDisplayName,info.Maps,id)
+                if not named or type(label)~="string"or label==""then label=id end
+                if not seen[label]then options[#options+1]=label seen[label]=true end
+            end end
+            if #options>0 then storyMap.options=options end
+        end
         local function add(mode,map,label,sectionName)
             if not valid(map)or type(label)~="string"or label==""then return end
             local c={Gamemode=mode,MapName=map}
@@ -32658,7 +36516,8 @@ do
         end
         for _,mapping in ipairs({{"Story","Story","Select Story Macro"},{"Infinite","Infinite","Select Infinite Macro"},
             {"Mastery","Mastery","Select Mastery Macro"},{"Challenge","Story","Select Challenge Macro"},{"TowerOfGod","Story","Select Tower Macro"}})do
-            local listed,ids=pcall(info.Maps.GetOrderedMaps,info.Maps,mapping[2])
+            local listed,ids=storyListed,storyIds
+            if mapping[2]~="Story"then listed,ids=pcall(info.Maps.GetOrderedMaps,info.Maps,mapping[2])end
             if listed and type(ids)=="table"then for _,id in ipairs(ids)do
                 local named,label=pcall(info.Maps.GetMapDisplayName,info.Maps,id)
                 if not named or type(label)~="string"or label==""then label=id end
@@ -32671,6 +36530,18 @@ do
     end
 end
 -- MACRO_CATALOG_END
+
+-- AUTO_SHOP_CATALOG_GUI_BEGIN
+do
+    local catalog = assert(loadstring(AUTO_SHOP_SOURCE))()(Environment)
+    local ok, information, dependencies, fusion = pcall(function()
+        local replicated = game:GetService("ReplicatedStorage")
+        local package = replicated:WaitForChild("FusionPackage")
+        return require(replicated:WaitForChild("Shared"):WaitForChild("Information")), require(package:WaitForChild("Dependencies")), require(package:WaitForChild("Fusion"))
+    end)
+    if ok then catalog:Hydrate(Spec, information, dependencies, fusion) end
+end
+-- AUTO_SHOP_CATALOG_GUI_END
 
 local SensitiveKeys = {}
 for _, page in ipairs(Spec.pages) do
@@ -32793,6 +36664,9 @@ local function loadSavedState()
     end
 end
 loadSavedState()
+if State.Values["AE-STARRK-AUTOPLAY-ANCHOR"]==nil then
+    State.Values["AE-STARRK-AUTOPLAY-ANCHOR"]={3312.2036132812,1876.0106201172,3101.4770507812}
+end
 for key in pairs(SensitiveKeys) do State.Values[key] = nil end
 if State.Values.__GameWebhookDefaultsVersion ~= 1 then
     for _, key in ipairs({ "NUI-0237", "NUI-0240", "NUI-0243", "NUI-0246", "NUI-0249", "NUI-0250", "NUI-0253", "NUI-0254", "NUI-0255", "NUI-0256", "NUI-0257", "NUI-0260", "NUI-0267", "NUI-0273", "NUI-0274", "NUI-0275", "NUI-0276", "NUI-0277", "NUI-0278", "NUI-0279", "NUI-0294", "NUI-0295", "NUI-0591", "NUI-0592" }) do State.Values[key] = false end
@@ -32959,6 +36833,7 @@ end
 
 local function dispatch(control, value)
     if Controller.ApplyingSettings then return end
+    if control.autoShopSelection and Controller.AutoShopRefreshing then return end
     if control.key == "NUI-0054" and Controller.UpdatingTrainingUnits then return end
     if control.key == "NUI-0054" then Controller.TrainingDropdownSignature = nil end
     if control.type == "dropdown" and control.multi then
@@ -33179,7 +37054,7 @@ function Controller:Destroy(reason)
     self.Alive = false
     self.DestroyReason = reason or "manual"
     stopOwnedPresentation()
-    for _, field in ipairs({ "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
+    for _, field in ipairs({ "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
         local runtime = self[field]
         self[field] = nil
         if type(runtime) == "table" and type(runtime.Stop) == "function" then pcall(function() runtime:Stop(self.DestroyReason) end) end
@@ -33269,7 +37144,7 @@ local okGuiBuild, guiBuildFailure = xpcall(function()
 Library:OnUnload(function()
     Controller.Alive = false
     stopOwnedPresentation()
-    for _, field in ipairs({ "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
+    for _, field in ipairs({ "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
         local runtime = Controller[field]
         if type(runtime) == "table" and type(runtime.Stop) == "function" then pcall(function() runtime:Stop("library-unload") end) end
     end
@@ -33288,6 +37163,10 @@ end)
 local function storedValue(control)
     if control.transient then return control.default end
     local value = control.sensitive and Secrets[control.key] or State.Values[control.key]
+    if control.autoShopSelection then
+        local catalog = Environment.__AnimeExpeditionsAutoShopCatalog
+        if type(catalog) == "table" then return catalog:DisplaySelection(control, value ~= nil and value or control.default) end
+    end
     -- Display the blank input without turning an absent saved mention into @everyone.
     if control.key == WEBHOOK_MENTION_KEY and Secrets[WEBHOOK_MENTION_KEY] == nil then return control.default end
     if control.key == "NUI-0054" and control.type == "dropdown" and control.multi then
@@ -33470,32 +37349,108 @@ local function addControl(group, control)
     end
 end
 
+-- UI_LAYOUT_BEGIN
+-- Presentation paths are section identities. Array offsets are never bindings.
+local function normalizePageLayout(page)
+    local byPath,keys,nodes,roots,ordered={},{},{},{},{}
+    local function key(path)
+        assert(type(path)=="table" and #path>0,"UI section path required")
+        for _,part in ipairs(path) do assert(type(part)=="string" and part~="" and not part:find("\0",1,true),"Invalid UI section path") end
+        return table.concat(path,"\0")
+    end
+    for _,section in ipairs(page.sections or {}) do
+        local id=key(section.path)
+        assert(not byPath[id],"Duplicate UI section path: "..section.name)
+        byPath[id]=section
+        for _,control in ipairs(section.controls or {}) do
+            assert(type(control.key)=="string" and not keys[control.key],"Duplicate UI control key: "..tostring(control.key))
+            keys[control.key]=true
+        end
+    end
+    local function node(path)
+        local id=key(path)
+        if not nodes[id] then
+            local copy=table.clone(path)
+            nodes[id]={name=copy[#copy],path=copy,section=byPath[id],children={}}
+            ordered[#ordered+1]=nodes[id]
+        end
+        return nodes[id]
+    end
+    local attached={}
+    local function attach(n,parent,list)
+        local id=key(n.path)
+        if not attached[id] then table.insert(list,n) attached[id]=true end
+    end
+    local function retain(old,parent,list)
+        for _,saved in ipairs(old or {}) do
+            local id=key(saved.path)
+            -- Retain curated display order and collapsed-state identities, not
+            -- stale indices or a deleted section's controls.
+            local hasSection=byPath[id]~=nil
+            local hasDescendant=false
+            if not hasSection then for sectionPath in pairs(byPath) do if sectionPath:sub(1,#id+1)==id.."\0" then hasDescendant=true break end end end
+            if hasSection or hasDescendant then
+                local n=node(saved.path)
+                n.defaultExpanded=saved.defaultExpanded
+                attach(n,parent,list)
+                retain(saved.children,n,n.children)
+            end
+        end
+    end
+    retain(page.tree,nil,roots)
+    local function insertMissing(n,list)
+        local id=key(n.path)
+        if attached[id] then return end
+        -- Insert next to an already mounted sibling in source order. Existing
+        -- custom order (e.g. Auto Join Setting first) remains untouched.
+        local before,after
+        for _,section in ipairs(page.sections) do
+            if #section.path==#n.path then
+                local sameParent=true
+                for i=1,#n.path-1 do if section.path[i]~=n.path[i] then sameParent=false break end end
+                if sameParent then
+                    if key(section.path)==id then after=true
+                    elseif attached[key(section.path)] then
+                        local existing=nodes[key(section.path)]
+                        if after then before=table.find(list,existing) break else before=table.find(list,existing) and table.find(list,existing)+1 end
+                    end
+                end
+            end
+        end
+        table.insert(list,before or #list+1,n)
+        attached[id]=true
+    end
+    for _,section in ipairs(page.sections) do
+        local parent,list=nil,roots
+        for depth=1,#section.path do
+            local path={} for i=1,depth do path[i]=section.path[i] end
+            local n=node(path)
+            insertMissing(n,list)
+            parent,list=n,n.children
+        end
+    end
+    page.tree=roots
+    return roots
+end
+
 local function addSectionNode(page, tab, parent, node, rootIndex)
     local container
     if parent then
         assert(type(parent.AddSubGroupbox) == "function", "Patched Obsidian AddSubGroupbox is unavailable")
-        container = parent:AddSubGroupbox({
-            Name = node.name,
-            Collapsed = true,
-            Indent = 8,
-        })
+        container = parent:AddSubGroupbox({Name=node.name,Collapsed=true,Indent=8})
     else
-        container = tab:AddGroupbox({
-            Side = "Left",
-            Name = node.name,
-            Collapsed = node.defaultExpanded ~= true and rootIndex > 1,
-        })
+        container = tab:AddGroupbox({Side="Left",Name=node.name,Collapsed=node.defaultExpanded~=true and rootIndex>1})
     end
-
-    Controller.Sections[page.name .. "/" .. table.concat(node.path, "/")] = container
-    local priorCollapsed = previousPresentation.Collapsed[page.name .. "/" .. table.concat(node.path, "/")]
-    if node.defaultExpanded == true and type(container.SetCollapsed) == "function" then
-        container:SetCollapsed(false) -- Keep the global joiner switch visible on each GUI load.
-    elseif type(priorCollapsed) == "boolean" and type(container.SetCollapsed) == "function" then container:SetCollapsed(priorCollapsed) end
-    local section = node.sectionIndex and page.sections[node.sectionIndex] or nil
-    for _, control in ipairs(section and section.controls or {}) do addControl(container, control) end
-    for _, child in ipairs(node.children or {}) do addSectionNode(page, tab, container, child, rootIndex) end
+    local path=page.name.."/"..table.concat(node.path,"/")
+    Controller.Sections[path]=container
+    local priorCollapsed=previousPresentation.Collapsed[path]
+    if node.defaultExpanded==true and type(container.SetCollapsed)=="function" then container:SetCollapsed(false)
+    elseif type(priorCollapsed)=="boolean" and type(container.SetCollapsed)=="function" then container:SetCollapsed(priorCollapsed) end
+    for _,control in ipairs(node.section and node.section.controls or {}) do addControl(container,control) end
+    for _,child in ipairs(node.children or {}) do addSectionNode(page,tab,container,child,rootIndex) end
 end
+-- UI_LAYOUT_END
+
 
 local pageDescriptions = { Lobby = "Collect, train and manage your expedition", Joiner = "Set your priorities. Choose your next adventure.", Game = "Fine-tune your in-game automation", Macro = "Record, organize and replay your strategies", Webhook = "Your results, delivered clearly", Settings = "Configuration, interface and recovery preferences" }
 for _, page in ipairs(Spec.pages) do
@@ -33517,7 +37472,7 @@ for _, page in ipairs(Spec.pages) do
         end
         tab:RefreshSides()
     end
-    for rootIndex, node in ipairs(page.tree) do addSectionNode(page, tab, nil, node, rootIndex) end
+    for rootIndex, node in ipairs(normalizePageLayout(page)) do addSectionNode(page, tab, nil, node, rootIndex) end
 end
 
 Controller.SoftFocus = SoftFocus.Mount(Controller)
@@ -33584,6 +37539,15 @@ else
     Controller.AutoRejoinError = tostring(rejoinController)
     warn("[Anime Expeditions GUI] Auto Rejoin runtime failed", Controller.AutoRejoinError)
 end
+-- STARRK_AUTOPLAY_BOOT_BEGIN
+local starrkOk,starrkRuntime=pcall(function()
+    return assert(loadstring(STARRK_AUTOPLAY_RUNTIME_SOURCE))()({Environment=Environment,Gui=Controller,
+        Core=assert(loadstring(STARRK_AUTOPLAY_CORE_SOURCE))(),Placement=assert(loadstring(STARRK_AUTOPLAY_PLACEMENT_SOURCE))(),
+        Native=assert(loadstring(STARRK_AUTOPLAY_NATIVE_SOURCE))()})
+end)
+if starrkOk then Controller.StarrkAutoPlay=starrkRuntime
+else Controller.StarrkAutoPlayError=tostring(starrkRuntime) warn("[Starrk Auto Play]",starrkRuntime) end
+-- STARRK_AUTOPLAY_BOOT_END
 local macroLoader, macroCompileFailure = loadstring(MACRO_SOURCE)
 if type(macroLoader) == "function" then
     local okMacro, macroController = pcall(macroLoader)
@@ -33667,7 +37631,7 @@ else Controller.SettingsError="Settings initialization failed" warn("[Zen Hub] S
 -- SETTINGS_BOOT_END
 
 Controller.RuntimeErrors = {}
-for _, name in ipairs({ "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "AutoRejoin", "Macro", "Joiner", "GameWebhook", "Lobby", "Expedition", "Utilities", "LostShipment", "TidalSiege" }) do
+for _, name in ipairs({ "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "AutoRejoin", "Macro", "Joiner", "GameWebhook", "Lobby", "Expedition", "Utilities", "LostShipment", "TidalSiege" }) do
     if Controller[name .. "Error"] then Controller.RuntimeErrors[name] = Controller[name .. "Error"] end
 end
 Controller.RuntimeStatus = next(Controller.RuntimeErrors) and "degraded" or "ready"

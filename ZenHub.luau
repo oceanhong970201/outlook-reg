@@ -18773,9 +18773,11 @@ local function challengeHandoffPlan(context,pending,lobby)
     local ok,plan,reason=pcall(method,joiner,context,pending)
     return ok and plan or nil,ok and reason or tostring(plan)
 end
+local challengeRetireDisabledPreparation
 local function challengeHandoffReconcile(ledger,context)
     local pending=ledger.Pending
     if not pending then return nil end
+    if challengeRetireDisabledPreparation and challengeRetireDisabledPreparation(ledger,pending)then return nil end
     local joiner=Environment.__AnimeExpeditionsJoinerV1
     if pending.LobbyInvoked and type(joiner)=="table"and type(joiner.ConfirmedLobbyArrival)=="function"and joiner:ConfirmedLobbyArrival(pending.Plan)==true then
         ledger.LastOutcome,ledger.Pending="native-lobby-arrived",nil return nil
@@ -18815,6 +18817,60 @@ local function challengeHandoffPartyValid(party,expected)
     if not challengeHandoffPartyOwned(party,expected)or statePath(party.Data,"StartDisabled")==true then return false end
     return challengeHandoffFingerprint(statePath(party.Data,"QueueData"))==challengeHandoffFingerprint(expected)
 end
+-- HALLOWEEN_ENTRY_PREPARATION_RETIREMENT_BEGIN
+challengeRetireDisabledPreparation=function(ledger,pending)
+    local plan=type(pending)=="table"and pending.Plan
+    if type(plan)~="table"or plan.SourceInLobby~=true or plan.Route~="party"
+        or pending.CreateInvoked~=true or pending.CreateResponded~=true or pending.QueueInvoked
+        or pending.StartInvoked or pending.LobbyInvoked or pending.SpecialInvoked or pending.ActivateInvoked
+        or pending.PrepareInvoked or type(pending.StepInvoked)~="table"or next(pending.StepInvoked)~=nil
+        or ledger.RetiredPreparation~=nil or Controller.ModeHandoffBusy
+        or Environment[STATE_KEY]~=Controller or not Controller.Running or Controller.Stopping
+        or GAME_USER_ID==nil or gameAccountId()~=GAME_USER_ID or value("NUI-0069",false)~=true then return false end
+    local joiner=Environment.__AnimeExpeditionsJoinerV1
+    if type(joiner)~="table"or type(joiner.ConfirmedLobbyArrival)~="function"
+        or type(joiner.ReleaseRetiredLobbyPreparation)~="function"then return false end
+    local getter=Nodes.PARTY_GET_CURRENT_REPLICA
+    local actor=getter and getter.InvokeSelf
+    if type(actor)~="function"then return false end
+    local ok,ready=pcall(function()
+        return withGameIdentity(function()
+            local session=stateValue(Dependencies.SessionData)
+            if type(session)~="table"or stateValue(session.Matchmaking)or stateValue(session.MatchmakingFound)
+                or stateValue(Dependencies.PartyData)~=nil or joiner:ConfirmedLobbyArrival()~=true then return false end
+            if actor(getter)~=nil or actor(getter)~=nil then return false end
+            return Nodes.PARTY_GET_CURRENT_REPLICA==getter and getter.InvokeSelf==actor
+                and stateValue(Dependencies.PartyData)==nil and stateValue(Shared.IsInGame)==false
+                and stateValue(Shared.IsInAFKChamber)==false
+        end)
+    end)
+    if not ok or not ready or ledger.Pending~=pending or Controller.ModeHandoffBusy
+        or Environment[STATE_KEY]~=Controller or not Controller.Running or Controller.Stopping
+        or gameAccountId()~=GAME_USER_ID or value("NUI-0069",false)~=true then return false end
+    if joiner:ReleaseRetiredLobbyPreparation(plan)~=true then return false end
+    -- PARTY_CREATE only prepares a party. Its response may be a timeout; retain that unknown result.
+    pending.RetiredAt,pending.RetiredReason=os.time(),"Auto Joiners disabled before any native entry actor"
+    pending.CreateOutcome="unknown"
+    ledger.RetiredPreparation,ledger.Pending=pending,nil
+    ledger.LastOutcome="cancelled-before-entry"
+    Controller.ChallengeHandoffStatus="cancelled-before-entry"
+    Controller.ChallengeHandoffDetail="Auto Joiners disabled; party preparation retained without starting a game"
+    return true
+end
+local function challengeRetiredPreparationReady(ledger,expected)
+    local retired=ledger.RetiredPreparation
+    if type(retired)~="table"or retired.NativePartyObserved==true then return true end
+    local getter=Nodes.PARTY_GET_CURRENT_REPLICA
+    local actor=getter and getter.InvokeSelf
+    if type(actor)~="function"then return false end
+    local ok,party=pcall(function()return withGameIdentity(function()return actor(getter)end)end)
+    if not ok or type(party)~="table"or not challengeHandoffPartyOwned(party,expected)then return false end
+    local confirmed,again=pcall(function()return withGameIdentity(function()return actor(getter)end)end)
+    if not confirmed or again~=party or Nodes.PARTY_GET_CURRENT_REPLICA~=getter or getter.InvokeSelf~=actor then return false end
+    retired.NativePartyObserved,retired.NativePartyObservedAt=true,os.time()
+    return true
+end
+-- HALLOWEEN_ENTRY_PREPARATION_RETIREMENT_END
 function Controller:ChallengeHandoffOwnsResult(context)
     local ledger=challengeHandoffLedger()
     if challengeHandoffReconcile(ledger,context)then return true end
@@ -18862,6 +18918,9 @@ function Controller:ProcessChallengeHandoff(context,result,lobby,requestedPlan)
     if not lobby then self.ResultSeenAt=seen end
     if not lobby and os.clock()-seen<Config.ResultActionDelaySeconds+(plan.CooldownSeconds or 0)then return hold("Waiting for the result and Joiner cooldown")end
     if Config.DryRun then return hold("Dry run: native mode entry was not sent","dry-run")end
+    if not pending and not challengeRetiredPreparationReady(ledger,plan.QueueData)then
+        return hold("Previous party creation has no native party acknowledgement; preparation will not be repeated","waiting-native-party")
+    end
     if not pending then
         if not lobby and not self:ClaimTransition(context,"challenge-handoff")then return hold("Another transition owns this result")end
         pending={Plan=plan,Stamp=challengeHandoffStamp(plan),StepInvoked={},Bindings={},At=os.time()}
@@ -18990,7 +19049,20 @@ function Controller:ProcessChallengeHandoff(context,result,lobby,requestedPlan)
                     pending.CreateInvoked=true
                     local request=createActor(create,expected)
                     assert(type(request)=="table"and type(request.Timeout)=="function"and type(request.Once)=="function","Native PartyCreate request contract unavailable")
-                    request:Timeout(5)request:Once(function()pending.CreateResponded=true end)
+                    request:Timeout(5,function()pending.CreateTimeoutObserved=true end)
+                    request:Once(function(...)
+                        pending.CreateResponded=true
+                        pending.CreateResponseArity=select("#",...)
+                        local response={}
+                        for i=1,math.min(4,pending.CreateResponseArity)do
+                            local v=select(i,...)
+                            local t=type(v)
+                            if t=="boolean"or t=="number"then response[i]=v
+                            elseif t=="string"then response[i]=v:sub(1,300)
+                            else response[i]="<"..typeof(v)..">"end
+                        end
+                        pending.CreateResponseScalars=response
+                    end)
                 end
                 return
             end
@@ -22469,8 +22541,11 @@ function Controller:ConfirmedLobbyArrival()
     end)
 end
 function Controller:BuildLobbyModePlan(context,pending)
-    if Environment[STATE_KEY]~=self or not self.Running or Players.LocalPlayer~=LocalPlayer
-        or value(FEATURE.Disable,false)==true or Fusion.peek(Shared.IsInGame)~=false or Fusion.peek(Shared.IsInAFKChamber)~=false then return nil,"Waiting for the native Lobby"end
+    if Environment[STATE_KEY]~=self then return nil,"Joiner owner changed"end
+    if not self.Running then return nil,"Joiner is stopped"end
+    if Players.LocalPlayer~=LocalPlayer then return nil,"Joiner account changed"end
+    if value(FEATURE.Disable,false)==true then return nil,"Auto Joiners are disabled"end
+    if Fusion.peek(Shared.IsInGame)~=false or Fusion.peek(Shared.IsInAFKChamber)~=false then return nil,"Waiting for the native Lobby"end
     local macro=Environment.__AnimeExpeditionsMacro
     if value("NUI-0506",false)==true or type(macro)=="table"and(macro.Recording or macro.Busy or(tonumber(macro.ActiveOperations)or 0)>0)then return nil,"Macro is active; native entry is paused"end
     local plan,reason,order=self:ChooseJoinerPlan("lobby",pending)
@@ -22532,6 +22607,20 @@ local function joinPlanFingerprint(plan)
         if key ~= "NativePlan" then decision[key] = current end
     end
     return fingerprint(decision)
+end
+
+function Controller:ReleaseRetiredLobbyPreparation(plan)
+    if Environment[STATE_KEY]~=self or not self.Running or Players.LocalPlayer~=LocalPlayer or self.Busy
+        or value(FEATURE.Disable,false)~=true then return false end
+    if self.PendingSubmission==nil then return true end
+    local last,submitted=self.LastPlan,self.LastSubmission
+    if type(last)~="table"or type(submitted)~="table"or self.PendingSubmission~=joinPlanFingerprint(last)
+        or last.Name~=plan.Name or submitted.Name~=plan.Name
+        or fingerprint(last.QueueData)~=fingerprint(plan.QueueData)
+        or fingerprint(submitted.QueueData)~=fingerprint(plan.QueueData)then return false end
+    self.PendingSubmission=nil
+    self.Status,self.LastReason="idle","Auto Joiners disabled before native entry; preparation retained"
+    return true
 end
 
 local function joinPlanMatches(current, plan)

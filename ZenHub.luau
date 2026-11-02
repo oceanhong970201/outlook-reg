@@ -16616,7 +16616,13 @@ function Controller:CheckInfernalAction(operationExpected)
     return true
 end
 function Controller:RefreshInfernalMacroStatus()
-    local selected,context=self:ResolveSelectedMacro()
+    -- This label needs full selector/file resolution only in the Infernal stage.
+    -- Unknown native context keeps the original conservative resolution path.
+    local nativeMode=statePath(currentGameState(),"Parameters","Gamemode")
+    local selected,context
+    if type(nativeMode)~="string"or nativeMode==""or nativeMode=="InfernalCult"then
+        selected,context=self:ResolveSelectedMacro()
+    else context={Gamemode=nativeMode}end
     local text="Infernal Cult Macro: "..(value(INFERNAL_PLAY,false)==true and "enabled"or "off")
     if context.Gamemode=="InfernalCult"then
         text..="\nStage: "..tostring(context.DisplayName or context.MapName).." ["..tostring(context.MapName).."]"
@@ -19752,9 +19758,36 @@ function Controller:RestorePausedAnimations()
     end
 end
 
+-- Track only Boost-relevant instances; periodic enforcement still observes native changes.
+function Controller:ClearBoostIndex()
+    local connections=self.BoostIndexConnections
+    -- Invalidate first so queued callbacks from an old generation cannot repopulate it.
+    self.BoostCandidates=nil self.BoostIndexConnections=nil
+    for _,connection in ipairs(connections or{})do pcall(function()connection:Disconnect()end)end
+end
+
+function Controller:GetBoostCandidates()
+    if self.BoostCandidates then return self.BoostCandidates end
+    local candidates=setmetatable({},{__mode="k"})
+    local connections={}
+    self.BoostCandidates=candidates self.BoostIndexConnections=connections
+    local function add(instance)
+        if self.BoostCandidates~=candidates or self.Stopping or not self.Running or Environment[STATE_KEY]~=self then return end
+        if typeof(instance)=="Instance"and(instance:IsA("ParticleEmitter")or instance:IsA("Trail")or instance:IsA("Beam")
+            or instance:IsA("MeshPart")or instance:IsA("Animator"))then candidates[instance]=true end
+    end
+    -- Subscribe before seeding so streamed/new descendants cannot fall between them.
+    connections[#connections+1]=workspace.DescendantAdded:Connect(add)
+    connections[#connections+1]=workspace.DescendantRemoving:Connect(function(instance)
+        if self.BoostCandidates==candidates then candidates[instance]=nil end
+    end)
+    for _,instance in ipairs(workspace:GetDescendants())do add(instance)end
+    return candidates
+end
+
 function Controller:ProcessPerformance(context)
     local boost = value(FEATURE.BoostFPS, false) == true
-    if not boost then self:RestorePausedAnimations() end
+    if not boost then self:ClearBoostIndex() self:RestorePausedAnimations() end
     local deleteEnemies = context.InGame and value(FEATURE.DeleteEnemies, false) == true
     local deleteMap = context.InGame and value(FEATURE.DeleteMap, false) == true
     local blackScreen = value(FEATURE.BlackScreen, false) == true
@@ -19775,10 +19808,13 @@ function Controller:ProcessPerformance(context)
         Lighting.GlobalShadows = false
         Lighting.Brightness = 0
         Lighting.FogEnd = 100000
-        for _, instance in ipairs(workspace:GetDescendants()) do
-            if instance:IsA("ParticleEmitter") or instance:IsA("Trail") or instance:IsA("Beam") then hideVisual("Boost", instance) end
-            if instance:IsA("MeshPart") then lowerMeshFidelity(instance) end
-            if instance:IsA("Animator") then self:PauseAnimator(instance) end
+        local candidates=self:GetBoostCandidates()
+        for instance in pairs(candidates)do
+            if instance.Parent and instance:IsDescendantOf(workspace)then
+                if instance:IsA("ParticleEmitter") or instance:IsA("Trail") or instance:IsA("Beam") then hideVisual("Boost", instance) end
+                if instance:IsA("MeshPart") then lowerMeshFidelity(instance) end
+                if instance:IsA("Animator") then self:PauseAnimator(instance) end
+            else candidates[instance]=nil end
         end
     elseif self.LightingSnapshot then
         Lighting.GlobalShadows = self.LightingSnapshot.GlobalShadows
@@ -20667,6 +20703,7 @@ function Controller:Stop(reason)
     self.LoopGeneration += 1
     self:UnbindGui()
     self:ClearHitAttackBinding("Stopped")
+    self:ClearBoostIndex()
     self:RestorePausedAnimations()
     local deadline = os.clock() + 15
     while self.ActiveOperations > 0 and os.clock() < deadline do task.wait(0.05) end
@@ -33360,9 +33397,15 @@ function C:ReadWorld()
     end
     local function protected(id) id = normalizedId(id) return id ~= nil and permanentIds[id] == true end
     local r, hotbar
-    if peek(Shared.IsInGame) == true then pcall(function() r = Nodes.GET_GAME_REPLICA:InvokeSelf() end) end
-    pcall(function() hotbar = Nodes.GET_HOTBAR_REPLICA:InvokeSelf() end)
-    local w = { InGame = peek(Shared.IsInGame) == true, IsTarget = target(field(gs, "Parameters")), Active = field(gs, "Active") == true,
+    local inGame, isTarget = peek(Shared.IsInGame) == true, target(field(gs, "Parameters"))
+    -- Disabled or unrelated modes only need inventory observations and control cleanup.
+    -- Full hotbar decoding stays fresh for every eligible Tidal tick and native send.
+    local readEventHotbar = Config.Enabled and values()[FARM] == true and inGame and isTarget
+    if readEventHotbar then
+        pcall(function() r = Nodes.GET_GAME_REPLICA:InvokeSelf() end)
+        pcall(function() hotbar = Nodes.GET_HOTBAR_REPLICA:InvokeSelf() end)
+    end
+    local w = { InGame = inGame, IsTarget = isTarget, Active = field(gs, "Active") == true,
         State = field(gs, "CurrentGameState"), Wave = tonumber(field(gs, "Wave")) or 0, Time = tonumber(field(gs, "GameTime")) or 0,
         Round = tostring(r and r.Id or field(gs, "ID") or game.JobId) .. "|" .. tostring(field(gs, "GameIncrement") or 0),
         FishStage = field(D.SessionData, "FishingState", "Stage"), PlacementAllowed = field(hot, "PlacementAllowed") == true,
@@ -33374,7 +33417,7 @@ function C:ReadWorld()
     for id, raw in pairs(permanent) do
         if field(raw, "Asset") == "Harribel" then w.Units[tostring(id)] = { Shiny = field(raw, "Shiny") == true or field(raw, "IsShiny") == true } end
     end
-    for index, raw in pairs(field(hot, "Slots") or {}) do
+    for index, raw in pairs(readEventHotbar and field(hot, "Slots") or {}) do
         local slot, data = peek(raw), field(raw, "Data")
         local id = field(slot, "ID") or field(data, "ID")
         local asset = field(data, "Asset") or field(slot, "Asset")
@@ -34155,8 +34198,9 @@ function Engine:MoveFighter(s,unit,gate,main)
     self.MovementWait=nil
     return self:Issue(s,"Relocate",{unit.Id,point},{GateKey=not main and gate.Key or nil,MainReturn=main,MainLayoutRevision=main and MAIN_LAYOUT_REVISION or nil})
 end
-function Engine:Tick()
-    local s=self.Ctx.Read()
+function Engine:Tick(initialSnapshot)
+    -- The runtime passes only its immediately obtained snapshot; native actors still re-read.
+    local s=initialSnapshot or self.Ctx.Read()
     if type(self.TeamPreparation)~="table" then self.TeamPreparation={} end
     if self.Pending and self.Pending.Kind=="Start" then
         self.TeamPreparation.StartBarrier=self.TeamPreparation.StartBarrier or {RoundKey=self.Pending.RoundKey or self.RoundKey,Deadline=self.Pending.Deadline}
@@ -34989,7 +35033,7 @@ local STARRK_AUTOPLAY_RUNTIME_SOURCE = [========================================
                     adapter.Publish("waiting-macro-operation","Waiting for the previous Macro operation to finish")
                     return
                 end
-                engine:Tick()
+                engine:Tick(snapshot)
             end,debug.traceback)
             runtime.TickMilliseconds=(os.clock()-before)*1000
             if not ok then
@@ -37221,6 +37265,14 @@ return function(ctx)
     function R:Stop(reason)self.Running=false self.StopReason=reason or"stopped"return status("stopped",self.StopReason)end
     function R:_run()
         if not ctx.Owns()then return status("owner-changed","Waiting for the current GUI and account")end
+        if not ctx.Enabled()then
+            local unresolved=false
+            for _,row in pairs(ledger.Rounds)do
+                -- Unknown ledger entries are not proof that native submission is resolved.
+                if type(row)~="table"or row.Pending~=nil then unresolved=true break end
+            end
+            if not unresolved then return status("disabled","Auto Summon Boss OFF")end
+        end
         local s=ctx.Snapshot()
         if not known(s)then return status(ctx.Enabled()and"unavailable"or"disabled",ctx.Enabled()and"Waiting for the native Soul Furnace stage and forge"or"Auto Summon Boss OFF")end
         local row=ledger.Rounds[s.RoundKey]

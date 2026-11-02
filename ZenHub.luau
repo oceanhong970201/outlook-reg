@@ -37382,6 +37382,57 @@ return function(ctx)
         if count==nil then return 0,true end
         return count,nonnegative(count)and count%1==0
     end
+    -- GameID/replica persist across Replay; GameIncrement can change at defeat.
+    -- Persist a logical run only after native Wave/time reset and an active new battle.
+    local function runKey(scope,gs)
+        if ledger.NativeRuns==nil then ledger.NativeRuns={}end
+        if type(ledger.NativeRuns)~="table"then return nil end
+        local run=ledger.NativeRuns[scope]
+        if run==nil then run={Serial=0}ledger.NativeRuns[scope]=run end
+        if type(run)~="table"or not finite(run.Serial)or run.Serial<0 or run.Serial%1~=0 then return nil end
+        local now={Active=path(gs,"Active"),State=path(gs,"CurrentGameState"),Wave=path(gs,"Wave"),Time=path(gs,"GameTime")}
+        local increment=path(gs,"GameIncrement")
+        if type(now.Active)=="boolean"and type(now.State)=="string"and finite(now.Wave)and now.Wave>=0
+            and finite(now.Time)and now.Time>=0 and finite(increment)and increment>=0 and increment%1==0 then
+            if run.Increment==nil then run.Increment=increment end
+            if not now.Active or now.State~="InProgress"then run.SawInactive=true end
+            local prior=run.Last
+            local waveReset=prior and now.Wave<=2 and now.Wave<prior.Wave
+            local timeReset=prior and now.Time<=30 and now.Time+1<prior.Time
+            local boundary=run.Boundary
+            if boundary then
+                if not now.Active or now.State~="InProgress"then boundary.SawInactive=true end
+                if waveReset then boundary.WaveReset=true boundary.Wave=math.min(boundary.Wave,now.Wave)end
+                if timeReset then boundary.TimeReset=true boundary.Time=math.min(boundary.Time,now.Time)end
+                local progressed=not waveReset and not timeReset and now.Active and now.State=="InProgress"
+                    and(boundary.TimeReset and now.Wave>boundary.Wave or boundary.WaveReset and now.Time>boundary.Time+1)
+                if progressed or(waveReset or timeReset)and boundary.SawInactive then run.Boundary=nil boundary=nil end
+            end
+            local pending=run.PendingReset
+            if not pending and not boundary and prior and(waveReset or timeReset)and run.HadProgress then
+                pending={Before=prior,WaveReset=false,TimeReset=false,SawInactive=run.SawInactive==true}
+                run.PendingReset=pending
+            end
+            if pending then
+                local before=pending.Before
+                pending.WaveReset=pending.WaveReset or(now.Wave<=2 and now.Wave<before.Wave)
+                pending.TimeReset=pending.TimeReset or(now.Time<=30 and now.Time+1<before.Time)
+                pending.SawInactive=pending.SawInactive or not now.Active or now.State~="InProgress"
+                local waveReady=pending.WaveReset or(before.Wave<=2 and pending.SawInactive)
+                local timeReady=pending.TimeReset or(before.Time<=3 and pending.SawInactive)
+                if waveReady and timeReady and(pending.SawInactive or increment~=run.Increment)
+                    and now.Active and now.State=="InProgress"and now.Wave<=2 and now.Time<=30 then
+                    run.Serial+=1
+                    run.Increment=increment run.SawInactive=false run.AwaitingClear=true
+                    run.Boundary={Wave=now.Wave,Time=now.Time,WaveReset=pending.WaveReset,TimeReset=pending.TimeReset}
+                    run.PendingReset=nil
+                end
+            end
+            if now.Active and now.State=="InProgress"then run.HadProgress=true end
+            run.Last=now
+        end
+        return run.Serial==0 and scope or scope.."|run:"..tostring(run.Serial),run
+    end
     local function snapshot()
         local s={Account=account,Job=job,Ready=false,InGame=peek(Shared.IsInGame),NativeAvailable=false}
         local gs,gp=peek(D.GameState),peek(D.GamePlayerState)
@@ -37392,6 +37443,9 @@ return function(ctx)
         local gr,gn,ga=getter("GET_GAME_REPLICA")
         local pr,pn,pa=getter("GET_GAME_PLAYER_REPLICA")
         if not gr or not pr or tostring(gr.Id)~=tostring(id)or tostring(path(pr,"Data","GameID"))~=tostring(id)then return s end
+        local nativeRun
+        s.RoundKey,nativeRun=runKey(tostring(id).."|"..tostring(gr.Id),gs)
+        s.NativeIncrement,s.NativeState=path(gs,"GameIncrement"),path(gs,"CurrentGameState")
         local shopKey,shopId=path(gp,"SoulFurnace","ShopDataKey"),path(gp,"SoulFurnace","ShopReplicaId")
         if type(shopKey)~="string"or shopKey==""or shopId==nil then return s end
         local shop,sn,sa=getter("GET_SHOP_REPLICA",shopKey)
@@ -37424,7 +37478,6 @@ return function(ctx)
         local stock=path(item,"Stock")
         if stock==math.huge then stock=nil
         elseif stock~=nil then if not nonnegative(stock)or stock%1~=0 then return s end stock-=purchased end
-        s.RoundKey=tostring(id).."|"..tostring(gr.Id)
         s.GameToken,s.PlayerToken,s.ShopToken=gr,pr,shop
         s.GameGetter,s.PlayerGetter,s.ShopGetter=gn,pn,sn
         s.GameGetterActor,s.PlayerGetterActor,s.ShopGetterActor=ga,pa,sa
@@ -37438,8 +37491,17 @@ return function(ctx)
         s.Price,s.OriginalPrice,s.Discount,s.Souls=original-discount,original,discount,path(gp,"SoulFurnace","Souls")
         s.Stock,s.PurchaseCount=stock,purchased
         s.RequiredHeat,s.Heat=path(item,"RequiredHeat"),path(gs,"SoulFurnace","HeatLevel")
-        s.Ready=type(s.Active)=="boolean"and type(s.BossActive)=="boolean"and type(s.BossDefeated)=="boolean"
+        s.Ready=s.RoundKey~=nil and(s.NativeState==nil or s.NativeState=="InProgress"or s.Active==false)
+            and type(s.Active)=="boolean"and type(s.BossActive)=="boolean"and type(s.BossDefeated)=="boolean"
             and nonnegative(s.Souls)and nonnegative(s.RequiredHeat)and nonnegative(s.Heat)and type(s.Actor)=="function"
+        if nativeRun and nativeRun.AwaitingClear then
+            -- A new phase may replicate before the prior run's purchase/boss fields clear.
+            -- Do not let those old confirmations complete the newly promoted run.
+            if s.Ready and s.Active==true and s.NativeState=="InProgress"and s.BossActive==false
+                and s.BossDefeated==false and s.FinalBossForging==false and s.PurchaseCount==0 then
+                nativeRun.AwaitingClear=nil
+            else s.Ready=false end
+        end
         return s
     end
     local function act(kind,before)
@@ -37450,7 +37512,7 @@ return function(ctx)
             or fresh.Souls<fresh.Price or fresh.Heat<fresh.RequiredHeat or fresh.Stock~=nil and fresh.Stock<1 then
             return false,"Native FinalBoss forge is unavailable","not-sent"
         end
-        for _,field in ipairs({"Account","Job","RoundKey","GameToken","PlayerToken","ShopToken","GameGetter","PlayerGetter","ShopGetter",
+        for _,field in ipairs({"Account","Job","RoundKey","NativeIncrement","NativeState","GameToken","PlayerToken","ShopToken","GameGetter","PlayerGetter","ShopGetter",
             "GameGetterActor","PlayerGetterActor","ShopGetterActor","ShopKey","ShopIndex","ShopReplicaId","ItemToken","NativeItemToken",
             "Actor","Price","OriginalPrice","Discount","Souls","RequiredHeat","Heat","PurchaseCount","Stock"})do
             if before[field]~=fresh[field]then return false,"Native forge context changed","not-sent"end

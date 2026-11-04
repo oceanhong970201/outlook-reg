@@ -18868,6 +18868,7 @@ function Controller:ObserveRoundTransition()
         if os.clock() - queued.At > 45 or not sameRoundScope(queued.Context, context) then self.RestartIntents[key] = nil end
     end
     context.RoundSerial = self.RoundSerial
+    if type(self.ObserveWebhookRound)=="function"then self:ObserveWebhookRound(context)end
     self.LastRoundContext = copyMap(context)
     self.LastObservedWave, self.LastObservedGameState = context.Wave, context.CurrentState
     return restarted
@@ -20562,7 +20563,7 @@ local function addRewardFields(fields, summary)
 end
 
 function Controller:SendWebhook(payload, purpose)
-    if self.Stopping then return false, "runtime is stopping", true, "cancelled" end
+    if self.Stopping or Environment[STATE_KEY] ~= self then return false, "runtime no longer owns webhook delivery", true, "cancelled" end
     local url = tostring(value(FEATURE.WebhookUrl, "") or "")
     if url == "" or url == "[REDACTED_CURRENT_VALUE]" then return false, "webhook URL is empty", false, "not-sent" end
     local send = requestFunction()
@@ -20572,7 +20573,8 @@ function Controller:SendWebhook(payload, purpose)
     local stageDelivery = purpose == "stage-finished"
     local lastFailure, lastRetryable
     for attempt = 1, Config.WebhookAttempts do
-        if self.Stopping then return false, "runtime is stopping", true, "cancelled" end
+        -- Encoding and explicit-429 waits can yield across a GUI replacement.
+        if self.Stopping or Environment[STATE_KEY] ~= self then return false, "runtime no longer owns webhook delivery", true, "cancelled" end
         local ok, response = pcall(send, {
             Url = url,
             Method = "POST",
@@ -20679,7 +20681,7 @@ end
 
 -- Durable same-job stage delivery reservations survive runtime replacement.
 -- ResultEpoch can change when GameResults briefly clears; it is not a new run.
-local function stageWebhookLedger(context)
+local function stageWebhookSession(context)
     if type(context)~="table"or context.InGame~=true or type(context.GameId)~="string"or context.GameId==""
         or type(context.RoundSerial)~="number"or context.RoundSerial~=context.RoundSerial or context.RoundSerial<0
         or context.RoundSerial%1~=0 or type(GAME_USER_ID)~="string"or GAME_USER_ID==""
@@ -20691,17 +20693,98 @@ local function stageWebhookLedger(context)
     local ledger=ledgers[scope]
     if ledger==nil then ledger={Version=1,Entries={}}ledgers[scope]=ledger end
     if type(ledger)~="table"or ledger.Version~=1 or type(ledger.Entries)~="table"then return nil end
-    return ledger.Entries,roundKey(context)
+    if ledger.NativeRounds==nil then ledger.NativeRounds={}end
+    if type(ledger.NativeRounds)~="table"then return nil end
+    return ledger
+end
+
+local function stageWebhookNativeScope(context)
+    -- Queue/parameter metadata may hydrate after the terminal result. Only the
+    -- native GameID and an observed native battle reset define another result.
+    return context.GameId
+end
+
+-- Local RoundSerial belongs to a runtime snapshot. It can move backwards or
+-- forwards after overlapping GUI reloads, so it cannot identify an HTTP result.
+-- This journal observes native battle resets once for every generation together.
+function Controller:ObserveWebhookRound(context)
+    if self.Stopping or Environment[STATE_KEY]~=self then return nil end
+    local ledger=stageWebhookSession(context)
+    if not ledger then return nil end
+    local scope=stageWebhookNativeScope(context)
+    local round=ledger.NativeRounds[scope]
+    if round==nil then
+        round={Epoch=0,LastContext=copyMap(context),HadProgress=context.Active==true and context.CurrentState=="InProgress"}
+        ledger.NativeRounds[scope]=round
+        -- Upgrades must not re-send an already observed terminal result merely
+        -- because an older generation used another local serial. Preserve every
+        -- old receipt; a subsequently observed native reset releases this hold.
+        local prefix=context.GameId.."|"
+        for legacy,entry in pairs(ledger.Entries)do
+            if type(legacy)=="string"and string.sub(legacy,1,#prefix)==prefix and type(entry)=="table"then
+                round.LegacyHold=true
+                break
+            end
+        end
+    end
+    if type(round)~="table"or type(round.Epoch)~="number"or round.Epoch<0 or round.Epoch%1~=0 then return nil end
+    local prior=round.LastContext
+    local sameScope=sameRoundScope(prior,context)
+    local validNumbers=prior and type(prior.Wave)=="number"and type(prior.GameTime)=="number"
+        and type(context.Wave)=="number"and type(context.GameTime)=="number"
+    local waveReset=validNumbers and sameScope and context.Wave<=2 and context.Wave<prior.Wave
+    local timeReset=validNumbers and sameScope and context.GameTime<=30 and context.GameTime+1<prior.GameTime
+    local boundary=round.Boundary
+    if not sameScope then round.Pending=nil round.Boundary=nil boundary=nil
+    elseif boundary then
+        if context.Active~=true or context.CurrentState~="InProgress"then boundary.SawInactive=true end
+        if waveReset then boundary.SawWaveReset=true boundary.Wave=math.min(boundary.Wave,context.Wave)end
+        if timeReset then boundary.SawTimeReset=true boundary.GameTime=math.min(boundary.GameTime,context.GameTime)end
+        local progressed=validNumbers and not waveReset and not timeReset and context.Active==true and context.CurrentState=="InProgress"
+            and((boundary.SawTimeReset and context.Wave>boundary.Wave)or(boundary.SawWaveReset and context.GameTime>boundary.GameTime+1))
+        if progressed or((waveReset or timeReset)and boundary.SawInactive)then boundary=nil round.Boundary=nil end
+    end
+    local pending=round.Pending
+    if not pending and not boundary and(waveReset or timeReset)and(round.HadProgress or terminalGameState(prior.CurrentState))then
+        pending={Context=copyMap(prior),WaveReset=false,TimeReset=false,SawInactive=prior.Active~=true or prior.CurrentState~="InProgress"}
+        round.Pending=pending
+    end
+    if pending and validNumbers and sameRoundScope(pending.Context,context)then
+        local before=pending.Context
+        pending.WaveReset=pending.WaveReset or(context.Wave<=2 and context.Wave<before.Wave)
+        pending.TimeReset=pending.TimeReset or(context.GameTime<=30 and context.GameTime+1<before.GameTime)
+        pending.SawInactive=pending.SawInactive or context.Active~=true or context.CurrentState~="InProgress"
+        local waveReady=pending.WaveReset or(before.Wave<=2 and pending.SawInactive)
+        local timeReady=pending.TimeReset or(before.GameTime<=3 and pending.SawInactive)
+        if waveReady and timeReady and context.Active==true and context.CurrentState=="InProgress"and context.Wave<=2 and context.GameTime<=30 then
+            round.Epoch+=1
+            round.Pending=nil
+            round.LegacyHold=nil
+            round.Boundary={Wave=context.Wave,GameTime=context.GameTime,SawWaveReset=pending.WaveReset,SawTimeReset=pending.TimeReset}
+        end
+    end
+    if context.Active==true and context.CurrentState=="InProgress"then round.HadProgress=true end
+    round.LastContext=copyMap(context)
+    local key="native|"..scope.."|"..tostring(round.Epoch)
+    if round.LegacyHold and not ledger.Entries[key]then ledger.Entries[key]={State="legacy-observed",At=os.time()}end
+    self.WebhookRoundKey=key
+    return ledger.Entries,key
+end
+
+local function stageWebhookLedger(context)
+    local owner=Environment[STATE_KEY]
+    if type(owner)~="table"or type(owner.ObserveWebhookRound)~="function"then return nil end
+    return owner:ObserveWebhookRound(context)
 end
 
 function Controller:ProcessStageWebhook(context, result)
-    if self.Stopping or value(FEATURE.StageFinishedWebhook, false) ~= true or not result then return false end
+    if self.Stopping or Environment[STATE_KEY]~=self or value(FEATURE.StageFinishedWebhook, false) ~= true or not result then return false end
     local restartIntent = self.RestartIntents[roundKey(context)]
     if restartIntentSuppressesResult(restartIntent) then return false end
     local entries, key = stageWebhookLedger(context)
     if not entries or entries[key] then return false end
     -- Migrate old epoch-keyed sends/attempts during an update on the result screen.
-    local prefix=key.."|result|"
+    local prefix=roundKey(context).."|result|"
     for _,records in ipairs({self.WebhookHandled,self.WebhookInFlight,self.WebhookAttemptBatches})do
         for legacy,record in pairs(records)do
             if type(legacy)=="string"and string.sub(legacy,1,#prefix)==prefix and record and record~=0 then
@@ -37663,6 +37746,10 @@ return function(ctx)
     ledger.Rounds=type(ledger.Rounds)=="table"and ledger.Rounds or{}
     local R={Running=true,Ledger=ledger,Status="disabled",ActionCount=0}
     local function finite(n)return type(n)=="number"and n==n and n~=math.huge and n~=-math.huge end
+    local function outstanding(row)
+        if row==nil or row.OutstandingSouls==nil then return 0 end
+        return row.OutstandingSouls
+    end
     local function status(code,detail)
         R.Status,R.Detail=code,detail
         if type(ctx.OnStatus)=="function"then pcall(ctx.OnStatus,code,detail)end
@@ -37686,15 +37773,17 @@ return function(ctx)
         return known(s)and s.RecipeId=="SpeedBoost"and s.Price==20 and s.OriginalPrice==20 and s.Discount==0
             and finite(s.SPABoost)and type(s.ForgeBusy)=="boolean"
     end
-    local function spaAvailable(s)
-        return knownSPA(s)and s.Active==true and s.FinalBossForging==false and s.ForgeBusy==false
-            and s.NativeAvailable==true and finite(s.Souls)and s.Souls-20>500
+    local function spaAvailable(s,reserved)
+        reserved=reserved or 0
+        return finite(reserved)and reserved>=0 and knownSPA(s)and s.Active==true and s.FinalBossForging==false and s.ForgeBusy==false
+            and s.NativeAvailable==true and finite(s.Souls)and s.Souls-reserved-20>500
             and(s.Stock==nil or finite(s.Stock)and s.Stock>=1)
             and finite(s.RequiredHeat)and s.RequiredHeat>=0 and finite(s.Heat)and s.Heat>=s.RequiredHeat
     end
-    local function available(s)
-        return known(s)and s.Active==true and not s.BossActive and not s.BossDefeated and not s.FinalBossForging
-            and s.NativeAvailable==true and finite(s.Price)and s.Price>=0 and finite(s.Souls)and s.Souls>=s.Price
+    local function available(s,reserved)
+        reserved=reserved or 0
+        return finite(reserved)and reserved>=0 and known(s)and s.Active==true and not s.BossActive and not s.BossDefeated and not s.FinalBossForging
+            and s.NativeAvailable==true and finite(s.Price)and s.Price>=0 and finite(s.Souls)and s.Souls-reserved>=s.Price
             and(s.Stock==nil or finite(s.Stock)and s.Stock>=1)
             and finite(s.RequiredHeat)and s.RequiredHeat>=0 and finite(s.Heat)and s.Heat>=s.RequiredHeat
     end
@@ -37706,7 +37795,7 @@ return function(ctx)
         return true
     end
     local function sameSPA(a,b)
-        return same(a,b)and a.RecipeId==b.RecipeId and a.OriginalPrice==b.OriginalPrice
+        return same(a,b)and a.ReservedSouls==b.ReservedSouls and a.RecipeId==b.RecipeId and a.OriginalPrice==b.OriginalPrice
             and a.Discount==b.Discount and a.SPABoost==b.SPABoost and a.ForgeBusy==b.ForgeBusy
     end
     local function pendingMatches(p,s)
@@ -37723,21 +37812,35 @@ return function(ctx)
     local function spaTick(row,boss)
         if not spaEnabled()then return status(row.Completed and"completed"or"spa-disabled","Auto Buy SPA requires Auto Summon Boss and Auto Buy SPA ON")end
         if not R.Running or not ctx.Owns()then return status("stopped",R.StopReason or"owner-changed")end
+        local reserved=outstanding(row)
+        if not finite(reserved)or reserved<0 then return status("spa-waiting-budget","Native forge spending reservation is unknown")end
         if row.BossDebit~=nil then
             local debit=row.BossDebit
-            if type(debit)=="table"and pendingMatches(debit,boss)and finite(debit.Souls)and finite(debit.Price)
-                and boss.Souls<=debit.Souls-debit.Price then row.BossDebit=nil
-            else return status("spa-waiting-boss-debit","Waiting for native Final Boss souls debit confirmation")end
+            if type(debit)~="table"or not pendingMatches(debit,boss)or not finite(debit.Souls)
+                or not finite(debit.Price)or debit.Price<0 then
+                return status("spa-waiting-boss-debit","Waiting for the original native Final Boss spending context")
+            end
+            -- A missed debit may be masked by incoming souls. Keep the full cost reserved,
+            -- rather than freezing every later forge or guessing an EarnedSouls update order.
+            if reserved>0 or not finite(boss.Souls)or boss.Souls>debit.Souls-debit.Price then
+                reserved+=debit.Price row.OutstandingSouls=reserved
+                row.DebitReserveReason="Final Boss debit not directly observed"
+            end
+            row.BossDebit=nil
         end
+        ledger.Rounds[boss.RoundKey]=row
+        local budgetDetail="Waiting for idle native SPA forge; souls - reserved "..tostring(reserved).." - 20 must stay above 500"
         if boss.FinalBossForging then return status("spa-waiting-forge","Waiting for the native Final Boss forge")end
         local s=ctx.Snapshot("ForgeSPA")
-        if not spaAvailable(s)then return status("spa-waiting-available",type(s)=="table"and s.DisabledReason or"Waiting for idle native SPA forge and souls - 20 > 500")end
+        if not spaAvailable(s,reserved)then return status("spa-waiting-available",type(s)=="table"and s.DisabledReason or budgetDetail)end
         if s.RoundKey~=boss.RoundKey or s.Account~=boss.Account or s.Job~=boss.Job then return status("cancelled","SPA native round changed")end
         local fresh=ctx.Snapshot("ForgeSPA")
-        if not R.Running or not ctx.Owns()or not spaEnabled()or not spaAvailable(fresh)or not sameSPA(s,fresh)then
+        if not R.Running or not ctx.Owns()or not spaEnabled()or outstanding(row)~=reserved
+            or not spaAvailable(fresh,reserved)or not sameSPA(s,fresh)or (fresh.ReservedSouls or 0)~=reserved then
             return status("cancelled","SPA context changed before forging")
         end
         row.Pending=reserve(fresh,"ForgeSPA")
+        row.Pending.ReservedSouls=reserved
         ledger.Rounds[s.RoundKey]=row
         local ok,result,why,outcome=pcall(ctx.Act,"ForgeSPA",fresh)
         if ok and result==false and outcome=="not-sent"then row.Pending=nil return status("cancelled",tostring(why or"SPA forge cancelled before native submission"))end
@@ -37763,12 +37866,21 @@ return function(ctx)
         if row and row.Pending and row.Pending.Kind=="ForgeSPA"then
             local p=row.Pending
             local a=ctx.Snapshot("ForgeSPA")
-            if knownSPA(a)and pendingMatches(p,a)and a.PurchaseCount==p.PurchaseCount+1
-                and finite(p.Souls)and a.Souls<=p.Souls-20 then
+            if knownSPA(a)and pendingMatches(p,a)and a.PurchaseCount==p.PurchaseCount+1 and finite(p.Souls)and finite(a.Souls)then
+                local reserved=outstanding(row)
+                if not finite(reserved)or reserved<0 then return status("spa-waiting-budget","Native forge spending reservation is unknown")end
+                -- History acknowledges this one actor; it does not prove the balance debit.
+                -- Preserve every unobserved cost as a separate spending reservation. Once
+                -- income masks a debit, reservations stay conservative for this native round:
+                -- a later balance drop cannot be counted for both Boss and SPA purchases.
+                if reserved>0 or a.Souls>p.Souls-20 then
+                    row.OutstandingSouls=reserved+20
+                    row.DebitReserveReason="SPA purchase accepted; souls debit not directly observed"
+                end
                 row.Pending=nil row.SPAConfirmed=(row.SPAConfirmed or 0)+1
-                return status("spa-confirmed","Native SPA purchase and resource change confirmed; rechecking before another purchase")
+                return status("spa-confirmed","Native SPA purchase confirmed; outstanding souls reserved "..tostring(row.OutstandingSouls or 0).."; rechecking budget")
             end
-            return status("spa-waiting-ack","Waiting for native SPA purchase and 20 souls debit confirmation; holding new forge requests")
+            return status("spa-waiting-ack","Waiting for native SPA purchase history +1; the pending request will not be repeated")
         end
         if row and row.Completed then
             if spaEnabled()then return spaTick(row,s)end
@@ -37785,12 +37897,14 @@ return function(ctx)
         if row and row.Pending then return status("waiting-ack","Forge requested once; waiting for native purchase or boss state")end
         if not self.Running then return status("stopped",self.StopReason)end
         if not ctx.Enabled()then return status("disabled","Auto Summon Boss OFF")end
-        if not available(s)then
+        local budget=outstanding(row)
+        if not finite(budget)or budget<0 then return status("spa-waiting-budget","Native forge spending reservation is unknown")end
+        if not available(s,budget)then
             if spaEnabled()then return spaTick(row or{Account=s.Account,Job=s.Job},s)end
             return status("waiting-available",s.DisabledReason or"Waiting for the native FinalBoss forge and enough souls")
         end
         local fresh=ctx.Snapshot()
-        if not ctx.Owns()or not self.Running or not ctx.Enabled()or not available(fresh)or not same(s,fresh)then
+        if not ctx.Owns()or not self.Running or not ctx.Enabled()or not available(fresh,budget)or not same(s,fresh)or outstanding(row)~=budget then
             return status("cancelled","Soul Furnace context changed before forging")
         end
         row=row or{Account=s.Account,Job=s.Job}
@@ -37996,11 +38110,24 @@ return function(ctx)
         s.Price,s.OriginalPrice,s.Discount,s.Souls=original-discount,original,discount,path(gp,"SoulFurnace","Souls")
         s.Stock,s.PurchaseCount=stock,purchased
         s.RecipeId=recipe
+        local row=ledger.Rounds[s.RoundKey]
+        if row~=nil and(type(row)~="table"or row.Account~=account or row.Job~=job)then return s end
+        local reserved
+        if row then reserved=row.OutstandingSouls end
+        if reserved==nil then reserved=0 end
+        if not nonnegative(reserved)then return s end
+        if row and row.BossDebit~=nil then
+            local debit=row.BossDebit
+            if type(debit)~="table"or not nonnegative(debit.Price)then return s end
+            reserved+=debit.Price
+        end
+        s.ReservedSouls=reserved
         if kind=="ForgeSPA"then
             if original~=20 or discount~=0 then return s end
             local forge=path(gp,"SoulFurnace","Forge")
             local queue=path(gp,"SoulFurnace","ForgeQueue")
-            if type(forge)~="table"or queue~=nil and type(queue)~="table"then return s end
+            -- Native Forge is nil while idle; ForgeQueue also defaults to an empty queue.
+            if forge~=nil and type(forge)~="table"or queue~=nil and type(queue)~="table"then return s end
             s.ForgeRecipe=path(forge,"RecipeId")
             if s.ForgeRecipe~=nil and(type(s.ForgeRecipe)~="string"or s.ForgeRecipe=="")then return s end
             s.ForgeBusy=s.ForgeRecipe~=nil or type(queue)=="table"and next(queue)~=nil
@@ -38030,13 +38157,14 @@ return function(ctx)
             or fresh.FinalBossForging~=false or fresh.NativeAvailable~=true
             or not isSPA and(fresh.BossActive~=false or fresh.BossDefeated~=false)
             or isSPA and(fresh.RecipeId~="SpeedBoost"or fresh.Price~=20 or fresh.OriginalPrice~=20 or fresh.Discount~=0
-                or fresh.ForgeBusy~=false or not finite(fresh.SPABoost)or fresh.Souls-20<=500)
-            or fresh.Souls<fresh.Price or fresh.Heat<fresh.RequiredHeat or fresh.Stock~=nil and fresh.Stock<1 then
+                or fresh.ForgeBusy~=false or not finite(fresh.SPABoost)or not nonnegative(fresh.ReservedSouls)
+                or fresh.Souls-fresh.ReservedSouls-20<=500)
+            or not nonnegative(fresh.ReservedSouls)or fresh.Souls-fresh.ReservedSouls<fresh.Price or fresh.Heat<fresh.RequiredHeat or fresh.Stock~=nil and fresh.Stock<1 then
             return false,"Native Soul Furnace forge is unavailable","not-sent"
         end
         for _,field in ipairs({"Account","Job","RoundKey","NativeIncrement","NativeState","GameToken","PlayerToken","ShopToken","GameGetter","PlayerGetter","ShopGetter",
             "GameGetterActor","PlayerGetterActor","ShopGetterActor","ShopKey","ShopIndex","ShopReplicaId","ItemToken","NativeItemToken",
-            "Actor","Price","OriginalPrice","Discount","Souls","RequiredHeat","Heat","PurchaseCount","Stock","RecipeId","SPABoost","ForgeRecipe","ForgeBusy"})do
+            "Actor","Price","OriginalPrice","Discount","Souls","RequiredHeat","Heat","PurchaseCount","Stock","RecipeId","SPABoost","ForgeRecipe","ForgeBusy","ReservedSouls"})do
             if before[field]~=fresh[field]then return false,"Native forge context changed","not-sent"end
         end
         if rawget(Actions,"SoulFurnace_Forge")~=fresh.Actor then return false,"Native forge actor changed","not-sent"end

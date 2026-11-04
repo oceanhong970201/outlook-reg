@@ -20562,7 +20562,7 @@ local function addRewardFields(fields, summary)
     if #summary.Units + #summary.Rewards + #summary.Experience == 0 then table.insert(fields, { name = "Rewards", value = "No rewards reported.", inline = false }) end
 end
 
-function Controller:SendWebhook(payload, purpose)
+function Controller:SendWebhook(payload, purpose, deliveryGuard)
     if self.Stopping or Environment[STATE_KEY] ~= self then return false, "runtime no longer owns webhook delivery", true, "cancelled" end
     local url = tostring(value(FEATURE.WebhookUrl, "") or "")
     if url == "" or url == "[REDACTED_CURRENT_VALUE]" then return false, "webhook URL is empty", false, "not-sent" end
@@ -20573,8 +20573,12 @@ function Controller:SendWebhook(payload, purpose)
     local stageDelivery = purpose == "stage-finished"
     local lastFailure, lastRetryable
     for attempt = 1, Config.WebhookAttempts do
-        -- Encoding and explicit-429 waits can yield across a GUI replacement.
+        -- Encoding and explicit-429 waits can yield across a GUI or native round replacement.
         if self.Stopping or Environment[STATE_KEY] ~= self then return false, "runtime no longer owns webhook delivery", true, "cancelled" end
+        if type(deliveryGuard)=="function"then
+            local guarded,ready=pcall(deliveryGuard)
+            if not guarded or ready~=true then return false,"native result changed before webhook submission",false,"cancelled"end
+        end
         local ok, response = pcall(send, {
             Url = url,
             Method = "POST",
@@ -20704,14 +20708,63 @@ local function stageWebhookNativeScope(context)
     return context.GameId
 end
 
+-- This ID comes from the game-player state. The general UI context can fall
+-- back to JobId while replicas are replaced; that fallback is not a game result.
+local function webhookNativeId(context)
+    local id=statePath(currentPlayerState(),"GameID")
+    if not(type(id)=="string"and id~=""or type(id)=="number"and id==id and id>=0 and id<math.huge and id%1==0)then return nil end
+    if tostring(id)~=context.GameId then return nil end
+    return tostring(id)
+end
+
+local function webhookTerminalContext(context)
+    return type(context)=="table"and context.InGame==true and context.Active==false
+        and terminalGameState(context.CurrentState)and webhookNativeId(context)~=nil
+end
+
+local function webhookNativeProof(context,terminal)
+    if webhookNativeId(context)==nil or Environment[STATE_KEY]~=Controller or Controller.Stopping then return nil end
+    local ok,proof=pcall(function()return withGameIdentity(function()
+        local getter,playerGetter=Nodes.GET_GAME_REPLICA,Nodes.GET_GAME_PLAYER_REPLICA
+        local get=type(getter)=="table"and getter.InvokeSelf
+        local getPlayer=type(playerGetter)=="table"and playerGetter.InvokeSelf
+        if type(get)~="function"or type(getPlayer)~="function"then return nil end
+        local replica,playerReplica=get(getter),getPlayer(playerGetter)
+        local data=type(replica)=="table"and replica.Data
+        local playerData=type(playerReplica)=="table"and playerReplica.Data
+        if type(data)~="table"or type(playerData)~="table"or tostring(replica.Id)~=context.GameId
+            or tostring(playerData.GameID)~=context.GameId then return nil end
+        local fresh=currentContext()
+        if Environment[STATE_KEY]~=Controller or Controller.Stopping
+            or webhookNativeId(fresh)==nil or fresh.GameId~=context.GameId
+            or fresh.Active~=context.Active or fresh.CurrentState~=context.CurrentState
+            or fresh.GameTime~=context.GameTime or fresh.Wave~=context.Wave
+            or Nodes.GET_GAME_REPLICA~=getter or Nodes.GET_GAME_PLAYER_REPLICA~=playerGetter
+            or getter.InvokeSelf~=get or playerGetter.InvokeSelf~=getPlayer then return nil end
+        if data.Active~=context.Active or data.CurrentGameState~=context.CurrentState
+            or data.GameTime~=context.GameTime or data.Wave~=context.Wave then return nil end
+        if terminal==true and not webhookTerminalContext(fresh)then return nil end
+        if terminal==false and(context.Active~=true or context.CurrentState~="InProgress")then return nil end
+        return {GameId=context.GameId,CurrentState=data.CurrentGameState,Active=data.Active,Wave=data.Wave,GameTime=data.GameTime}
+    end)end)
+    return ok and proof or nil
+end
+
 -- Local RoundSerial belongs to a runtime snapshot. It can move backwards or
 -- forwards after overlapping GUI reloads, so it cannot identify an HTTP result.
 -- This journal observes native battle resets once for every generation together.
 function Controller:ObserveWebhookRound(context)
     if self.Stopping or Environment[STATE_KEY]~=self then return nil end
     local ledger=stageWebhookSession(context)
-    if not ledger then return nil end
+    if not ledger or webhookNativeId(context)==nil then return nil end
+    local observationProof=webhookNativeProof(context,nil)
+    if not observationProof then return nil end
     local scope=stageWebhookNativeScope(context)
+    local nativeResult=statePath(currentSessionData(),"GameResults")
+    local previousId=ledger.LastNativeGameId
+    if previousId==nil and type(self.LastGameId)=="string"then previousId=self.LastGameId end
+    local scopeChanged=previousId~=nil and previousId~=scope
+    ledger.LastNativeGameId=scope
     local round=ledger.NativeRounds[scope]
     if round==nil then
         round={Epoch=0,LastContext=copyMap(context),HadProgress=context.Active==true and context.CurrentState=="InProgress"}
@@ -20728,6 +20781,11 @@ function Controller:ObserveWebhookRound(context)
         end
     end
     if type(round)~="table"or type(round.Epoch)~="number"or round.Epoch<0 or round.Epoch%1~=0 then return nil end
+    -- GameID can replicate before CurrentGameState and GameResults. A result
+    -- still present while switching IDs belongs to the source until it clears.
+    -- Keep this latch in the shared journal across GUI reloads.
+    if scopeChanged and type(nativeResult)=="table"then round.AwaitingNativeResultClear=true end
+    if type(nativeResult)~="table"then round.AwaitingNativeResultClear=nil end
     local prior=round.LastContext
     local sameScope=sameRoundScope(prior,context)
     local validNumbers=prior and type(prior.Wave)=="number"and type(prior.GameTime)=="number"
@@ -20760,15 +20818,20 @@ function Controller:ObserveWebhookRound(context)
             round.Epoch+=1
             round.Pending=nil
             round.LegacyHold=nil
+            round.NativeProgressObserved=nil
+            if type(nativeResult)=="table"then round.AwaitingNativeResultClear=true end
             round.Boundary={Wave=context.Wave,GameTime=context.GameTime,SawWaveReset=pending.WaveReset,SawTimeReset=pending.TimeReset}
         end
     end
-    if context.Active==true and context.CurrentState=="InProgress"then round.HadProgress=true end
+    if context.Active==true and context.CurrentState=="InProgress"then
+        round.HadProgress=true
+        round.NativeProgressObserved=true
+    end
     round.LastContext=copyMap(context)
     local key="native|"..scope.."|"..tostring(round.Epoch)
     if round.LegacyHold and not ledger.Entries[key]then ledger.Entries[key]={State="legacy-observed",At=os.time()}end
     self.WebhookRoundKey=key
-    return ledger.Entries,key
+    return ledger.Entries,key,round
 end
 
 local function stageWebhookLedger(context)
@@ -20781,8 +20844,19 @@ function Controller:ProcessStageWebhook(context, result)
     if self.Stopping or Environment[STATE_KEY]~=self or value(FEATURE.StageFinishedWebhook, false) ~= true or not result then return false end
     local restartIntent = self.RestartIntents[roundKey(context)]
     if restartIntentSuppressesResult(restartIntent) then return false end
-    local entries, key = stageWebhookLedger(context)
-    if not entries or entries[key] then return false end
+    if not webhookTerminalContext(context)then return false end
+    local entries,key,round=stageWebhookLedger(context)
+    if not entries or entries[key]or not round or round.NativeProgressObserved~=true or round.AwaitingNativeResultClear then return false end
+    local nativeProof=webhookNativeProof(context,true)
+    if not nativeProof then return false end
+    -- Native getters can yield/reenter before the reservation exists. Recheck
+    -- the exact journal and receipt using only non-yielding table operations;
+    -- a second native read here would open the same race again.
+    local sessionLedger=stageWebhookSession(context)
+    if self.Stopping or Environment[STATE_KEY]~=self or entries[key]~=nil
+        or not sessionLedger or sessionLedger.Entries~=entries or sessionLedger.NativeRounds[context.GameId]~=round
+        or key~="native|"..context.GameId.."|"..tostring(round.Epoch)
+        or round.NativeProgressObserved~=true or round.AwaitingNativeResultClear then return false end
     -- Migrate old epoch-keyed sends/attempts during an update on the result screen.
     local prefix=roundKey(context).."|result|"
     for _,records in ipairs({self.WebhookHandled,self.WebhookInFlight,self.WebhookAttemptBatches})do
@@ -20793,7 +20867,7 @@ function Controller:ProcessStageWebhook(context, result)
             end
         end
     end
-    local entry={State="preparing",At=os.time()}
+    local entry={State="preparing",At=os.time(),NativeSource=nativeProof,Epoch=round.Epoch}
     entries[key]=entry -- Reserve BEFORE any callback can yield/reenter/reload.
     self.WebhookInFlight[key]=true
     local built,payload=pcall(self.BuildStageWebhookPayload,self,context,result)
@@ -20802,14 +20876,28 @@ function Controller:ProcessStageWebhook(context, result)
         if entries[key]==entry then entries[key]=nil end -- No request was invoked.
         return false,"stage webhook payload could not be built"
     end
-    if self.Stopping or Environment[STATE_KEY]~=self or value(FEATURE.StageFinishedWebhook,false)~=true then
+    local fresh=currentContext()
+    local freshEntries,freshKey,freshRound=stageWebhookLedger(fresh)
+    if self.Stopping or Environment[STATE_KEY]~=self or value(FEATURE.StageFinishedWebhook,false)~=true
+        or not webhookTerminalContext(fresh)or freshEntries~=entries or freshKey~=key or not freshRound
+        or freshRound.NativeProgressObserved~=true or freshRound.AwaitingNativeResultClear
+        or fresh.GameTime~=context.GameTime or fresh.Wave~=context.Wave or not webhookNativeProof(fresh,true)then
         self.WebhookInFlight[key]=nil
         if entries[key]==entry then entries[key]=nil end
         return false,"runtime changed before webhook submission"
     end
     self.WebhookAttemptBatches[key]=(self.WebhookAttemptBatches[key]or 0)+1
     entry.State="submitted"
-    local callOK,ok,detail,retryable,disposition=pcall(self.SendWebhook,self,payload,"stage-finished")
+    local function deliveryGuard()
+        if self.Stopping or Environment[STATE_KEY]~=self or value(FEATURE.StageFinishedWebhook,false)~=true then return false end
+        local latest=currentContext()
+        local latestEntries,latestKey,latestRound=stageWebhookLedger(latest)
+        return webhookTerminalContext(latest)and latestEntries==entries and latestKey==key
+            and latestEntries[key]==entry and latestRound and latestRound.NativeProgressObserved==true
+            and not latestRound.AwaitingNativeResultClear and latest.GameTime==context.GameTime
+            and latest.Wave==context.Wave and webhookNativeProof(latest,true)~=nil
+    end
+    local callOK,ok,detail,retryable,disposition=pcall(self.SendWebhook,self,payload,"stage-finished",deliveryGuard)
     self.WebhookInFlight[key]=nil
     if not callOK then ok,detail,disposition=false,"webhook outcome is unknown","unknown"end
     if disposition=="cancelled"or disposition=="not-sent"then
@@ -37776,7 +37864,7 @@ return function(ctx)
     local function spaAvailable(s,reserved)
         reserved=reserved or 0
         return finite(reserved)and reserved>=0 and knownSPA(s)and s.Active==true and s.FinalBossForging==false and s.ForgeBusy==false
-            and s.NativeAvailable==true and finite(s.Souls)and s.Souls-reserved-20>500
+            and s.NativeAvailable==true and s.ForgeReceiptKnown~=false and finite(s.Souls)and s.Souls-reserved-20>500
             and(s.Stock==nil or finite(s.Stock)and s.Stock>=1)
             and finite(s.RequiredHeat)and s.RequiredHeat>=0 and finite(s.Heat)and s.Heat>=s.RequiredHeat
     end
@@ -37795,7 +37883,10 @@ return function(ctx)
         return true
     end
     local function sameSPA(a,b)
-        return same(a,b)and a.ReservedSouls==b.ReservedSouls and a.RecipeId==b.RecipeId and a.OriginalPrice==b.OriginalPrice
+        return same(a,b)and a.ReservedSouls==b.ReservedSouls
+            and a.ForgeReceiptKnown==b.ForgeReceiptKnown and a.ForgeReceiptId==b.ForgeReceiptId
+            and a.ForgeReceiptRecipeId==b.ForgeReceiptRecipeId and a.ForgeReceiptSuccess==b.ForgeReceiptSuccess
+            and a.ForgeReceiptRefunded==b.ForgeReceiptRefunded and a.RecipeId==b.RecipeId and a.OriginalPrice==b.OriginalPrice
             and a.Discount==b.Discount and a.SPABoost==b.SPABoost and a.ForgeBusy==b.ForgeBusy
     end
     local function pendingMatches(p,s)
@@ -37804,10 +37895,19 @@ return function(ctx)
         end
         return true
     end
+    local function receiptAcknowledges(p,s)
+        if p.ForgeReceiptBaselineKnown~=true or s.ForgeReceiptKnown~=true then return false end
+        local prior,expected=p.ForgeReceiptBaselineId,p.ExpectedForgeId
+        return finite(prior)and prior>=0 and prior%1==0 and prior<=9007199254740990
+            and expected==prior+1 and s.ForgeReceiptId==expected and s.ForgeReceiptId>prior
+            and s.ForgeReceiptRecipeId=="SpeedBoost"and s.ForgeReceiptSuccess==true and s.ForgeReceiptRefunded==false
+    end
     local function reserve(s,kind)
         return{Kind=kind,RoundKey=s.RoundKey,ShopKey=s.ShopKey,ShopIndex=s.ShopIndex,ShopReplicaId=s.ShopReplicaId,
             GameToken=s.GameToken,PlayerToken=s.PlayerToken,ShopToken=s.ShopToken,PurchaseCount=s.PurchaseCount,
-            Souls=s.Souls,SPABoost=s.SPABoost}
+            Souls=s.Souls,SPABoost=s.SPABoost,ForgeReceiptBaselineKnown=s.ForgeReceiptKnown==true,
+            ForgeReceiptBaselineId=s.ForgeReceiptKnown==true and s.ForgeReceiptId or nil,
+            ExpectedForgeId=s.ForgeReceiptKnown==true and s.ForgeReceiptId+1 or nil}
     end
     local function spaTick(row,boss)
         if not spaEnabled()then return status(row.Completed and"completed"or"spa-disabled","Auto Buy SPA requires Auto Summon Boss and Auto Buy SPA ON")end
@@ -37866,7 +37966,9 @@ return function(ctx)
         if row and row.Pending and row.Pending.Kind=="ForgeSPA"then
             local p=row.Pending
             local a=ctx.Snapshot("ForgeSPA")
-            if knownSPA(a)and pendingMatches(p,a)and a.PurchaseCount==p.PurchaseCount+1 and finite(p.Souls)and finite(a.Souls)then
+            local historyAck=knownSPA(a)and a.PurchaseCount==p.PurchaseCount+1
+            local receiptAck=knownSPA(a)and receiptAcknowledges(p,a)
+            if knownSPA(a)and pendingMatches(p,a)and(historyAck or receiptAck)and finite(p.Souls)and finite(a.Souls)then
                 local reserved=outstanding(row)
                 if not finite(reserved)or reserved<0 then return status("spa-waiting-budget","Native forge spending reservation is unknown")end
                 -- History acknowledges this one actor; it does not prove the balance debit.
@@ -37877,10 +37979,14 @@ return function(ctx)
                     row.OutstandingSouls=reserved+20
                     row.DebitReserveReason="SPA purchase accepted; souls debit not directly observed"
                 end
+                row.LastSPAConfirmation={Kind=receiptAck and"native-receipt"or"purchase-history",ForgeId=receiptAck and a.ForgeReceiptId or nil}
                 row.Pending=nil row.SPAConfirmed=(row.SPAConfirmed or 0)+1
                 return status("spa-confirmed","Native SPA purchase confirmed; outstanding souls reserved "..tostring(row.OutstandingSouls or 0).."; rechecking budget")
             end
-            return status("spa-waiting-ack","Waiting for native SPA purchase history +1; the pending request will not be repeated")
+            if p.ForgeReceiptBaselineKnown~=true then
+                return status("spa-waiting-ack","Older SPA request has no captured native forge receipt baseline; waiting for history ACK or a positive new round without resending")
+            end
+            return status("spa-waiting-ack","Waiting for native SPA purchase history +1 or the exact next successful SpeedBoost receipt; the pending request will not be repeated")
         end
         if row and row.Completed then
             if spaEnabled()then return spaTick(row,s)end
@@ -38133,6 +38239,24 @@ return function(ctx)
             s.ForgeBusy=s.ForgeRecipe~=nil or type(queue)=="table"and next(queue)~=nil
             s.SPABoost=path(gp,"SoulFurnace","Boosts","SPA")
             if not finite(s.SPABoost)then return s end
+            local receipt=path(gp,"SoulFurnace","LastForgeResult")
+            local nativeReceipt=path(pr,"Data","SoulFurnace","LastForgeResult")
+            s.ForgeReceiptKnown=false
+            if receipt==nil and nativeReceipt==nil then
+                s.ForgeReceiptKnown=true s.ForgeReceiptId=0
+            elseif type(receipt)=="table"and type(nativeReceipt)=="table"then
+                local matches=true
+                for _,field in ipairs({"Id","RecipeId","Success","Refunded"})do
+                    if path(receipt,field)~=path(nativeReceipt,field)then matches=false break end
+                end
+                local id,recipeId=path(receipt,"Id"),path(receipt,"RecipeId")
+                local success,refunded=path(receipt,"Success"),path(receipt,"Refunded")
+                if matches and finite(id)and id>=1 and id%1==0 and id<=9007199254740990
+                    and type(recipeId)=="string"and recipeId~=""and type(success)=="boolean"and type(refunded)=="boolean"then
+                    s.ForgeReceiptKnown=true s.ForgeReceiptId=id s.ForgeReceiptRecipeId=recipeId
+                    s.ForgeReceiptSuccess=success s.ForgeReceiptRefunded=refunded
+                end
+            end
         end
         s.RequiredHeat,s.Heat=path(item,"RequiredHeat"),path(gs,"SoulFurnace","HeatLevel")
         s.Ready=s.RoundKey~=nil and(s.NativeState==nil or s.NativeState=="InProgress"or s.Active==false)
@@ -38157,14 +38281,14 @@ return function(ctx)
             or fresh.FinalBossForging~=false or fresh.NativeAvailable~=true
             or not isSPA and(fresh.BossActive~=false or fresh.BossDefeated~=false)
             or isSPA and(fresh.RecipeId~="SpeedBoost"or fresh.Price~=20 or fresh.OriginalPrice~=20 or fresh.Discount~=0
-                or fresh.ForgeBusy~=false or not finite(fresh.SPABoost)or not nonnegative(fresh.ReservedSouls)
+                or fresh.ForgeBusy~=false or fresh.ForgeReceiptKnown~=true or not finite(fresh.SPABoost)or not nonnegative(fresh.ReservedSouls)
                 or fresh.Souls-fresh.ReservedSouls-20<=500)
             or not nonnegative(fresh.ReservedSouls)or fresh.Souls-fresh.ReservedSouls<fresh.Price or fresh.Heat<fresh.RequiredHeat or fresh.Stock~=nil and fresh.Stock<1 then
             return false,"Native Soul Furnace forge is unavailable","not-sent"
         end
         for _,field in ipairs({"Account","Job","RoundKey","NativeIncrement","NativeState","GameToken","PlayerToken","ShopToken","GameGetter","PlayerGetter","ShopGetter",
             "GameGetterActor","PlayerGetterActor","ShopGetterActor","ShopKey","ShopIndex","ShopReplicaId","ItemToken","NativeItemToken",
-            "Actor","Price","OriginalPrice","Discount","Souls","RequiredHeat","Heat","PurchaseCount","Stock","RecipeId","SPABoost","ForgeRecipe","ForgeBusy","ReservedSouls"})do
+            "Actor","Price","OriginalPrice","Discount","Souls","RequiredHeat","Heat","PurchaseCount","Stock","RecipeId","SPABoost","ForgeRecipe","ForgeBusy","ReservedSouls","ForgeReceiptKnown","ForgeReceiptId","ForgeReceiptRecipeId","ForgeReceiptSuccess","ForgeReceiptRefunded"})do
             if before[field]~=fresh[field]then return false,"Native forge context changed","not-sent"end
         end
         if rawget(Actions,"SoulFurnace_Forge")~=fresh.Actor then return false,"Native forge actor changed","not-sent"end

@@ -167,7 +167,7 @@ end
 ]==========================================================]
 local GuiLifecycle=assert(loadstring(GUI_LIFECYCLE_SOURCE))()({
     Environment=Environment,RootEnvironment=RootEnvironment,Preview=PREVIEW_ONLY,Uid=CONFIG_USER_ID,
-    Job=tostring(game.JobId),Build="039482069d20033f6f25c6faf779fe350d61096895a9ca314a5d9271b7a5fb46",Clock=os.clock,Wait=task.wait,
+    Job=tostring(game.JobId),Build="01e077377765e87a98f9bb845c14a72b360fd1227f6b5a5abcdcb176f86778c6",Clock=os.clock,Wait=task.wait,
     OnReuse=function(g)
         if not PREVIEW_ONLY and type(g.CloudSyncOnExecute)=="function"then g.CloudSyncOnExecute()end
     end,
@@ -38054,6 +38054,38 @@ return function(ctx)
             ForgeReceiptBaselineId=s.ForgeReceiptKnown==true and s.ForgeReceiptId or nil,
             ExpectedForgeId=finite(s.ForgeMaxId)and s.ForgeMaxId+1 or nil}
     end
+    -- A legacy/unknown SPA stays reserved and is never retried. It must not starve
+    -- a separately affordable Boss. This exceptional round stays conservative:
+    -- once Boss is dispatched, leave the SPA intent intact until the round ends.
+    local function pendingSPAStatus(row,boss,code,detail)
+        if boss.BossActive or boss.BossDefeated or boss.FinalBossForging or boss.PurchaseCount>0 then
+            row.Completed=true
+            row.Outcome=boss.BossDefeated and"boss-defeated"or boss.BossActive and"boss-active"or boss.FinalBossForging and"native-forge"or"native-purchase"
+            return status("completed","Final Boss confirmed; unresolved SPA retained without resubmission for this round")
+        end
+        if row.Completed then return status("completed","Final Boss confirmed; unresolved SPA retained for this round")end
+        if row.BossPending then return status("waiting-ack","Final Boss requested once; unresolved SPA remains reserved separately")end
+        if not R.Running or not ctx.Owns()or not ctx.Enabled()then return status(code,detail)end
+        local reserved=outstanding(row)
+        if not finite(reserved)or reserved<0 then return status("spa-waiting-budget","Native forge spending reservation is unknown")end
+        reserved+=20
+        if not available(boss,reserved)then return status(code,detail)end
+        local fresh=ctx.Snapshot()
+        if not R.Running or not ctx.Owns()or not ctx.Enabled()or not available(fresh,reserved)
+            or not same(boss,fresh)or outstanding(row)+20~=reserved or fresh.ReservedSouls~=reserved then
+            return status("cancelled","Final Boss context changed while preserving the unresolved SPA")
+        end
+        local p=reserve(fresh,"Forge")p.Price=fresh.Price
+        row.BossPending=p
+        local ok,result,why,outcome=pcall(ctx.Act,"Forge",fresh)
+        if ok and result==false and outcome=="not-sent"then
+            row.BossPending=nil
+            return status("cancelled",tostring(why or"Final Boss rejected before admission"))
+        end
+        R.ActionCount+=1
+        if not ok or result~=true then R.LastError=tostring(ok and why or result)end
+        return status("waiting-ack","Final Boss requested once; preserving 20 souls for the unresolved SPA")
+    end
     local function spaTick(row,boss)
         if not spaEnabled()then return status(row.Completed and"completed"or"spa-disabled","Auto Buy SPA requires Auto Summon Boss and Auto Buy SPA ON")end
         if not R.Running or not ctx.Owns()then return status("stopped",R.StopReason or"owner-changed")end
@@ -38106,7 +38138,7 @@ return function(ctx)
             local unresolved=false
             for _,row in pairs(ledger.Rounds)do
                 -- Unknown ledger entries are not proof that native submission is resolved.
-                if type(row)~="table"or row.Pending~=nil then unresolved=true break end
+                if type(row)~="table"or row.Pending~=nil or row.BossPending~=nil then unresolved=true break end
             end
             if not unresolved then return status("disabled","Auto Summon Boss OFF")end
         end
@@ -38114,12 +38146,16 @@ return function(ctx)
         if not known(s)then return status(ctx.Enabled()and"unavailable"or"disabled",ctx.Enabled()and"Waiting for the native Soul Furnace stage and forge"or"Auto Summon Boss OFF")end
         local row=ledger.Rounds[s.RoundKey]
         if row~=nil and(type(row)~="table"or row.Account~=s.Account or row.Job~=s.Job)then return status("owner-changed","Native round ledger belongs to another owner")end
+        if row and row.BossPending~=nil then
+            return pendingSPAStatus(row,s,"waiting-ack","Final Boss request outcome is pending")
+        end
         if row and row.SPAAccepted then
             local progress=ctx.Snapshot("ForgeSPA")
             if knownSPA(progress)then row.SPAConfirmed=math.floor(progress.SPABoost*100+0.5)end
         end
         if row and row.Pending and row.Pending.Kind=="ForgeSPA"then
             local p=row.Pending
+            if row.BossPending or row.Completed then return pendingSPAStatus(row,s,"spa-waiting-ack","Unresolved SPA retained")end
             local a=ctx.Snapshot("ForgeSPA")
             local enqueuedAck=knownSPA(a)and finite(p.ExpectedForgeId)
                 and a.NativeForgeJobs[p.ExpectedForgeId]=="SpeedBoost"
@@ -38131,7 +38167,7 @@ return function(ctx)
                 -- One in-flight actor: reconcile income and balance before releasing this debit.
                 if not finite(p.EarnedSouls)or not finite(a.EarnedSouls)or a.EarnedSouls<p.EarnedSouls
                     or a.Souls~=p.Souls+(a.EarnedSouls-p.EarnedSouls)-20 then
-                    return status("spa-waiting-debit","Successful SPA receipt; waiting for matching income/balance debit")
+                    return pendingSPAStatus(row,s,"spa-waiting-debit","Successful SPA receipt; waiting for matching income/balance debit")
                 end
                 row.OutstandingSouls=0
                 row.DebitReserveReason="SPA debit reconciled against EarnedSouls and Souls"
@@ -38141,9 +38177,9 @@ return function(ctx)
                 return status("spa-accepted","Native SPA order admitted and debit reconciled; checking next affordable order")
             end
             if p.ForgeReceiptBaselineKnown~=true then
-                return status("spa-waiting-ack","Older SPA request has no captured native forge receipt baseline; waiting for history ACK or a positive new round without resending")
+                return pendingSPAStatus(row,s,"spa-waiting-ack","Older SPA request has no captured native forge receipt baseline; waiting for history ACK or a positive new round without resending")
             end
-            return status("spa-waiting-ack","Waiting for native SPA purchase history +1 or the exact next successful SpeedBoost receipt; the pending request will not be repeated")
+            return pendingSPAStatus(row,s,"spa-waiting-ack","Waiting for the exact native SpeedBoost order; this unresolved SPA will not be repeated")
         end
         if row and row.Completed then
             if spaEnabled()then return spaTick(row,s)end
@@ -38212,7 +38248,7 @@ return function(ctx)
     local Nodes=require(R:WaitForChild("Nodes"))
     local player=assert(Players.LocalPlayer,"Native LocalPlayer unavailable")
     local account,job,place=tostring(player.UserId),tostring(game.JobId),tostring(game.PlaceId)
-    local runtime={Running=true,Gui=G,Version=2,PollSeconds=0.05,SPAPolicies={"Reserve 500 Souls","Buy From Start"}}
+    local runtime={Running=true,Gui=G,Version=3,PollSeconds=0.05,RetrySeconds=0.25,SPAPolicies={"Reserve 500 Souls","Buy From Start"}}
     E[KEY]=runtime
     local all=E.__ZenHubSoulFurnaceBossLedger
     if type(all)~="table"then all={}E.__ZenHubSoulFurnaceBossLedger=all end
@@ -38372,7 +38408,7 @@ return function(ctx)
         s.GameGetterActor,s.PlayerGetterActor,s.ShopGetterActor=ga,pa,sa
         s.ShopKey,s.ShopIndex,s.ShopReplicaId=shopKey,index,shopId
         s.ItemToken,s.NativeItemToken=item,native
-        s.Actor=rawget(Actions,"SoulFurnace_Forge")
+        s.Actor=rawget(Actions,"ShopPurchaseItem")
         s.Active,s.BossActive,s.BossDefeated=path(gs,"Active"),path(gs,"SoulFurnace","FinalBossActive"),path(gs,"SoulFurnace","FinalBossDefeated")
         s.FinalBossForging=path(gp,"SoulFurnace","Forge","RecipeId")=="FinalBoss"
         s.NativeAvailable=path(item,"Available")==true
@@ -38391,6 +38427,9 @@ return function(ctx)
             local debit=row.BossDebit
             if type(debit)~="table"or not nonnegative(debit.Price)then return s end
             reserved+=debit.Price
+        end
+        if kind~="ForgeSPA"and row and type(row.Pending)=="table"and row.Pending.Kind=="ForgeSPA"then
+            reserved+=20
         end
         s.SPAPolicy=spaPolicy()
         s.SPAQuotaUsed=row and math.max(row.SPAAccepted or 0,row.SPAConfirmed or 0)or 0
@@ -38455,7 +38494,10 @@ return function(ctx)
         if nativeRun and nativeRun.AwaitingClear and kind=="ForgeSPA"then s.Ready=false end
         return s
     end
+    local now=type(ctx.Now)=="function"and ctx.Now or os.clock
+    local retryAt=0
     local function act(kind,before)
+        if now()<retryAt then return false,"Native purchase retry cooldown","not-sent"end
         if kind~="Forge"and kind~="ForgeSPA"then return false,"Unknown Soul Furnace action","not-sent"end
         local isSPA=kind=="ForgeSPA"
         local fresh=snapshot(kind)
@@ -38476,9 +38518,16 @@ return function(ctx)
             "Actor","Price","OriginalPrice","Discount","Souls","EarnedSouls","SPAPolicy","SPAQuotaUsed","RequiredHeat","Heat","PurchaseCount","Stock","RecipeId","SPABoost","ForgeRecipe","ForgeBusy","ForgeMaxId","ForgeQueueCount","ForgeQueueLimit","ReservedSouls","ForgeReceiptKnown","ForgeReceiptId","ForgeReceiptRecipeId","ForgeReceiptSuccess","ForgeReceiptRefunded"})do
             if before[field]~=fresh[field]then return false,"Native forge context changed","not-sent"end
         end
-        if rawget(Actions,"SoulFurnace_Forge")~=fresh.Actor then return false,"Native forge actor changed","not-sent"end
-        -- The game's bound action resolves its native dynamic Forge ShopIndex and purchases quantity one.
-        fresh.Actor(isSPA and"SpeedBoost"or"FinalBoss")
+        if rawget(Actions,"ShopPurchaseItem")~=fresh.Actor then return false,"Native forge actor changed","not-sent"end
+        -- Processor.Purchase uses this exact native action and dynamic Forge index.
+        -- SoulFurnace_Forge discards its return. Nodes.Request returns raw server
+        -- values; its timeout fires with no values, so nil is an unknown outcome.
+        local result,reason=fresh.Actor(fresh.ShopKey,"Forge",fresh.ShopIndex,1)
+        if result==false then
+            retryAt=now()+runtime.RetrySeconds
+            return false,tostring(reason or"Native purchase rejected"),"not-sent"
+        end
+        if result~=true then return nil,tostring(reason or"Native purchase response missing"),"unknown"end
         return true
     end
     local function publish(code,detail)

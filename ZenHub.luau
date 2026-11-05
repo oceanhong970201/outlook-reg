@@ -167,7 +167,7 @@ end
 ]==========================================================]
 local GuiLifecycle=assert(loadstring(GUI_LIFECYCLE_SOURCE))()({
     Environment=Environment,RootEnvironment=RootEnvironment,Preview=PREVIEW_ONLY,Uid=CONFIG_USER_ID,
-    Job=tostring(game.JobId),Build="30bfbb08ab9e2577907ef671feba59a793b026721cc3b7e8ad9d930553611d59",Clock=os.clock,Wait=task.wait,
+    Job=tostring(game.JobId),Build="5029714df2ed55c2f62808fb68396483b5f7719b6c429f69934a123654f033c6",Clock=os.clock,Wait=task.wait,
     OnReuse=function(g)
         if not PREVIEW_ONLY and type(g.CloudSyncOnExecute)=="function"then g.CloudSyncOnExecute()end
     end,
@@ -39455,7 +39455,7 @@ return function(E,uid,spec,Http,preview)
                 ctx.OnStatus("error","Local settings save failed; cloud sync skipped")
                 return false,why or"local-save-failed"
             end
-            if onExecute then return C:OnExecute()end
+            if onExecute then return C:Bootstrap()end
             return C:SyncOnce()
         end
         g.CloudSyncOnExecute=function()return syncNow(true)end

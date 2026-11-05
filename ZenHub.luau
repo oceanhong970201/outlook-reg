@@ -49,6 +49,138 @@ local WEBHOOK_MENTION_KEY = "NUI-0593"
 local WEBHOOK_CONFIG_PATH = CONFIG_USER_ID and (CONFIG_FOLDER .. "/webhook_" .. CONFIG_USER_ID .. ".json") or nil
 local WINDOW_TITLE = "Anime Expeditions"
 
+-- GUI_SINGLETON_BEGIN
+local GUI_LIFECYCLE_SOURCE=[========================================================[-- One boot transaction per live/preview surface; repeated delivery shares its result.
+return function(ctx)
+    local E,R=ctx.Environment,ctx.RootEnvironment
+    local key=ctx.Preview and "__ZenHubPreviewBoot"or"__ZenHubGuiBoot"
+    local mode=ctx.Preview and"preview"or"live"
+    local L={}
+    local function screen(g)return type(g)=="table"and type(g.Library)=="table"and g.Library.ScreenGui end
+    local function alive(root)return root~=nil and root.Parent~=nil end
+    local function current()
+        if ctx.Preview then return R.__AnimeExpeditionsPreviewController end
+        return E.__AnimeExpeditionsGuiController
+    end
+    local function matches(root)
+        if not alive(root)or not root:IsA("ScreenGui")then return false end
+        if root:GetAttribute("ZenHubGui")=="AnimeExpeditions"then return root:GetAttribute("ZenHubMode")==mode end
+        if ctx.Preview then return false end
+        -- Exact legacy ZenHub presentation fingerprint; an Obsidian name alone is insufficient.
+        local dock=root:FindFirstChild("AESoftFocusCompactDock")
+        local title=dock and dock:FindFirstChild("AESoftFocusDockTitle",true)
+        local main=root:FindFirstChild("Main")
+        if not(title and title:IsA("TextLabel")and title.Text=="Anime Expeditions"and main and main:IsA("TextButton"))then return false end
+        for _,node in ipairs(root:GetDescendants())do
+            if node:IsA("TextLabel")and node.Text=="UI PREVIEW • automation OFF • settings not saved"then return false end
+        end
+        return true
+    end
+    function L:Sweep(keep)
+        local preview=screen(R.__AnimeExpeditionsPreviewController)
+        local live=screen(R.__AnimeExpeditionsGuiController)
+        local peer
+        if ctx.Preview then peer=live else peer=preview end
+        local ok,roots=pcall(ctx.Roots)
+        if not ok or type(roots)~="table"then return end
+        for _,root in ipairs(roots)do
+            if root~=keep and root~=peer then
+                local identified,owned=pcall(matches,root)
+                if identified and owned then pcall(function()root:Destroy()end)end
+            end
+        end
+    end
+    function L:Retire(previous)
+        if type(previous)~="table"then return end
+        -- Destroy may have failed after marking Alive=false; still remove its captured surface.
+        local root=screen(previous)
+        local peer
+        if ctx.Preview then peer=screen(R.__AnimeExpeditionsGuiController)else peer=screen(R.__AnimeExpeditionsPreviewController)end
+        previous.Alive=false
+        if root and root~=peer then
+            pcall(function()root:Destroy()end)
+        end
+    end
+    function L:Run(build)
+        local pending=R[key]
+        if type(pending)=="table"and pending.State=="booting"then
+            assert(pending.Thread~=coroutine.running(),"Zen Hub: GUI initialization is already running in this thread")
+            local deadline=ctx.Clock()+90
+            repeat
+                assert(ctx.Clock()<deadline,"Zen Hub: GUI initialization is still running; retry after it completes")
+                ctx.Wait(0.05)
+            until pending.State~="booting"
+            if pending.State=="failed"then error("Zen Hub: concurrent GUI initialization failed: "..tostring(pending.Error),0)end
+        end
+        local g=current()
+        local root=screen(g)
+        if type(g)=="table"and g.Alive==true and g.Ready==true and g.BuildRevision==ctx.Build
+            and g.ConfigUserId==ctx.Uid and g.BootJobId==ctx.Job and type(g.Library)=="table"
+            and not g.Library.Unloaded and alive(root)and g.Window and alive(g.Window.MainFrame)then
+            self:Sweep(root)
+            return g
+        end
+        local ticket={State="booting",Thread=coroutine.running(),Build=ctx.Build,Roots={},Libraries={}}
+        R[key]=ticket E.__ZenHubActiveGuiBoot=ticket
+        function ticket:RegisterRoot(root,library)
+            assert(R[key]==self and self.State=="booting","Zen Hub: GUI boot ownership changed")
+            self.Roots[root]=true self.Libraries[library]=true
+            root:SetAttribute("ZenHubGui","AnimeExpeditions")
+            root:SetAttribute("ZenHubMode",mode)
+            root:SetAttribute("ZenHubAccount",ctx.Uid)
+        end
+        local ok,result=xpcall(function()return build(ticket)end,function(err)
+            local message=tostring(err)
+            return type(debug)=="table"and type(debug.traceback)=="function"and debug.traceback(message,2)or message
+        end)
+        if ok then
+            ok=type(result)=="table"and result.Alive==true and result.Ready==true and R[key]==ticket
+            if not ok then result="Zen Hub: GUI boot did not produce an active controller"end
+        end
+        if ok then
+            result.BuildRevision=ctx.Build result.BootJobId=ctx.Job
+            ticket.Result=result ticket.State="ready"
+            if E.__ZenHubActiveGuiBoot==ticket then E.__ZenHubActiveGuiBoot=nil end
+            self:Sweep(screen(result))
+            return result
+        end
+        -- Finish cleanup before waking waiters; only dispose this transaction's resources.
+        if ticket.CloudSync and type(ticket.CloudSync.Stop)=="function"then pcall(ticket.CloudSync.Stop,ticket.CloudSync)end
+        for library in pairs(ticket.Libraries)do
+            if type(library.Unload)=="function"then pcall(library.Unload,library)end
+            if E.Library==library then E.Library=nil end
+        end
+        for root in pairs(ticket.Roots)do pcall(function()root:Destroy()end)end
+        local partial=current()
+        if type(partial)=="table"and partial.BootTicket==ticket then
+            partial.Alive=false
+            if E.__AnimeExpeditionsGuiController==partial then E.__AnimeExpeditionsGuiController=nil end
+            if ctx.Preview and R.__AnimeExpeditionsPreviewController==partial then R.__AnimeExpeditionsPreviewController=nil end
+        end
+        if E.__ZenHubActiveGuiBoot==ticket then E.__ZenHubActiveGuiBoot=nil end
+        ticket.Error=tostring(result)ticket.State="failed"
+        error(result,0)
+    end
+    return L
+end
+]========================================================]
+local GuiLifecycle=assert(loadstring(GUI_LIFECYCLE_SOURCE))()({
+    Environment=Environment,RootEnvironment=RootEnvironment,Preview=PREVIEW_ONLY,Uid=CONFIG_USER_ID,
+    Job=tostring(game.JobId),Build="12cbda1cbd767651466c1cbf38d323d7a98c4c9d2defdc819e1c6c0f727e8f43",Clock=os.clock,Wait=task.wait,
+    Roots=function()
+        local roots,seen={},{}
+        local function add(parent)
+            if not parent then return end
+            local ok,children=pcall(function()return parent:GetChildren()end)
+            if ok then for _,child in ipairs(children)do if not seen[child]and child:IsA("ScreenGui")then seen[child]=true roots[#roots+1]=child end end end
+        end
+        if type(gethui)=="function"then local ok,parent=pcall(gethui)if ok then add(parent)end end
+        add(game:GetService("CoreGui"))add(Players.LocalPlayer:FindFirstChildOfClass("PlayerGui"))
+        return roots
+    end,
+})
+return GuiLifecycle:Run(function(GuiBootTicket)
+-- GUI_SINGLETON_BODY_BEGIN
 local previous = Environment.__AnimeExpeditionsGuiController
 local previousPresentation = { Selections = {}, Collapsed = {} }
 local previousAccountMatches = CONFIG_USER_ID ~= nil and type(Environment.AnimeExpeditionsUIState) == "table"
@@ -74,6 +206,7 @@ if type(previous) == "table" and type(previous.Destroy) == "function" then
         previous:Destroy("reload")
     end)
 end
+GuiLifecycle:Retire(previous)
 if not previousAccountMatches then
     -- Reload snapshots and layout are only meaningful for the account that produced them.
     Environment.__AnimeExpeditionsMacroReloadState = nil
@@ -2010,6 +2143,8 @@ local ScreenGui = New("ScreenGui", {
 })
 ParentUI(ScreenGui)
 Library.ScreenGui = ScreenGui
+local guiBootTicket=getgenv().__ZenHubActiveGuiBoot
+if type(guiBootTicket)=="table"and type(guiBootTicket.RegisterRoot)=="function"then guiBootTicket:RegisterRoot(ScreenGui,Library)end
 
 ScreenGui.DescendantRemoving:Connect(function(Instance)
     task.defer(function()
@@ -15434,7 +15569,7 @@ function Library:Unload()
     Library.KeybindFrame = nil
     Library.KeybindContainer = nil
 
-    getgenv().Library = nil
+    if getgenv().Library == Library then getgenv().Library = nil end
 end
 
 getgenv().Library = Library
@@ -39111,6 +39246,7 @@ if not PREVIEW_ONLY and CONFIG_USER_ID then
         CloudSyncContext=assert(loadstring(CLOUD_SYNC_NATIVE_SOURCE))()(Environment,CONFIG_USER_ID,Spec,HttpService,PREVIEW_ONLY)
         local C=assert(loadstring(CLOUD_SYNC_SOURCE))()(CloudSyncContext)
         Environment.__AnimeExpeditionsCloudSync=C
+        GuiBootTicket.CloudSync=C
         C:Bootstrap()
         return C
     end)
@@ -39165,6 +39301,7 @@ local Controller = {
     Design = "Clean Dark Workspace",
     PreviewOnly = PREVIEW_ONLY,
     ConfigUserId = CONFIG_USER_ID,
+    BootTicket = GuiBootTicket,
     ConfigPath = CONFIG_PATH,
     SaveGeneration = 0,
     Spec = Spec,
@@ -39525,7 +39662,7 @@ function Controller:Destroy(reason)
     self.Alive = false
     self.DestroyReason = reason or "manual"
     stopOwnedPresentation()
-    for _, field in ipairs({ "SoulFurnaceBoss", "HalloweenTrick", "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
+    for _, field in ipairs({ "CloudSync", "SoulFurnaceBoss", "HalloweenTrick", "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
         local runtime = self[field]
         self[field] = nil
         if type(runtime) == "table" and type(runtime.Stop) == "function" then pcall(function() runtime:Stop(self.DestroyReason) end) end
@@ -39533,7 +39670,7 @@ function Controller:Destroy(reason)
     stopOwnedMacro(self.DestroyReason)
     stopOwnedGameWebhook(self.DestroyReason)
     stopOwnedJoiner(self.DestroyReason)
-    saveStateNow()
+    pcall(saveStateNow)
     if self.Library and type(self.Library.Unload) == "function" then
         pcall(function() self.Library:Unload() end)
     end
@@ -39615,7 +39752,7 @@ local okGuiBuild, guiBuildFailure = xpcall(function()
 Library:OnUnload(function()
     Controller.Alive = false
     stopOwnedPresentation()
-    for _, field in ipairs({ "SoulFurnaceBoss", "HalloweenTrick", "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
+    for _, field in ipairs({ "CloudSync", "SoulFurnaceBoss", "HalloweenTrick", "StarrkAutoPlay", "MonsterClash", "Settings", "StreamerMode", "PutOut", "DmcaSearch", "TidalSiege", "AutoRejoin", "LostShipment", "Utilities", "Lobby", "Expedition" }) do
         local runtime = Controller[field]
         if type(runtime) == "table" and type(runtime.Stop) == "function" then pcall(function() runtime:Stop("library-unload") end) end
     end
@@ -40129,6 +40266,8 @@ for _, name in ipairs({ "SoulFurnaceBoss", "HalloweenTrick", "StarrkAutoPlay", "
 end
 Controller.RuntimeStatus = next(Controller.RuntimeErrors) and "degraded" or "ready"
 return Controller
+end)
+-- GUI_SINGLETON_END
 ]============================================================]
 getgenv().__AnimeExpeditionsGuiSource=approvedSource
 return assert(loadstring(approvedSource))()
